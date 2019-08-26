@@ -6,6 +6,7 @@ namespace Mathematicator\Numbers;
 
 
 use Mathematicator\Engine\DivisionByZero;
+use Mathematicator\Engine\MathematicatorException;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -224,7 +225,7 @@ class SmartNumber
 			$this->integer = (int) $this->float;
 			$this->setStringHelper(bcdiv($short[0], $short[1], $this->accuracy));
 		} else {
-			throw new NumberException('Invalid input format: "' . $value . '".');
+			throw new NumberException('Invalid input format. "' . $value . '" given.');
 		}
 	}
 
@@ -303,7 +304,7 @@ class SmartNumber
 	 * @param string $y
 	 * @param int $level
 	 * @return int[]|string[]
-	 * @throws DivisionByZero
+	 * @throws DivisionByZero|MathematicatorException
 	 */
 	private function shortFractionHelper(string $x, string $y, int $level = 0): array
 	{
@@ -319,8 +320,8 @@ class SmartNumber
 		}
 
 		$originalX = $x;
-		$x = number_format(abs($x), 6, '.', '');
-		$y = number_format(abs($y), 6, '.', '');
+		$x = number_format(abs((float) $x), 6, '.', '');
+		$y = number_format(abs((float) $y), 6, '.', '');
 
 		if ($level > 100) {
 			return [$x, $y];
@@ -344,7 +345,7 @@ class SmartNumber
 			}
 		}
 
-		return [($originalX < 0 ? '-' : '') . number_format($x, 0, '.', ''), number_format($y, 0, '.', '')];
+		return [($originalX < 0 ? '-' : '') . number_format((float) $x, 0, '.', ''), number_format((float) $y, 0, '.', '')];
 	}
 
 }
