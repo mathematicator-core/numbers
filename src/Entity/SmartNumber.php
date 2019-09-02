@@ -49,7 +49,7 @@ class SmartNumber
 	/**
 	 * @param int|null $accuracy
 	 * @param string $number
-	 * @throws NumberException
+	 * @throws NumberException|MathematicatorException
 	 */
 	public function __construct(?int $accuracy, string $number)
 	{
@@ -86,7 +86,7 @@ class SmartNumber
 	 */
 	public function getFloat(): float
 	{
-		return $this->float;
+		return (float) $this->float;
 	}
 
 	/**
@@ -94,7 +94,7 @@ class SmartNumber
 	 */
 	public function getFloatString(): string
 	{
-		return (string) $this->getFloat();
+		return (string) $this->float;
 	}
 
 	/**
@@ -184,7 +184,7 @@ class SmartNumber
 	/**
 	 * @internal
 	 * @param string $value
-	 * @throws NumberException|DivisionByZero
+	 * @throws NumberException|DivisionByZero|MathematicatorException
 	 */
 	public function setValue(string $value): void
 	{
@@ -245,7 +245,7 @@ class SmartNumber
 	 * @param string $float
 	 * @param float $tolerance
 	 * @return int[]
-	 * @throws NumberException
+	 * @throws NumberException|MathematicatorException
 	 */
 	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
 	{
