@@ -222,8 +222,8 @@ class SmartNumber
 			$short = $this->shortFractionHelper($parseFraction['x'], $parseFraction['y']);
 			$this->fraction = [$short[0], $short[1]];
 			$this->float = $short[0] / $short[1];
-			$this->integer = (int) $this->float;
-			$this->setStringHelper(bcdiv($short[0], $short[1], $this->accuracy));
+			$this->integer = (string) (int) $this->float;
+			$this->setStringHelper(bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
 		} else {
 			throw new NumberException('Invalid input format. "' . $value . '" given.');
 		}
@@ -250,7 +250,7 @@ class SmartNumber
 	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
 	{
 		if (preg_match('/^0+(\.0+)?$/', $float)) {
-			return $this->fraction = [0, 1];
+			return $this->fraction = ['0', '1'];
 		}
 
 		$floatOriginal = $float;
@@ -286,7 +286,7 @@ class SmartNumber
 		$short = $this->shortFractionHelper(number_format($numerator, 0, '.', ''), number_format($denominator, 0, '.', ''));
 
 		if ((\is_int($short) || \is_float($short)) && $short[1] === null) {
-			return $this->fraction = [(int) $short, 1];
+			return $this->fraction = [(string) (int) $short, '1'];
 		}
 
 		if ($short[1] === null) {
@@ -295,7 +295,7 @@ class SmartNumber
 
 		return $this->fraction = [
 			($floatOriginal < 0 ? '-' : '') . $short[0],
-			$short[1],
+			(string) $short[1],
 		];
 	}
 
