@@ -272,15 +272,13 @@ class SmartNumber
 				$denominator = $a * $denominator + $subDenominator;
 				$subDenominator = $aux;
 				$b -= $a;
-			} while (abs($float - $numerator / $denominator) > $float * $tolerance);
+			} while ($denominator > 0 && abs($float - $numerator / $denominator) > $float * $tolerance);
+		} elseif (preg_match('/^(.*)\.(.*)$/', $float, $floatParser)) {
+			$numerator = ltrim($floatParser[1] . $floatParser[2], '0');
+			$denominator = '1' . str_repeat('0', \strlen($floatParser[2]));
 		} else {
-			if (preg_match('/^(.*)\.(.*)$/', $float, $floatParser)) {
-				$numerator = ltrim($floatParser[1] . $floatParser[2], '0');
-				$denominator = '1' . str_repeat('0', \strlen($floatParser[2]));
-			} else {
-				$numerator = str_replace('.', '', $float);
-				$denominator = '1';
-			}
+			$numerator = str_replace('.', '', $float);
+			$denominator = '1';
 		}
 
 		$short = $this->shortFractionHelper(number_format($numerator, 0, '.', ''), number_format($denominator, 0, '.', ''));
