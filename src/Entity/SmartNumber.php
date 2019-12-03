@@ -224,6 +224,8 @@ class SmartNumber
 			$this->float = $short[0] / $short[1];
 			$this->integer = (string) (int) $this->float;
 			$this->setStringHelper(bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
+		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
+			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
 			throw new NumberException('Invalid input format. "' . $value . '" given.');
 		}
