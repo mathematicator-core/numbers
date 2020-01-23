@@ -255,6 +255,10 @@ class SmartNumber
 			return $this->fraction = ['0', '1'];
 		}
 
+		if (preg_match('/^0+\.(?<zeros>0{3,})(?<num>\d+?)$/', $float, $floatParser)) {
+			return $this->fraction = [$floatParser['num'], '1' . str_repeat('0', \strlen($floatParser['zeros']) + 2)];
+		}
+
 		$floatOriginal = $float;
 		$float = preg_replace('/^-/', '', $float);
 
