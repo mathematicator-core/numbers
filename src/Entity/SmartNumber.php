@@ -13,38 +13,26 @@ use Nette\Utils\Validators;
 
 class SmartNumber
 {
-
 	use SmartObject;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $accuracy;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $input;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $string;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $integer;
 
-	/**
-	 * @var float
-	 */
+	/** @var float */
 	private $float;
 
-	/**
-	 * @var string[]
-	 */
+	/** @var string[] */
 	private $fraction = [];
+
 
 	/**
 	 * @param int|null $accuracy
@@ -57,6 +45,7 @@ class SmartNumber
 		$this->setValue($number);
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -64,6 +53,7 @@ class SmartNumber
 	{
 		return $this->input;
 	}
+
 
 	/**
 	 * @return string
@@ -73,6 +63,7 @@ class SmartNumber
 		return $this->integer;
 	}
 
+
 	/**
 	 * @return int
 	 */
@@ -80,6 +71,7 @@ class SmartNumber
 	{
 		return \abs($this->integer);
 	}
+
 
 	/**
 	 * @return float
@@ -89,6 +81,7 @@ class SmartNumber
 		return (float) $this->float;
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -96,6 +89,7 @@ class SmartNumber
 	{
 		return (string) $this->float;
 	}
+
 
 	/**
 	 * @return string[]|int[]
@@ -105,6 +99,7 @@ class SmartNumber
 		return $this->fraction;
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -112,6 +107,7 @@ class SmartNumber
 	{
 		return $this->integer !== null && ($this->input === $this->integer || $this->getFraction()[1] === 1);
 	}
+
 
 	/**
 	 * @return bool
@@ -121,6 +117,7 @@ class SmartNumber
 		return $this->isInteger() === false && $this->integer !== null;
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -128,6 +125,7 @@ class SmartNumber
 	{
 		return $this->float > 0;
 	}
+
 
 	/**
 	 * @return bool
@@ -137,6 +135,7 @@ class SmartNumber
 		return $this->float < 0;
 	}
 
+
 	/**
 	 * @return bool
 	 */
@@ -145,6 +144,7 @@ class SmartNumber
 		return $this->float === 0 || $this->float === 0.0;
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -152,6 +152,7 @@ class SmartNumber
 	{
 		return $this->getString();
 	}
+
 
 	/**
 	 * @return string
@@ -167,6 +168,7 @@ class SmartNumber
 		return '\frac{' . $fraction[0] . '}{' . $fraction[1] . '}';
 	}
 
+
 	/**
 	 * @return string
 	 */
@@ -180,6 +182,7 @@ class SmartNumber
 
 		return $fraction[0] . '/' . $fraction[1];
 	}
+
 
 	/**
 	 * @internal
@@ -231,6 +234,7 @@ class SmartNumber
 		}
 	}
 
+
 	/**
 	 * @param string $string
 	 */
@@ -242,6 +246,7 @@ class SmartNumber
 			$this->string = $redundantZeros['int'] . '.' . $redundantZeros['float'];
 		}
 	}
+
 
 	/**
 	 * @param string $float
@@ -303,6 +308,7 @@ class SmartNumber
 		];
 	}
 
+
 	/**
 	 * @param string $x
 	 * @param string $y
@@ -351,5 +357,4 @@ class SmartNumber
 
 		return [($originalX < 0 ? '-' : '') . number_format((float) $x, 0, '.', ''), number_format((float) $y, 0, '.', '')];
 	}
-
 }

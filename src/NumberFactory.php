@@ -8,10 +8,9 @@ namespace Mathematicator\Numbers;
 class NumberFactory
 {
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	private $accuracy;
+
 
 	/**
 	 * @param int $accuracy
@@ -21,6 +20,7 @@ class NumberFactory
 		$this->accuracy = $accuracy;
 	}
 
+
 	/**
 	 * @param string $number
 	 * @return SmartNumber
@@ -29,5 +29,4 @@ class NumberFactory
 	{
 		return new SmartNumber($this->accuracy, (string) $number);
 	}
-
 }

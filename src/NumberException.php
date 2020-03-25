@@ -9,5 +9,4 @@ use Mathematicator\Engine\MathematicatorException;
 
 class NumberException extends MathematicatorException
 {
-
 }
