@@ -19,5 +19,4 @@ class Cache
 			yield $number;
 		}
 	}
-
 }
