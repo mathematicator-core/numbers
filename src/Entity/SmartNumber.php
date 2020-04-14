@@ -308,12 +308,12 @@ final class SmartNumber
 	 */
 	private function shortFractionHelper(string $x, string $y, int $level = 0): array
 	{
-		if ($y === 0 || preg_match('/^0+(\.0+)?$/', $y)) {
+		if ($y === '0' || preg_match('/^0+(\.0+)?$/', $y)) {
 			throw new NumberException('Can not division fraction [' . $x . ' / ' . $y . '] by zero.');
 		}
 
 		if (Validators::isNumericInt($x) === false || Validators::isNumericInt($y) === false) {
-			return [$this->setFractionHelper((string) ($x / $y)), '1'];
+			return $this->setFractionHelper((string) ($x / $y));
 		}
 
 		$originalX = $x;
@@ -325,7 +325,7 @@ final class SmartNumber
 		}
 
 		if ($x % $y === 0) {
-			return [$x / $y, 1];
+			return [(string) (int) ($x / $y), '1'];
 		}
 
 		foreach (Cache::primaries() as $primary) {
