@@ -5,13 +5,12 @@
 	"authors": [
 		{
 			"name": "Jan Barášek",
-			"homepage": "http://baraja.cz"
+			"homepage": "https://baraja.cz"
 		}
 	],
 	"require": {
 		"php": ">=7.1.0",
 		"nette/utils": "^3.0",
-		"mathematicator-core/engine": "~1.0",
 		"ext-bcmath": "*"
 	},
 	"require-dev": {

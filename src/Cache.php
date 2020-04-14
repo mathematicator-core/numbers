@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-class Cache
+final class Cache
 {
 
 	/**

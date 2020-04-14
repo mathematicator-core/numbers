@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-use Mathematicator\Engine\DivisionByZero;
-use Mathematicator\Engine\MathematicatorException;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 
-class SmartNumber
+final class SmartNumber
 {
 	use SmartObject;
 
@@ -37,7 +35,7 @@ class SmartNumber
 	/**
 	 * @param int|null $accuracy
 	 * @param string $number
-	 * @throws NumberException|MathematicatorException
+	 * @throws NumberException
 	 */
 	public function __construct(?int $accuracy, string $number)
 	{
@@ -187,7 +185,7 @@ class SmartNumber
 	/**
 	 * @internal
 	 * @param string $value
-	 * @throws NumberException|DivisionByZero|MathematicatorException
+	 * @throws NumberException
 	 */
 	public function setValue(string $value): void
 	{
@@ -252,7 +250,7 @@ class SmartNumber
 	 * @param string $float
 	 * @param float $tolerance
 	 * @return string[] (representation of integers)
-	 * @throws NumberException|MathematicatorException
+	 * @throws NumberException
 	 */
 	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
 	{
@@ -306,15 +304,12 @@ class SmartNumber
 	 * @param string $y
 	 * @param int $level
 	 * @return string[]
-	 * @throws DivisionByZero|MathematicatorException
+	 * @throws NumberException
 	 */
 	private function shortFractionHelper(string $x, string $y, int $level = 0): array
 	{
 		if ($y === 0 || preg_match('/^0+(\.0+)?$/', $y)) {
-			throw new DivisionByZero(
-				'Can not division fraction [' . $x . ' / ' . $y . '] by zero.',
-				500, null, [$x, $y]
-			);
+			throw new NumberException('Can not division fraction [' . $x . ' / ' . $y . '] by zero.');
 		}
 
 		if (Validators::isNumericInt($x) === false || Validators::isNumericInt($y) === false) {

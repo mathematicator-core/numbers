@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-class NumberFactory
+final class NumberFactory
 {
 
 	/** @var int */
@@ -22,8 +22,9 @@ class NumberFactory
 
 
 	/**
-	 * @param string $number
+	 * @param mixed $number
 	 * @return SmartNumber
+	 * @throws NumberException
 	 */
 	public function create($number): SmartNumber
 	{
