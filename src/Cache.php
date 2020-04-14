@@ -9,7 +9,7 @@ class Cache
 {
 
 	/**
-	 * @return \Generator
+	 * @return \Generator<int>
 	 */
 	public static function primaries(): \Generator
 	{

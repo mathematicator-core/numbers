@@ -78,7 +78,7 @@ class SmartNumber
 	 */
 	public function getFloat(): float
 	{
-		return (float) $this->float;
+		return $this->float;
 	}
 
 
@@ -141,7 +141,7 @@ class SmartNumber
 	 */
 	public function isZero(): bool
 	{
-		return $this->float === 0 || $this->float === 0.0;
+		return $this->float === 0.0 || abs($this->float) < 0.000000001;
 	}
 
 
@@ -191,20 +191,20 @@ class SmartNumber
 	 */
 	public function setValue(string $value): void
 	{
-		$value = preg_replace('/(\d)\s+(\d)/', '$1$2', $value);
-		$value = rtrim(preg_replace('/^(\d*\.\d*?)0+$/', '$1', $value), '.');
+		$value = (string) preg_replace('/(\d)\s+(\d)/', '$1$2', $value);
+		$value = rtrim((string) preg_replace('/^(\d*\.\d*?)0+$/', '$1', $value), '.');
 		$this->input = $value;
 
 		if (Validators::isNumeric($value)) {
-			$toInteger = preg_replace('/\..*$/', '', $value);
+			$toInteger = (string) preg_replace('/\..*$/', '', $value);
 			if (Validators::isNumericInt($value)) {
 				$this->integer = $toInteger;
-				$this->float = $toInteger * 1;
+				$this->float = (float) $toInteger;
 				$this->setStringHelper($toInteger);
 				$this->fraction = [$toInteger, '1'];
 			} else {
 				$this->integer = $toInteger;
-				$this->float = $value * 1;
+				$this->float = (float) $value;
 				$this->setStringHelper($value);
 				$this->setFractionHelper($value);
 			}
@@ -218,7 +218,7 @@ class SmartNumber
 				$this->setFractionHelper((string) $floatPow);
 			} else {
 				$this->integer = $toString;
-				$this->float = $toString;
+				$this->float = (float) $toString;
 				$this->fraction = [$toString, '1'];
 			}
 		} elseif (preg_match('/^(?<x>-?\d*[.]?\d+)\s*\/\s*(?<y>-?\d*[.]?\d+)$/', $value, $parseFraction)) {
@@ -251,7 +251,7 @@ class SmartNumber
 	/**
 	 * @param string $float
 	 * @param float $tolerance
-	 * @return int[]
+	 * @return string[] (representation of integers)
 	 * @throws NumberException|MathematicatorException
 	 */
 	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
@@ -294,14 +294,6 @@ class SmartNumber
 
 		$short = $this->shortFractionHelper(number_format($numerator, 0, '.', ''), number_format($denominator, 0, '.', ''));
 
-		if ((\is_int($short) || \is_float($short)) && $short[1] === null) {
-			return $this->fraction = [(string) (int) $short, '1'];
-		}
-
-		if ($short[1] === null) {
-			throw new NumberException('Part of fraction is NULL');
-		}
-
 		return $this->fraction = [
 			($floatOriginal < 0 ? '-' : '') . $short[0],
 			(string) $short[1],
@@ -313,7 +305,7 @@ class SmartNumber
 	 * @param string $x
 	 * @param string $y
 	 * @param int $level
-	 * @return int[]|string[]
+	 * @return string[]
 	 * @throws DivisionByZero|MathematicatorException
 	 */
 	private function shortFractionHelper(string $x, string $y, int $level = 0): array
@@ -325,8 +317,8 @@ class SmartNumber
 			);
 		}
 
-		if (!Validators::isNumericInt($x) || !Validators::isNumericInt($y)) {
-			return $this->setFractionHelper((string) ($x / $y));
+		if (Validators::isNumericInt($x) === false || Validators::isNumericInt($y) === false) {
+			return [$this->setFractionHelper((string) ($x / $y)), '1'];
 		}
 
 		$originalX = $x;
