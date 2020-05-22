@@ -9,6 +9,19 @@ use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 
+/**
+ * This is an implementation of an easy-to-use entity for interpreting numbers.
+ *
+ * The service supports the storage of the following data types:
+ *
+ * - Original user input
+ * - Integer
+ * - Decimal number with adjustable accuracy
+ * - Fraction
+ *
+ * Decimal numbers are automatically converted to a fraction when entered.
+ * WARNING: Always use fractions for calculations to avoid problems with rounding of intermediate calculations!
+ */
 final class SmartNumber
 {
 	use SmartObject;
@@ -34,7 +47,7 @@ final class SmartNumber
 
 	/**
 	 * @param int|null $accuracy
-	 * @param string $number
+	 * @param string $number number or real user input
 	 * @throws NumberException
 	 */
 	public function __construct(?int $accuracy, string $number)
@@ -45,6 +58,8 @@ final class SmartNumber
 
 
 	/**
+	 * User real input
+	 *
 	 * @return string
 	 */
 	public function getInput(): string
@@ -54,6 +69,8 @@ final class SmartNumber
 
 
 	/**
+	 * This service represent integer as a string to avoid precision distortion.
+	 *
 	 * @return string
 	 */
 	public function getInteger(): string
@@ -81,6 +98,8 @@ final class SmartNumber
 
 
 	/**
+	 * Return float number converted to string.
+	 *
 	 * @return string
 	 */
 	public function getFloatString(): string
@@ -90,7 +109,11 @@ final class SmartNumber
 
 
 	/**
-	 * @return string[]|int[]
+	 * Return number converted to fraction.
+	 * For example `2.5` will be converted to `[5, 2]`.
+	 * The fraction is always shortened to the basic shape.
+	 *
+	 * @return string[]
 	 */
 	public function getFraction(): array
 	{
@@ -99,6 +122,9 @@ final class SmartNumber
 
 
 	/**
+	 * Detects that the number passed is integer.
+	 * Advanced methods through fractional truncation are used for detection.
+	 *
 	 * @return bool
 	 */
 	public function isInteger(): bool
@@ -135,6 +161,9 @@ final class SmartNumber
 
 
 	/**
+	 * Detects that the number is zero.
+	 * For very small decimal number, the function can only return approximate result.
+	 *
 	 * @return bool
 	 */
 	public function isZero(): bool
@@ -153,36 +182,46 @@ final class SmartNumber
 
 
 	/**
+	 * Returns a number in computer readable form (in LaTeX format).
+	 *
 	 * @return string
 	 */
 	public function getString(): string
 	{
-		if ($this->isInteger()) {
+		if ($this->isInteger() === true) {
 			return $this->integer;
 		}
 
-		$fraction = $this->getFraction();
-
-		return '\frac{' . $fraction[0] . '}{' . $fraction[1] . '}';
+		return ($fraction = $this->getFraction()) !== [] && isset($fraction[0], $fraction[1]) === true
+			? '\frac{' . $fraction[0] . '}{' . $fraction[1] . '}'
+			: $this->getFloatString();
 	}
 
 
 	/**
+	 * Returns a number in human readable form (valid search input).
+	 *
 	 * @return string
 	 */
 	public function getHumanString(): string
 	{
-		if ($this->isInteger()) {
+		if ($this->isInteger() === true) {
 			return $this->integer;
 		}
 
-		$fraction = $this->getFraction();
-
-		return $fraction[0] . '/' . $fraction[1];
+		return ($fraction = $this->getFraction()) !== [] && isset($fraction[0], $fraction[1]) === true
+			? $fraction[0] . '/' . $fraction[1]
+			: $this->getFloatString();
 	}
 
 
 	/**
+	 * Converts any user input to the internal state of the object.
+	 * This method must be called before reading any getter, otherwise the number information will not be available.
+	 *
+	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
+	 * Numbers are handled like a string.
+	 *
 	 * @internal
 	 * @param string $value
 	 * @throws NumberException
@@ -228,7 +267,7 @@ final class SmartNumber
 		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
 			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
-			throw new NumberException('Invalid input format. "' . $value . '" given.');
+			throw new NumberException('Invalid input format. Haystack "' . $value . '" given.');
 		}
 	}
 
@@ -247,6 +286,9 @@ final class SmartNumber
 
 
 	/**
+	 * Converts a decimal number to the best available fraction.
+	 * The fraction is automatically converted to the basic abbreviated form.
+	 *
 	 * @param string $float
 	 * @param float $tolerance
 	 * @return string[] (representation of integers)
@@ -300,6 +342,9 @@ final class SmartNumber
 
 
 	/**
+	 * Automatically converts a fraction to a shortened form.
+	 * A prime division is used to shorten the fractions. It is the fastest method for calculation.
+	 *
 	 * @param string $x
 	 * @param string $y
 	 * @param int $level
@@ -328,7 +373,7 @@ final class SmartNumber
 			return [(string) (int) ($x / $y), '1'];
 		}
 
-		foreach (Cache::primaries() as $primary) {
+		foreach (PrimaryNumber::getList() as $primary) {
 			if ($primary > $x || $primary > $y) {
 				break;
 			}
