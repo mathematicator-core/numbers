@@ -267,7 +267,7 @@ final class SmartNumber
 		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
 			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
-			throw new NumberException('Invalid input format. Haystack "' . $value . '" given.');
+			NumberException::invalidInput($value);
 		}
 	}
 
@@ -354,7 +354,7 @@ final class SmartNumber
 	private function shortFractionHelper(string $x, string $y, int $level = 0): array
 	{
 		if ($y === '0' || preg_match('/^0+(\.0+)?$/', $y)) {
-			throw new NumberException('Can not division fraction [' . $x . ' / ' . $y . '] by zero.');
+			NumberException::canNotDivisionFractionByZero($x, $y);
 		}
 
 		if (Validators::isNumericInt($x) === false || Validators::isNumericInt($y) === false) {
