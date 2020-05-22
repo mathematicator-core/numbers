@@ -117,6 +117,10 @@ final class SmartNumber
 	 */
 	public function getFraction(): array
 	{
+		if (isset($this->fraction[0], $this->fraction[1]) === false) {
+			throw new \RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
+		}
+
 		return $this->fraction;
 	}
 
@@ -129,7 +133,7 @@ final class SmartNumber
 	 */
 	public function isInteger(): bool
 	{
-		return $this->integer !== null && ($this->input === $this->integer || $this->getFraction()[1] === 1);
+		return $this->integer !== null && ($this->input === $this->integer || $this->getFraction()[1] === '1');
 	}
 
 
