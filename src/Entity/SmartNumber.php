@@ -196,9 +196,7 @@ final class SmartNumber
 			return $this->integer;
 		}
 
-		return ($fraction = $this->getFraction()) !== [] && isset($fraction[0], $fraction[1]) === true
-			? '\frac{' . $fraction[0] . '}{' . $fraction[1] . '}'
-			: $this->getFloatString();
+		return '\frac{' . ($fraction = $this->getFraction())[0] . '}{' . $fraction[1] . '}';
 	}
 
 
@@ -213,9 +211,7 @@ final class SmartNumber
 			return $this->integer;
 		}
 
-		return ($fraction = $this->getFraction()) !== [] && isset($fraction[0], $fraction[1]) === true
-			? $fraction[0] . '/' . $fraction[1]
-			: $this->getFloatString();
+		return ($fraction = $this->getFraction())[0] . '/' . $fraction[1];
 	}
 
 
