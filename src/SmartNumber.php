@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
+use function abs;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
+use RuntimeException;
+use function strlen;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
@@ -84,7 +87,7 @@ final class SmartNumber
 	 */
 	public function getAbsoluteInteger(): int
 	{
-		return \abs($this->integer);
+		return (int) abs($this->integer);
 	}
 
 
@@ -118,7 +121,7 @@ final class SmartNumber
 	public function getFraction(): array
 	{
 		if (isset($this->fraction[0], $this->fraction[1]) === false) {
-			throw new \RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
+			throw new RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
 		}
 
 		return $this->fraction;
@@ -222,9 +225,9 @@ final class SmartNumber
 	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
 	 * Numbers are handled like a string.
 	 *
-	 * @internal
 	 * @param string $value
 	 * @throws NumberException
+	 * @internal
 	 */
 	public function setValue(string $value): void
 	{
@@ -250,7 +253,7 @@ final class SmartNumber
 			$this->setStringHelper($toString);
 			if (Strings::contains($toString, '.')) {
 				$floatPow = $parseExponential['mantissa'] * (10 ** $parseExponential['exponent']);
-				$this->integer = preg_replace('/\..+$/', '', $toString);
+				$this->integer = (string) preg_replace('/\..+$/', '', $toString);
 				$this->float = $floatPow;
 				$this->setFractionHelper((string) $floatPow);
 			} else {
@@ -263,7 +266,7 @@ final class SmartNumber
 			$this->fraction = [$short[0], $short[1]];
 			$this->float = $short[0] / $short[1];
 			$this->integer = (string) (int) $this->float;
-			$this->setStringHelper(bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
+			$this->setStringHelper((string) bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
 		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
 			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
@@ -301,7 +304,7 @@ final class SmartNumber
 		}
 
 		if (preg_match('/^0+\.(?<zeros>0{3,})(?<num>\d+?)$/', $float, $floatParser)) {
-			return $this->fraction = [$floatParser['num'], '1' . str_repeat('0', \strlen($floatParser['zeros']) + 2)];
+			return $this->fraction = [$floatParser['num'], '1' . str_repeat('0', strlen($floatParser['zeros']) + 2)];
 		}
 
 		$floatOriginal = $float;
@@ -324,15 +327,18 @@ final class SmartNumber
 				$subDenominator = $aux;
 				$b -= $a;
 			} while ($denominator > 0 && abs($float - $numerator / $denominator) > $float * $tolerance);
-		} elseif (preg_match('/^(.*)\.(.*)$/', $float, $floatParser)) {
+		} elseif (preg_match('/^(.*)\.(.*)$/', (string) $float, $floatParser)) {
 			$numerator = ltrim($floatParser[1] . $floatParser[2], '0');
-			$denominator = '1' . str_repeat('0', \strlen($floatParser[2]));
+			$denominator = '1' . str_repeat('0', strlen($floatParser[2]));
 		} else {
-			$numerator = str_replace('.', '', $float);
+			$numerator = str_replace('.', '', (string) $float);
 			$denominator = '1';
 		}
 
-		$short = $this->shortFractionHelper(number_format($numerator, 0, '.', ''), number_format($denominator, 0, '.', ''));
+		$short = $this->shortFractionHelper(
+			number_format((float) $numerator, 0, '.', ''),
+			number_format((float) $denominator, 0, '.', '')
+		);
 
 		return $this->fraction = [
 			($floatOriginal < 0 ? '-' : '') . $short[0],
