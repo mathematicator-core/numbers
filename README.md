@@ -1,8 +1,17 @@
-# Smart PHP math number
+<h1 align="center">
+    Smart PHP math number
+</h1>
+
+<p align="center">
+    <a href="https://mathematicator.com" target="_blank">
+        <img src="https://avatars3.githubusercontent.com/u/44620375?s=100&v=4">
+    </a>
+</p>
 
 [![Integrity check](https://github.com/mathematicator-core/numbers/workflows/Integrity%20check/badge.svg)](https://github.com/mathematicator-core/numbers/actions?query=workflow%3A%22Integrity+check%22)
 [![codecov](https://codecov.io/gh/mathematicator-core/numbers/branch/master/graph/badge.svg)](https://codecov.io/gh/mathematicator-core/numbers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](./LICENSE)
+[![PHPStan Enabled](https://img.shields.io/badge/PHPStan-enabled%20L8-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 
 Robust library for representation of "number".
