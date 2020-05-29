@@ -5,55 +5,31 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Entity;
 
 use Brick\Math\BigNumber;
-use Doctrine\ORM\Mapping as ORM;
 use Stringable;
 
 /**
- * Single entity to store simple and compound fractions
- *
- * @ORM\Entity
+ * Entity to store simple and compound fractions
  */
 class Fraction
 {
-	/**
-	 * @var int
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue
-	 */
-	protected $id;
-	/**
-	 * @var Fraction|null
-	 * @ORM\Column(type="string", nullable=true)
-	 */
+	/** @var Fraction|null */
 	protected $numeratorFraction;
-	/**
-	 * @var string|null
-	 * @ORM\Column(type="string", nullable=true)
-	 */
+	/** @var string|null */
 	protected $numeratorString;
-	/**
-	 * @var Fraction|null
-	 * @ORM\Column(type="string", nullable=true)
-	 */
+	/** @var Fraction|null */
 	protected $denominatorFraction;
-	/**
-	 * @var string|null
-	 * @ORM\Column(type="string", nullable=true)
-	 */
+	/** @var string|null */
 	protected $denominatorString;
 	/**
 	 * Superior fraction (if in compound structure)
 	 *
 	 * @var Fraction|null
-	 * @ORM\OneToMany(targetEntity="Fraction", mappedBy="numeratorFraction")
 	 */
 	protected $parentInNumerator;
 	/**
 	 * Superior fraction (if in compound structure)
 	 *
 	 * @var Fraction|null
-	 * @ORM\OneToMany(targetEntity="Fraction", mappedBy="denominatorFraction")
 	 */
 	protected $parentInDenominator;
 
