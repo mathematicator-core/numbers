@@ -8,7 +8,6 @@ namespace Mathematicator\Numbers\Tests;
 require __DIR__ . '/../vendor/autoload.php';
 
 
-use Mathematicator\Engine\Translation\TranslatorHelper;
 use Nette\Configurator;
 use Nette\DI\Container;
 use Tester\Environment;
