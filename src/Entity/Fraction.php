@@ -13,17 +13,11 @@ use Stringable;
 class Fraction
 {
 
-	/** @var Fraction|null */
-	protected $numeratorFraction;
+	/** @var Fraction|string|null */
+	protected $numerator;
 
-	/** @var string|null */
-	protected $numeratorString;
-
-	/** @var Fraction|null */
-	protected $denominatorFraction;
-
-	/** @var string|null */
-	protected $denominatorString;
+	/** @var Fraction|string|null */
+	protected $denominator;
 
 	/**
 	 * Superior fraction (if in compound structure)
@@ -31,6 +25,7 @@ class Fraction
 	 * @var Fraction|null
 	 */
 	protected $parentInNumerator;
+
 	/**
 	 * Superior fraction (if in compound structure)
 	 *
@@ -40,8 +35,8 @@ class Fraction
 
 
 	/**
-	 * @param string|Stringable|BigNumber|Fraction|null $numerator optional
-	 * @param string|Stringable|BigNumber|Fraction|null $denominator optional
+	 * @param int|string|Stringable|BigNumber|Fraction|null $numerator optional
+	 * @param int|string|Stringable|BigNumber|Fraction|null $denominator optional
 	 */
 	public function __construct($numerator = null, $denominator = null)
 	{
@@ -65,11 +60,7 @@ class Fraction
 	 */
 	public function getNumerator()
 	{
-		if ($this->numeratorFraction) {
-			return $this->numeratorFraction;
-		} else {
-			return $this->numeratorString;
-		}
+		return $this->numerator;
 	}
 
 
@@ -80,12 +71,10 @@ class Fraction
 	public function setNumerator($numerator): self
 	{
 		if ($numerator instanceof self) {
-			$this->numeratorString = null;
 			$numerator->setParentInNumerator($this);
-			$this->numeratorFraction = $numerator;
+			$this->numerator = $numerator;
 		} else {
-			$this->numeratorFraction = null;
-			$this->numeratorString = (string) $numerator;
+			$this->numerator = (string) $numerator;
 		}
 
 		return $this;
@@ -97,20 +86,7 @@ class Fraction
 	 */
 	public function getDenominator()
 	{
-		if ($this->denominatorFraction) {
-			return $this->denominatorFraction;
-		} else {
-			return $this->denominatorString;
-		}
-	}
-
-
-	/**
-	 * @return Fraction|string
-	 */
-	public function getDenominatorNotNull()
-	{
-		return $this->getDenominator() ?: '1';
+		return $this->denominator;
 	}
 
 
@@ -121,15 +97,22 @@ class Fraction
 	public function setDenominator($denominator): self
 	{
 		if ($denominator instanceof self) {
-			$this->denominatorString = null;
 			$denominator->setParentInDenominator($this);
-			$this->denominatorFraction = $denominator;
+			$this->denominator = $denominator;
 		} else {
-			$this->denominatorFraction = null;
-			$this->denominatorString = (string) $denominator;
+			$this->denominator = (string) $denominator;
 		}
 
 		return $this;
+	}
+
+
+	/**
+	 * @return Fraction|string
+	 */
+	public function getDenominatorNotNull()
+	{
+		return $this->getDenominator() ?: '1';
 	}
 
 

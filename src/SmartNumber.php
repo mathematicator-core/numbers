@@ -6,8 +6,9 @@ namespace Mathematicator\Numbers;
 
 
 use function abs;
+use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
-use Mathematicator\Numbers\Latex\MathLatexBuilder;
+use Mathematicator\Numbers\Latex\MathLatexToolkit;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -46,8 +47,8 @@ final class SmartNumber
 	/** @var float */
 	private $float;
 
-	/** @var string[] */
-	private $fraction = [];
+	/** @var Fraction|null */
+	private $fraction;
 
 
 	/**
@@ -122,11 +123,11 @@ final class SmartNumber
 	 */
 	public function getFraction(): array
 	{
-		if (isset($this->fraction[0], $this->fraction[1]) === false) {
+		if (!isset($this->fraction) || $this->fraction->getNumerator() === null) {
 			throw new RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
 		}
 
-		return $this->fraction;
+		return [(string) $this->fraction->getNumerator(), (string) $this->fraction->getDenominatorNotNull()];
 	}
 
 
@@ -203,7 +204,7 @@ final class SmartNumber
 
 		$fraction = $this->getFraction();
 
-		return (string) MathLatexBuilder::frac($fraction[0], $fraction[1]);
+		return (string) MathLatexToolkit::frac($fraction[0], $fraction[1]);
 	}
 
 
@@ -245,7 +246,7 @@ final class SmartNumber
 				$this->integer = $toInteger;
 				$this->float = (float) $toInteger;
 				$this->setStringHelper($toInteger);
-				$this->fraction = [$toInteger, '1'];
+				$this->fraction = new Fraction($toInteger, 1);
 			} else {
 				$this->integer = $toInteger;
 				$this->float = (float) $value;
@@ -263,11 +264,11 @@ final class SmartNumber
 			} else {
 				$this->integer = $toString;
 				$this->float = (float) $toString;
-				$this->fraction = [$toString, '1'];
+				$this->fraction = new Fraction($toString, 1);
 			}
 		} elseif (preg_match('/^(?<x>-?\d*[.]?\d+)\s*\/\s*(?<y>-?\d*[.]?\d+)$/', $value, $parseFraction)) {
 			$short = $this->shortFractionHelper($parseFraction['x'], $parseFraction['y']);
-			$this->fraction = [$short[0], $short[1]];
+			$this->fraction = new Fraction($short[0], $short[1]);
 			$this->float = $short[0] / $short[1];
 			$this->integer = (string) (int) $this->float;
 			$this->setStringHelper((string) bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
@@ -304,11 +305,13 @@ final class SmartNumber
 	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
 	{
 		if (preg_match('/^0+(\.0+)?$/', $float)) {
-			return $this->fraction = ['0', '1'];
+			$this->fraction = new Fraction(0, 1);
+			return $this->getFraction();
 		}
 
 		if (preg_match('/^0+\.(?<zeros>0{3,})(?<num>\d+?)$/', $float, $floatParser)) {
-			return $this->fraction = [$floatParser['num'], '1' . str_repeat('0', strlen($floatParser['zeros']) + 2)];
+			$this->fraction = new Fraction($floatParser['num'], '1' . str_repeat('0', strlen($floatParser['zeros']) + 2));
+			return $this->getFraction();
 		}
 
 		$floatOriginal = $float;
@@ -344,10 +347,11 @@ final class SmartNumber
 			number_format((float) $denominator, 0, '.', '')
 		);
 
-		return $this->fraction = [
+		$this->fraction = new Fraction(
 			($floatOriginal < 0 ? '-' : '') . $short[0],
-			(string) $short[1],
-		];
+			(string) $short[1]
+		);
+		return $this->getFraction();
 	}
 
 

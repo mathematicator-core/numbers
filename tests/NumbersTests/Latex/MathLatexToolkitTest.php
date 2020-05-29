@@ -12,12 +12,26 @@ use Tester\TestCase;
 
 require __DIR__ . '/../../Bootstrap.php';
 
-class MathLatexBuilderTest extends TestCase
+class MathLatexToolkitTest extends TestCase
 {
-	public function testMultipliedBy(): void
+	public function testPow(): void
 	{
-		$latex = MathLatexToolkit::frac(1, 2)->multipliedBy('10');
-		Assert::same('\frac{1}{2}\ \cdot\ 10', (string) $latex);
+		$latex = MathLatexToolkit::pow(1, 2);
+		Assert::same('{1}^{2}', (string) $latex);
+	}
+
+
+	public function testFrac(): void
+	{
+		$latex = MathLatexToolkit::frac(1, 2);
+		Assert::same('\frac{1}{2}', (string) $latex);
+	}
+
+
+	public function testSqrt(): void
+	{
+		$latex = MathLatexToolkit::sqrt(1024, 3);
+		Assert::same('\sqrt[3]{1024}', (string) $latex);
 	}
 
 
@@ -30,4 +44,4 @@ class MathLatexBuilderTest extends TestCase
 	}
 }
 
-(new MathLatexBuilderTest())->run();
+(new MathLatexToolkitTest())->run();

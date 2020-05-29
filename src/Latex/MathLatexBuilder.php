@@ -10,65 +10,56 @@ use Stringable;
 class MathLatexBuilder implements Stringable
 {
 
-	/** @var string */
-	private $latex;
+	/** @var MathLatexSnippet */
+	private $snippet;
 
 
 	/**
 	 * @param string|Stringable $latex
+	 * @param string|null $delimiterLeft
+	 * @param string|null $delimiterRight
 	 */
-	public function __construct($latex = '')
+	public function __construct($latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null)
 	{
-		$this->latex = (string) $latex;
+		$this->snippet = new MathLatexSnippet((string) $latex);
+		if ($delimiterLeft) {
+			$this->snippet->setDelimiters($delimiterLeft, $delimiterRight);
+		}
 	}
 
 
 	/**
-	 * @param string|Stringable $latex
-	 * @return MathLatexBuilder
+	 * @return MathLatexSnippet
 	 */
-	public static function create($latex = ''): self
+	public function getSnippet(): MathLatexSnippet
 	{
-		return new self($latex);
-	}
-
-
-	/**
-	 * @param string|Stringable $numerator
-	 * @param string|Stringable $denominator
-	 * @return MathLatexBuilder
-	 */
-	public static function frac($numerator, $denominator): self
-	{
-		return new self('\frac{' . $numerator . '}{' . $denominator . '}');
-	}
-
-
-	/**
-	 * @param string|Stringable $x
-	 * @param string|Stringable $pow
-	 * @return MathLatexBuilder
-	 */
-	public static function pow($x, $pow): self
-	{
-		return new self('{' . $x . '}^{' . $pow . '}');
+		return $this->snippet;
 	}
 
 
 	public function __toString()
 	{
-		return $this->latex;
+		return (string) $this->snippet;
 	}
 
 
 	/**
-	 * @param string|Stringable $add
+	 * @param string|Stringable $with
 	 * @return MathLatexBuilder
 	 */
-	public function plus($add): self
+	public function plus($with): self
 	{
-		$this->latex .= '\ +\ ' . $add;
-		return $this;
+		return $this->operator('+', $with);
+	}
+
+
+	/**
+	 * @param string|Stringable $with
+	 * @return MathLatexBuilder
+	 */
+	public function minus($with): self
+	{
+		return $this->operator('-', $with);
 	}
 
 
@@ -78,8 +69,17 @@ class MathLatexBuilder implements Stringable
 	 */
 	public function multipliedBy($with): self
 	{
-		$this->latex .= '\ \cdot\ ' . $with;
-		return $this;
+		return $this->operator('\cdot', $with);
+	}
+
+
+	/**
+	 * @param string|Stringable $with
+	 * @return MathLatexBuilder
+	 */
+	public function dividedBy($with): self
+	{
+		return $this->operator('\div', $with);
 	}
 
 
@@ -89,7 +89,25 @@ class MathLatexBuilder implements Stringable
 	 */
 	public function equals($to): self
 	{
-		$this->latex .= '\ =\ ' . $to;
+		return $this->operator('=', $to);
+	}
+
+
+	/**
+	 * @param string $operator
+	 * @param string|Stringable $to
+	 * @return MathLatexBuilder
+	 */
+	public function operator(string $operator, $to): self
+	{
+		$this->snippet->latex = (string) MathLatexToolkit::operator($this->snippet->latex, $to, $operator);
+		return $this;
+	}
+
+
+	public function wrap(string $left, string $right = null): self
+	{
+		$this->snippet->latex = (string) MathLatexToolkit::wrap($this->snippet->latex, $left, $right);
 		return $this;
 	}
 }
