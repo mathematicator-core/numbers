@@ -14,7 +14,7 @@
 [![PHPStan Enabled](https://img.shields.io/badge/PHPStan-enabled%20L8-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 
-Library for numbersLatex representation in PHP.
+Library for numbers representation in PHP.
 
 > Please help improve this documentation by sending a Pull request.
 
