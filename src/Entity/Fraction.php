@@ -12,14 +12,19 @@ use Stringable;
  */
 class Fraction
 {
+
 	/** @var Fraction|null */
 	protected $numeratorFraction;
+
 	/** @var string|null */
 	protected $numeratorString;
+
 	/** @var Fraction|null */
 	protected $denominatorFraction;
+
 	/** @var string|null */
 	protected $denominatorString;
+
 	/**
 	 * Superior fraction (if in compound structure)
 	 *
@@ -70,8 +75,9 @@ class Fraction
 
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction $numerator
+	 * @return Fraction
 	 */
-	public function setNumerator($numerator): void
+	public function setNumerator($numerator): self
 	{
 		if ($numerator instanceof self) {
 			$this->numeratorString = null;
@@ -81,6 +87,8 @@ class Fraction
 			$this->numeratorFraction = null;
 			$this->numeratorString = (string) $numerator;
 		}
+
+		return $this;
 	}
 
 
@@ -108,8 +116,9 @@ class Fraction
 
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction $denominator
+	 * @return Fraction
 	 */
-	public function setDenominator($denominator): void
+	public function setDenominator($denominator): self
 	{
 		if ($denominator instanceof self) {
 			$this->denominatorString = null;
@@ -119,6 +128,8 @@ class Fraction
 			$this->denominatorFraction = null;
 			$this->denominatorString = (string) $denominator;
 		}
+
+		return $this;
 	}
 
 
