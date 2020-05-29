@@ -1,5 +1,5 @@
 <h1 align="center">
-    Smart PHP math number
+    Smart PHP Number Utilities
 </h1>
 
 <p align="center">
@@ -14,13 +14,13 @@
 [![PHPStan Enabled](https://img.shields.io/badge/PHPStan-enabled%20L8-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 
-Robust library for representation of "number".
+Library for numbersLatex representation in PHP.
 
 > Please help improve this documentation by sending a Pull request.
 
 ## Installation
 
-Via Composer:
+Install via Composer:
 
 ```
 composer require mathematicator-core/numbers
@@ -28,9 +28,15 @@ composer require mathematicator-core/numbers
 
 ## Idea
 
-Imagine you want store lot's of number types exactly. For instance integers, fractions and user inputs (automatically normalized!).
+Imagine you want store lots of number types exactly. For instance integers, fractions and user inputs (automatically normalized!).
 
 Entity `SmartNumber` can storage all your numbers safely.
+
+## Features
+
+- SmartNumber
+- Fraction
+- MathLatexBuilder
 
 ## Contribution
 
