@@ -20,5 +20,4 @@ class SmartNumberTest extends TestCase
 	}
 }
 
-Bootstrap::boot();
 (new SmartNumberTest())->run();

@@ -20,13 +20,20 @@
 		"php": ">=7.2",
 		"ext-bcmath": "*",
 		"nette/tester": "^2.3",
-		"nette/utils": "^3.0"
+		"nette/utils": "^3.0",
+		"symfony/polyfill-php80": "^1.17"
 	},
 	"require-dev": {
 		"brainmaestro/composer-git-hooks": "dev-master",
 		"nette/bootstrap": "^3.0",
 		"phpstan/phpstan": "^0.12.18",
-		"phpstan/phpstan-nette": "^0.12.6"
+		"phpstan/phpstan-nette": "^0.12.6",
+		"brick/math": "^0.8.15",
+		"doctrine/orm": "^2.7"
+	},
+	"suggest": {
+		"brick/math": "(^0.8.15) For better basic math computing.",
+		"doctrine/orm": "(^2.7) For ORM"
 	},
 	"autoload": {
 		"psr-4": {

@@ -6,6 +6,7 @@ namespace Mathematicator\Numbers;
 
 
 use function abs;
+use Mathematicator\Numbers\Exception\NumberException;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
