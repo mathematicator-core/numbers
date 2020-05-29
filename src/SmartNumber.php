@@ -6,6 +6,8 @@ namespace Mathematicator\Numbers;
 
 
 use function abs;
+use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -199,7 +201,9 @@ final class SmartNumber
 			return $this->integer;
 		}
 
-		return '\frac{' . ($fraction = $this->getFraction())[0] . '}{' . $fraction[1] . '}';
+		$fraction = $this->getFraction();
+
+		return (string) MathLatexBuilder::frac($fraction[0], $fraction[1]);
 	}
 
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mathematicator\Numbers;
+namespace Mathematicator\Numbers\Exception;
 
 
 use Exception;
