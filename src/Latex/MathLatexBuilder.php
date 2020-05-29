@@ -67,7 +67,7 @@ class MathLatexBuilder implements Stringable
 	 */
 	public function plus($add): self
 	{
-		$this->latex = '\ +\ ' . $add;
+		$this->latex .= '\ +\ ' . $add;
 		return $this;
 	}
 
@@ -78,7 +78,7 @@ class MathLatexBuilder implements Stringable
 	 */
 	public function multipliedBy($with): self
 	{
-		$this->latex = '\ \cdot\ ' . $with;
+		$this->latex .= '\ \cdot\ ' . $with;
 		return $this;
 	}
 
@@ -89,7 +89,7 @@ class MathLatexBuilder implements Stringable
 	 */
 	public function equals($to): self
 	{
-		$this->latex = '\ =\ ' . $to;
+		$this->latex .= '\ =\ ' . $to;
 		return $this;
 	}
 }
