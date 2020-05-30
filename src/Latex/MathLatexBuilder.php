@@ -7,7 +7,7 @@ namespace Mathematicator\Numbers\Latex;
 
 use Stringable;
 
-class MathLatexBuilder implements Stringable
+final class MathLatexBuilder implements Stringable
 {
 
 	/** @var MathLatexSnippet */
@@ -22,6 +22,7 @@ class MathLatexBuilder implements Stringable
 	public function __construct($latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null)
 	{
 		$this->snippet = new MathLatexSnippet((string) $latex);
+
 		if ($delimiterLeft) {
 			$this->snippet->setDelimiters($delimiterLeft, $delimiterRight);
 		}
@@ -101,6 +102,7 @@ class MathLatexBuilder implements Stringable
 	public function operator(string $operator, $to): self
 	{
 		$this->snippet->latex = (string) MathLatexToolkit::operator($this->snippet->latex, $to, $operator);
+
 		return $this;
 	}
 
@@ -108,6 +110,7 @@ class MathLatexBuilder implements Stringable
 	public function wrap(string $left, string $right = null): self
 	{
 		$this->snippet->latex = (string) MathLatexToolkit::wrap($this->snippet->latex, $left, $right);
+
 		return $this;
 	}
 }

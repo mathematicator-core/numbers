@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-use function abs;
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\Latex\MathLatexToolkit;
@@ -13,6 +12,7 @@ use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use RuntimeException;
+use function abs;
 use function strlen;
 
 /**
@@ -306,11 +306,13 @@ final class SmartNumber
 	{
 		if (preg_match('/^0+(\.0+)?$/', $float)) {
 			$this->fraction = new Fraction(0, 1);
+
 			return $this->getFraction();
 		}
 
 		if (preg_match('/^0+\.(?<zeros>0{3,})(?<num>\d+?)$/', $float, $floatParser)) {
 			$this->fraction = new Fraction($floatParser['num'], '1' . str_repeat('0', strlen($floatParser['zeros']) + 2));
+
 			return $this->getFraction();
 		}
 
@@ -351,6 +353,7 @@ final class SmartNumber
 			($floatOriginal < 0 ? '-' : '') . $short[0],
 			(string) $short[1]
 		);
+
 		return $this->getFraction();
 	}
 

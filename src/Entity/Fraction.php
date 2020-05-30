@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Entity;
 
+
 use Brick\Math\BigNumber;
 use Stringable;
 
@@ -118,11 +119,7 @@ class Fraction
 
 	public function getParent(): ?self
 	{
-		if ($this->parentInNumerator) {
-			return $this->parentInNumerator;
-		} else {
-			return $this->parentInDenominator;
-		}
+		return $this->parentInNumerator ?: $this->parentInDenominator;
 	}
 
 
@@ -134,6 +131,7 @@ class Fraction
 	{
 		$this->parentInDenominator = null;
 		$this->parentInNumerator = $parentInNumerator;
+
 		return $this;
 	}
 
@@ -146,6 +144,7 @@ class Fraction
 	{
 		$this->parentInNumerator = null;
 		$this->parentInDenominator = $parentInDenominator;
+
 		return $this;
 	}
 }
