@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Converter;
 
+
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Mathematicator\Numbers\Latex\MathLatexToolkit;
 
-class FractionToLatex
+final class FractionToLatex
 {
 	public static function convert(Fraction $fraction): MathLatexBuilder
 	{
