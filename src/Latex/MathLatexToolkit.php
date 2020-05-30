@@ -7,12 +7,16 @@ namespace Mathematicator\Numbers\Latex;
 
 use Stringable;
 
-class MathLatexToolkit
+final class MathLatexToolkit
 {
 	public const PI = '\pi';
+
 	public const INFINITY = '\infty';
+
 	public const DEGREE = '\deg';
+
 	public const PER_MILLE = '\permil';
+
 	public const PERCENT = '\%';
 
 
@@ -74,6 +78,8 @@ class MathLatexToolkit
 
 
 	/**
+	 * Render function to valid LaTeX formula.
+	 *
 	 * @param string $name
 	 * @param array<int|string|Stringable|null> $arguments
 	 * @param int|string|Stringable|null $root
@@ -81,14 +87,15 @@ class MathLatexToolkit
 	 */
 	public static function func(string $name, $arguments = [], $root = null): MathLatexBuilder
 	{
-		$out = '\\' . $name;
+		$return = '\\' . $name;
 		if ($root) {
-			$out .= "[$root]";
+			$return .= '[' . $root . ']';
 		}
 		foreach ($arguments as $argument) {
-			$out .= '{' . $argument . '}';
+			$return .= '{' . $argument . '}';
 		}
-		return new MathLatexBuilder($out);
+
+		return new MathLatexBuilder($return);
 	}
 
 

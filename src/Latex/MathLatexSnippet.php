@@ -10,13 +10,16 @@ use Stringable;
 final class MathLatexSnippet implements Stringable
 {
 
-	/** @var string */
+	/**
+	 * @var string
+	 * @internal
+	 */
 	public $latex;
 
-	/** @var string */
+	/** @var string|null */
 	private $delimiterLeft;
 
-	/** @var string */
+	/** @var string|null */
 	private $delimiterRight;
 
 
@@ -26,9 +29,15 @@ final class MathLatexSnippet implements Stringable
 	}
 
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->delimiterLeft . $this->latex . $this->delimiterRight;
+	}
+
+
+	public function getLatex(): string
+	{
+		return $this->latex;
 	}
 
 
@@ -41,6 +50,7 @@ final class MathLatexSnippet implements Stringable
 	{
 		$this->delimiterLeft = $left;
 		$this->delimiterRight = $right ?: $left;
+
 		return $this;
 	}
 
@@ -50,6 +60,6 @@ final class MathLatexSnippet implements Stringable
 	 */
 	public function getDelimiters(): array
 	{
-		return [$this->delimiterLeft, $this->delimiterRight];
+		return [(string) $this->delimiterLeft, (string) $this->delimiterRight];
 	}
 }
