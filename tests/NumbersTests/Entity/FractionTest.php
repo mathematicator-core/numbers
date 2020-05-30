@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mathematicator\Numbers\Tests;
+namespace Mathematicator\Numbers\Tests\Entity;
 
 
 use Mathematicator\Numbers\Entity\Fraction;
