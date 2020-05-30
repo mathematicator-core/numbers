@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Entity;
 
+
 use Brick\Math\BigNumber;
 use Stringable;
 
@@ -31,6 +32,7 @@ class Fraction
 	 * @var Fraction|null
 	 */
 	protected $parentInNumerator;
+
 	/**
 	 * Superior fraction (if in compound structure)
 	 *
@@ -65,11 +67,7 @@ class Fraction
 	 */
 	public function getNumerator()
 	{
-		if ($this->numeratorFraction) {
-			return $this->numeratorFraction;
-		} else {
-			return $this->numeratorString;
-		}
+		return $this->numeratorFraction ?: $this->numeratorString;
 	}
 
 
@@ -97,11 +95,7 @@ class Fraction
 	 */
 	public function getDenominator()
 	{
-		if ($this->denominatorFraction) {
-			return $this->denominatorFraction;
-		} else {
-			return $this->denominatorString;
-		}
+		return $this->denominatorFraction ?: $this->denominatorString;
 	}
 
 
@@ -135,11 +129,7 @@ class Fraction
 
 	public function getParent(): ?self
 	{
-		if ($this->parentInNumerator) {
-			return $this->parentInNumerator;
-		} else {
-			return $this->parentInDenominator;
-		}
+		return $this->parentInNumerator ?: $this->parentInDenominator;
 	}
 
 
@@ -151,6 +141,7 @@ class Fraction
 	{
 		$this->parentInDenominator = null;
 		$this->parentInNumerator = $parentInNumerator;
+
 		return $this;
 	}
 
@@ -163,6 +154,7 @@ class Fraction
 	{
 		$this->parentInNumerator = null;
 		$this->parentInDenominator = $parentInDenominator;
+
 		return $this;
 	}
 }

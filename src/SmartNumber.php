@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-use function abs;
 use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use RuntimeException;
+use function abs;
 use function strlen;
 
 /**
