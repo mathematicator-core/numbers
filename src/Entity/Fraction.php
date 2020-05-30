@@ -61,7 +61,7 @@ class Fraction
 	 */
 	public function getNumerator()
 	{
-		return $this->numeratorFraction ?: $this->numeratorString;
+		return $this->numerator;
 	}
 
 
@@ -88,15 +88,6 @@ class Fraction
 	public function getDenominator()
 	{
 		return $this->denominator;
-	}
-
-
-	/**
-	 * @return Fraction|string
-	 */
-	public function getDenominatorNotNull()
-	{
-		return $this->getDenominator() ?: '1';
 	}
 
 
