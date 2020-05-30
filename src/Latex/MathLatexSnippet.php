@@ -14,10 +14,10 @@ final class MathLatexSnippet implements Stringable
 	public $latex;
 
 	/** @var string */
-	private $delimiterLeft;
+	private $delimiterLeft = '';
 
 	/** @var string */
-	private $delimiterRight;
+	private $delimiterRight = '';
 
 
 	public function __construct(string $latex = '')
@@ -26,7 +26,7 @@ final class MathLatexSnippet implements Stringable
 	}
 
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->delimiterLeft . $this->latex . $this->delimiterRight;
 	}

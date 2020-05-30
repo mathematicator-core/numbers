@@ -10,9 +10,13 @@ use Stringable;
 class MathLatexToolkit
 {
 	public const PI = '\pi';
+
 	public const INFINITY = '\infty';
+
 	public const DEGREE = '\deg';
+
 	public const PER_MILLE = '\permil';
+
 	public const PERCENT = '\%';
 
 

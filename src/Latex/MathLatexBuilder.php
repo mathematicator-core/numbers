@@ -37,7 +37,7 @@ class MathLatexBuilder implements Stringable
 	}
 
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return (string) $this->snippet;
 	}
