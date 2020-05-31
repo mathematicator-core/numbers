@@ -205,14 +205,30 @@ final class SmartNumber
 
 
 	/**
-	 * Returns a number in computer readable form (in LaTeX format).
+	 * Returns a number in default form (in LaTeX format). Prefers fraction output.
 	 *
 	 * @return string
 	 */
 	public function getString(): string
 	{
+		return $this->getLatex(true);
+	}
+
+
+	/**
+	 * Returns a number in computer readable form (in LaTeX format).
+	 *
+	 * @param bool $preferFraction
+	 * @return string
+	 */
+	public function getLatex(bool $preferFraction = false): string
+	{
 		if ($this->isInteger()) {
 			return (string) $this->integer;
+		}
+
+		if (!$preferFraction && $this->isFloat()) {
+			return (string) $this->decimal;
 		}
 
 		return (string) FractionToLatex::convert($this->getFraction());

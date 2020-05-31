@@ -14,31 +14,101 @@
 [![PHPStan Enabled](https://img.shields.io/badge/PHPStan-enabled%20L8-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 
-Library for numbers representation in PHP.
+**A PHP library to safely store and represent numbers and its equivalents in PHP.**
 
-> Please help improve this documentation by sending a Pull request.
+Store lots of number types exactly (**integers, decimals, fractions**) and convert them to each other.
+Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.g. `\frac{1}{2}`).
 
 ## Installation
 
 Install via Composer:
 
-```
+```bash
 composer require mathematicator-core/numbers
 ```
 
-## Idea
-
-Imagine you want store lots of number types exactly. For instance integers, fractions and user inputs (automatically normalized!).
-
-Entity `SmartNumber` can storage all your numbers safely.
-
 ## Features
 
-- SmartNumber
-- Fraction
-- MathLatexBuilder
+- **SmartNumber** - Unified safe storage for all number types with
+    an arbitrary precision.
+- **Fractions:**
+    - **Entity\Fraction** - Storage for simple or compound fraction that
+    can consist from numbers and other expressions.
+    - **Entity\FractionNumbersOnly** - Storage for simple or compound fraction
+    that consists only from numbers and is directly computable.
+- **LaTeX support and processing:** ([What is LaTeX?](https://en.wikipedia.org/wiki/LaTeX))
+    - **MathLatexBuilder** - Create valid LaTeX for mathematical expressions
+    in simple way with a fluent interface.
+    - **MathLatexToolkit** - Statical library for LaTeX expressions
+    (includes constants, functions, operators etc.)
+    - **MathLatexSnippet** - Storage for LaTeX syntax.
+- **Set generators**
+    - Primary numbers
+    - Even numbers
+    - Odd numbers
+- **Converters:**
+    - Array to fraction
+    - Decimal to fraction
+    - Fraction to array
+    - Fraction to human string
+    - Fraction to LaTeX
+
+## Usage
+
+```php
+use Mathematicator\Numbers\SmartNumber;
+
+$smartNumber = new SmartNumber(10, '80.500'); // accuracy, number
+echo $smartNumber->getFloat(); // 80.5
+echo $smartNumber->getFraction()->getNumerator(); // 161
+echo $smartNumber->getFraction()->getDenominator(); // 2
+echo $smartNumber->getHumanString(); // 161/2
+echo $smartNumber->getLatex(); // \frac{161}{2}
+```
+
+## Recommended libraries
+
+For safe operations with arbitrary length numbers we recommend to use:
+
+- [brick/math](https://github.com/brick/math) - Arbitrary precision
+arithmetic library for PHP with a simple interface.
+- [PHP BC Math extension](https://www.php.net/manual/en/ref.bc.php) - Native PHP extension for
+arbitrary precision computing.
+
+### Working with money
+
+Use on of these libraries if you work with money in you application.
+
+- [brick/money](https://github.com/brick/money) - A money and currency library
+with interface like brick/math.
+- [moneyphp/money](https://github.com/moneyphp/money) - Widely adopted PHP
+implementation of Fowler's Money pattern.
+
+## Why float is not safe?
+
+**Float stores you number as an approximation with a limited precision.**
+
+You should never trust float to the last digit. Do not use floats
+directly for checking an equity if you rely on precision
+(not only monetary calculations).
+
+**Example:**
+```php
+$result = 0.1 + 0.2;
+echo $result; // output: 0.3
+
+echo ($result == 0.3) ? 'true' : 'false'; // output: false
+```
+
+[How is float stored in memory?](https://softwareengineering.stackexchange.com/a/215126/354697)
+
+[See in PHP manual](https://www.php.net/manual/en/language.types.float.php)
+
+[Read more about float on Wikipedia](https://en.wikipedia.org/wiki/Floating-point_arithmetic)
 
 ## Contribution
+
+> Please help improve this documentation by sending a Pull request.
 
 ### Tests
 

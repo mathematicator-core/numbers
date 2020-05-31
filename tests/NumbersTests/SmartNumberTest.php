@@ -37,6 +37,8 @@ class SmartNumberTest extends TestCase
 		Assert::same('2', (string) $smartNumber->getFraction()->getDenominator());
 		Assert::same('161/2', (string) $smartNumber->getHumanString());
 		Assert::same('\frac{161}{2}', (string) $smartNumber->getString());
+		Assert::same('\frac{161}{2}', (string) $smartNumber->getLatex(true));
+		Assert::same('80.5', (string) $smartNumber->getLatex(false));
 	}
 }
 
