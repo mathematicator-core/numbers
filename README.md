@@ -17,11 +17,9 @@
 **A PHP library to safely store and represent numbers and its equivalents in PHP.**
 
 Store lots of number types exactly (**integers, decimals, fractions**) and convert them to each other.
-Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.g. `\frac{1}{2}`).
+Expressions can be outputted as a **human string** (e.g. `1 / 2`) or **LaTeX** (e.g. `\frac{1}{2}`).
 
 ## Installation
-
-Install via Composer:
 
 ```bash
 composer require mathematicator-core/numbers
@@ -36,13 +34,13 @@ composer require mathematicator-core/numbers
     can consist from numbers and other expressions.
     - **Entity\FractionNumbersOnly** - Storage for simple or compound fraction
     that consists only from numbers and is directly computable.
-- **LaTeX support and processing:** ([What is LaTeX?](https://en.wikipedia.org/wiki/LaTeX))
+- **LaTeX support:** ([What is LaTeX?](https://en.wikipedia.org/wiki/LaTeX))
     - **MathLatexBuilder** - Create valid LaTeX for mathematical expressions
     in simple way with a fluent interface.
     - **MathLatexToolkit** - Statical library for LaTeX expressions
     (includes constants, functions, operators etc.)
     - **MathLatexSnippet** - Storage for LaTeX syntax.
-- **Human string support and processing:**
+- **Human string support:**
     - **MathHumanStringBuilder** - same interface as MathLatexBuilder,
     but produces human strings
     - **MathHumanStringToolkit** - same interface as MathLatexToolkit,
