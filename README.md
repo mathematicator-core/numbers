@@ -62,12 +62,16 @@ for advance user input string **tokenization**.
 ## Usage
 
 ```php
+use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\SmartNumber;
 
 $smartNumber = new SmartNumber(10, '80.500'); // accuracy, number
-echo $smartNumber->getFloat(); // 80.5
+echo $smartNumber->getDecimal(); // 80.5
 echo $smartNumber->getFraction()->getNumerator(); // 161
 echo $smartNumber->getFraction()->getDenominator(); // 2
+echo $smartNumber->getDecimal()->multipliedBy(-4); // -322.0
+echo $smartNumber->getDecimal()->multipliedBy(-4)->abs()->toInt(); // 322
+echo $smartNumber->getDecimal()->toScale(0, RoundingMode::HALF_UP); // 81
 echo $smartNumber->getHumanString(); // 161/2
 echo $smartNumber->getLatex(); // \frac{161}{2}
 ```

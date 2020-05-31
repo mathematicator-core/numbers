@@ -37,6 +37,15 @@ class FractionArrayAccessTraitTest extends TestCase
 		Assert::same('1', $fraction[0][1]);
 		Assert::same('19', $fraction[1]);
 	}
+
+
+	public function testEntity4(): void
+	{
+		$fraction = new Fraction(new Fraction(25, null), 19);
+		Assert::same('25', $fraction['numerator'][0]);
+		Assert::same('1', $fraction[0][1]);
+		Assert::same('19', $fraction['denominator']);
+	}
 }
 
 (new FractionArrayAccessTraitTest())->run();
