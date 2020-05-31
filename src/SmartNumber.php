@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-use function abs;
-use Mathematicator\Numbers\Entity\Fraction;
+use Brick\Math\BigDecimal;
+use Brick\Math\BigInteger;
+use Brick\Math\RoundingMode;
+use Mathematicator\Numbers\Converter\DecimalToFraction;
+use Mathematicator\Numbers\Converter\FractionToHumanString;
+use Mathematicator\Numbers\Converter\FractionToLatex;
+use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberException;
-use Mathematicator\Numbers\Latex\MathLatexToolkit;
+use Mathematicator\Numbers\Helper\FractionHelper;
+use Mathematicator\Numbers\Helper\NumberHelper;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use RuntimeException;
-use function strlen;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
@@ -41,13 +46,13 @@ final class SmartNumber
 	/** @var string */
 	private $string;
 
-	/** @var string */
+	/** @var BigInteger */
 	private $integer;
 
-	/** @var float */
-	private $float;
+	/** @var BigDecimal */
+	private $decimal;
 
-	/** @var Fraction|null */
+	/** @var FractionNumbersOnly|null */
 	private $fraction;
 
 
@@ -81,7 +86,7 @@ final class SmartNumber
 	 */
 	public function getInteger(): string
 	{
-		return $this->integer;
+		return (string) $this->integer;
 	}
 
 
@@ -90,7 +95,7 @@ final class SmartNumber
 	 */
 	public function getAbsoluteInteger(): int
 	{
-		return (int) abs($this->integer);
+		return $this->integer->abs()->toInt();
 	}
 
 
@@ -99,7 +104,16 @@ final class SmartNumber
 	 */
 	public function getFloat(): float
 	{
-		return $this->float;
+		return $this->getDecimal()->toFloat();
+	}
+
+
+	/**
+	 * @return BigDecimal
+	 */
+	public function getDecimal(): BigDecimal
+	{
+		return $this->decimal;
 	}
 
 
@@ -110,7 +124,7 @@ final class SmartNumber
 	 */
 	public function getFloatString(): string
 	{
-		return (string) $this->float;
+		return (string) $this->getFloat();
 	}
 
 
@@ -119,15 +133,15 @@ final class SmartNumber
 	 * For example `2.5` will be converted to `[5, 2]`.
 	 * The fraction is always shortened to the basic shape.
 	 *
-	 * @return string[]
+	 * @return FractionNumbersOnly
 	 */
-	public function getFraction(): array
+	public function getFraction()
 	{
-		if (!isset($this->fraction) || $this->fraction->getNumerator() === null) {
+		if (!isset($this->fraction) || !$this->fraction->isValid()) {
 			throw new RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
 		}
 
-		return [(string) $this->fraction->getNumerator(), (string) $this->fraction->getDenominatorNotNull()];
+		return $this->fraction;
 	}
 
 
@@ -139,7 +153,7 @@ final class SmartNumber
 	 */
 	public function isInteger(): bool
 	{
-		return $this->integer !== null && ($this->input === $this->integer || $this->getFraction()[1] === '1');
+		return $this->integer !== null && ($this->input === (string) $this->integer || $this->getFraction()[1] === '1');
 	}
 
 
@@ -148,7 +162,7 @@ final class SmartNumber
 	 */
 	public function isFloat(): bool
 	{
-		return $this->isInteger() === false && $this->integer !== null;
+		return !$this->isInteger() && $this->integer !== null;
 	}
 
 
@@ -157,7 +171,7 @@ final class SmartNumber
 	 */
 	public function isPositive(): bool
 	{
-		return $this->float > 0;
+		return $this->decimal->isGreaterThan(0);
 	}
 
 
@@ -166,7 +180,7 @@ final class SmartNumber
 	 */
 	public function isNegative(): bool
 	{
-		return $this->float < 0;
+		return $this->decimal->isLessThan(0);
 	}
 
 
@@ -178,7 +192,7 @@ final class SmartNumber
 	 */
 	public function isZero(): bool
 	{
-		return $this->float === 0.0 || abs($this->float) < 0.000000001;
+		return $this->decimal->isEqualTo(0);
 	}
 
 
@@ -192,19 +206,33 @@ final class SmartNumber
 
 
 	/**
-	 * Returns a number in computer readable form (in LaTeX format).
+	 * Returns a number in default form (in LaTeX format). Prefers fraction output.
 	 *
 	 * @return string
 	 */
 	public function getString(): string
 	{
-		if ($this->isInteger() === true) {
-			return $this->integer;
+		return $this->getLatex(true);
+	}
+
+
+	/**
+	 * Returns a number in computer readable form (in LaTeX format).
+	 *
+	 * @param bool $preferFraction
+	 * @return string
+	 */
+	public function getLatex(bool $preferFraction = false): string
+	{
+		if ($this->isInteger()) {
+			return (string) $this->integer;
 		}
 
-		$fraction = $this->getFraction();
+		if (!$preferFraction && $this->isFloat()) {
+			return (string) $this->decimal;
+		}
 
-		return (string) MathLatexToolkit::frac($fraction[0], $fraction[1]);
+		return (string) FractionToLatex::convert($this->getFraction());
 	}
 
 
@@ -212,14 +240,15 @@ final class SmartNumber
 	 * Returns a number in human readable form (valid search input).
 	 *
 	 * @return string
+	 * @throws NumberException
 	 */
 	public function getHumanString(): string
 	{
-		if ($this->isInteger() === true) {
-			return $this->integer;
+		if ($this->isInteger()) {
+			return (string) $this->integer;
 		}
 
-		return ($fraction = $this->getFraction())[0] . '/' . $fraction[1];
+		return FractionToHumanString::convert($this->getFraction());
 	}
 
 
@@ -236,42 +265,44 @@ final class SmartNumber
 	 */
 	public function setValue(string $value): void
 	{
-		$value = (string) preg_replace('/(\d)\s+(\d)/', '$1$2', $value);
-		$value = rtrim((string) preg_replace('/^(\d*\.\d*?)0+$/', '$1', $value), '.');
+		$value = NumberHelper::preprocessInput($value);
+
+		// Store input
 		$this->input = $value;
 
 		if (Validators::isNumeric($value)) {
 			$toInteger = (string) preg_replace('/\..*$/', '', $value);
+			$this->integer = BigInteger::of($toInteger);
+
 			if (Validators::isNumericInt($value)) {
-				$this->integer = $toInteger;
-				$this->float = (float) $toInteger;
+				$this->decimal = BigDecimal::of($toInteger);
 				$this->setStringHelper($toInteger);
-				$this->fraction = new Fraction($toInteger, 1);
+				$this->fraction = new FractionNumbersOnly($toInteger, 1);
 			} else {
-				$this->integer = $toInteger;
-				$this->float = (float) $value;
+				$this->decimal = BigDecimal::of($value);
 				$this->setStringHelper($value);
-				$this->setFractionHelper($value);
+				$this->fraction = DecimalToFraction::convert($value);
 			}
 		} elseif (preg_match('/^(?<mantissa>-?\d*[.]?\d+)(e|E|^)(?<exponent>-?\d*[.]?\d+)$/', $value, $parseExponential)) {
 			$toString = bcmul($parseExponential['mantissa'], bcpow('10', $parseExponential['exponent'], $this->accuracy), $this->accuracy);
 			$this->setStringHelper($toString);
 			if (Strings::contains($toString, '.')) {
 				$floatPow = $parseExponential['mantissa'] * (10 ** $parseExponential['exponent']);
-				$this->integer = (string) preg_replace('/\..+$/', '', $toString);
-				$this->float = $floatPow;
-				$this->setFractionHelper((string) $floatPow);
+				$this->integer = BigInteger::of((string) preg_replace('/\..+$/', '', $toString));
+				$this->decimal = BigDecimal::of($floatPow);
+				$this->fraction = DecimalToFraction::convert($floatPow);
 			} else {
-				$this->integer = $toString;
-				$this->float = (float) $toString;
-				$this->fraction = new Fraction($toString, 1);
+				$this->integer = BigInteger::of($toString);
+				$this->decimal = BigDecimal::of($toString);
+				$this->fraction = new FractionNumbersOnly($toString);
 			}
 		} elseif (preg_match('/^(?<x>-?\d*[.]?\d+)\s*\/\s*(?<y>-?\d*[.]?\d+)$/', $value, $parseFraction)) {
-			$short = $this->shortFractionHelper($parseFraction['x'], $parseFraction['y']);
-			$this->fraction = new Fraction($short[0], $short[1]);
-			$this->float = $short[0] / $short[1];
-			$this->integer = (string) (int) $this->float;
-			$this->setStringHelper((string) bcdiv((string) $short[0], (string) $short[1], $this->accuracy));
+			$this->fraction = FractionHelper::toShortenForm(
+				new FractionNumbersOnly($parseFraction['x'], $parseFraction['y'])
+			);
+			$this->decimal = FractionHelper::evaluate($this->fraction, $this->accuracy, RoundingMode::FLOOR);
+			$this->integer = $this->decimal->toBigInteger();
+			$this->setStringHelper((string) $this->decimal);
 		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
 			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
@@ -290,120 +321,5 @@ final class SmartNumber
 		if (preg_match('/^(?<int>.*)(\.|\,)(?<float>.+?)0+$/', $string, $redundantZeros)) {
 			$this->string = $redundantZeros['int'] . '.' . $redundantZeros['float'];
 		}
-	}
-
-
-	/**
-	 * Converts a decimal number to the best available fraction.
-	 * The fraction is automatically converted to the basic abbreviated form.
-	 *
-	 * @param string $float
-	 * @param float $tolerance
-	 * @return string[] (representation of integers)
-	 * @throws NumberException
-	 */
-	private function setFractionHelper(string $float, float $tolerance = 1.e-8): array
-	{
-		if (preg_match('/^0+(\.0+)?$/', $float)) {
-			$this->fraction = new Fraction(0, 1);
-
-			return $this->getFraction();
-		}
-
-		if (preg_match('/^0+\.(?<zeros>0{3,})(?<num>\d+?)$/', $float, $floatParser)) {
-			$this->fraction = new Fraction($floatParser['num'], '1' . str_repeat('0', strlen($floatParser['zeros']) + 2));
-
-			return $this->getFraction();
-		}
-
-		$floatOriginal = $float;
-		$float = preg_replace('/^-/', '', $float);
-
-		if ($float >= $tolerance) {
-			$numerator = 1;
-			$subNumerator = 0;
-			$denominator = 0;
-			$subDenominator = 1;
-			$b = 1 / $float;
-			do {
-				$b = $b <= $tolerance ? 0 : 1 / $b;
-				$a = floor($b);
-				$aux = $numerator;
-				$numerator = $a * $numerator + $subNumerator;
-				$subNumerator = $aux;
-				$aux = $denominator;
-				$denominator = $a * $denominator + $subDenominator;
-				$subDenominator = $aux;
-				$b -= $a;
-			} while ($denominator > 0 && abs($float - $numerator / $denominator) > $float * $tolerance);
-		} elseif (preg_match('/^(.*)\.(.*)$/', (string) $float, $floatParser)) {
-			$numerator = ltrim($floatParser[1] . $floatParser[2], '0');
-			$denominator = '1' . str_repeat('0', strlen($floatParser[2]));
-		} else {
-			$numerator = str_replace('.', '', (string) $float);
-			$denominator = '1';
-		}
-
-		$short = $this->shortFractionHelper(
-			number_format((float) $numerator, 0, '.', ''),
-			number_format((float) $denominator, 0, '.', '')
-		);
-
-		$this->fraction = new Fraction(
-			($floatOriginal < 0 ? '-' : '') . $short[0],
-			(string) $short[1]
-		);
-
-		return $this->getFraction();
-	}
-
-
-	/**
-	 * Automatically converts a fraction to a shortened form.
-	 * A prime division is used to shorten the fractions. It is the fastest method for calculation.
-	 *
-	 * @param string $x
-	 * @param string $y
-	 * @param int $level
-	 * @return string[]
-	 * @throws NumberException
-	 */
-	private function shortFractionHelper(string $x, string $y, int $level = 0): array
-	{
-		if ($y === '0' || preg_match('/^0+(\.0+)?$/', $y)) {
-			NumberException::canNotDivisionFractionByZero($x, $y);
-		}
-
-		if (Validators::isNumericInt($x) === false || Validators::isNumericInt($y) === false) {
-			return $this->setFractionHelper((string) ($x / $y));
-		}
-
-		$originalX = $x;
-		$x = number_format(abs((float) $x), 6, '.', '');
-		$y = number_format(abs((float) $y), 6, '.', '');
-
-		if ($level > 100) {
-			return [$x, $y];
-		}
-
-		if ($x % $y === 0) {
-			return [(string) (int) ($x / $y), '1'];
-		}
-
-		foreach (PrimaryNumber::getList() as $primary) {
-			if ($primary > $x || $primary > $y) {
-				break;
-			}
-
-			if ($x % $primary === 0 && $y % $primary === 0) {
-				return $this->shortFractionHelper(
-					(string) ($originalX / $primary),
-					(string) ($y / $primary),
-					$level + 1
-				);
-			}
-		}
-
-		return [($originalX < 0 ? '-' : '') . number_format((float) $x, 0, '.', ''), number_format((float) $y, 0, '.', '')];
 	}
 }
