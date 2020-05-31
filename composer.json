@@ -26,7 +26,6 @@
 	},
 	"require-dev": {
 		"brainmaestro/composer-git-hooks": "dev-master",
-		"nette/bootstrap": "^3.0",
 		"phpstan/phpstan": "^0.12.18",
 		"phpstan/phpstan-nette": "^0.12.6"
 	},
@@ -74,7 +73,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.0.x-dev"
+			"dev-master": "2.1.x-dev"
 		},
 		"hooks": {
 			"post-merge": "composer install",

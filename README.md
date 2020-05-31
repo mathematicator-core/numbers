@@ -21,8 +21,6 @@ Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.
 
 ## Installation
 
-Install via Composer:
-
 ```bash
 composer require mathematicator-core/numbers
 ```
@@ -36,12 +34,17 @@ composer require mathematicator-core/numbers
     can consist from numbers and other expressions.
     - **Entity\FractionNumbersOnly** - Storage for simple or compound fraction
     that consists only from numbers and is directly computable.
-- **LaTeX support and processing:** ([What is LaTeX?](https://en.wikipedia.org/wiki/LaTeX))
+- **LaTeX support:** ([What is LaTeX?](https://en.wikipedia.org/wiki/LaTeX))
     - **MathLatexBuilder** - Create valid LaTeX for mathematical expressions
     in simple way with a fluent interface.
     - **MathLatexToolkit** - Statical library for LaTeX expressions
     (includes constants, functions, operators etc.)
     - **MathLatexSnippet** - Storage for LaTeX syntax.
+- **Human string support:**
+    - **MathHumanStringBuilder** - same interface as MathLatexBuilder,
+    but produces human strings
+    - **MathHumanStringToolkit** - same interface as MathLatexToolkit,
+    but produces human strings (e.g. `1/2*(3+1)`)
 - **Set generators**
     - Primary numbers
     - Even numbers
@@ -52,6 +55,9 @@ composer require mathematicator-core/numbers
     - Fraction to array
     - Fraction to human string
     - Fraction to LaTeX
+
+💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
+for advance user input string **tokenization**.
 
 ## Usage
 
@@ -77,19 +83,19 @@ arbitrary precision computing.
 
 ### Working with money
 
-Use on of these libraries if you work with money in you application.
+Use one of these libraries if you work with money in your application.
 
 - [brick/money](https://github.com/brick/money) - A money and currency library
-with interface like brick/math.
+with an interface like brick/math.
 - [moneyphp/money](https://github.com/moneyphp/money) - Widely adopted PHP
 implementation of Fowler's Money pattern.
 
 ## Why float is not safe?
 
-**Float stores you number as an approximation with a limited precision.**
+**Float stores your number as an approximation with limited precision.**
 
 You should never trust float to the last digit. Do not use floats
-directly for checking an equity if you rely on precision
+directly for checking equity if you rely on precision
 (not only monetary calculations).
 
 **Example:**
@@ -108,7 +114,7 @@ echo ($result == 0.3) ? 'true' : 'false'; // output: false
 
 ## Contribution
 
-> Please help improve this documentation by sending a Pull request.
+> Please help to improve this documentation by sending a Pull request.
 
 ### Tests
 
@@ -123,6 +129,6 @@ composer test
 
 Before PR, please run complete code check via command:
 ```bash
-composer cs:install # only first time
+composer cs:install # only the first time
 composer fix # otherwise pre-commit hook can fail
 ````

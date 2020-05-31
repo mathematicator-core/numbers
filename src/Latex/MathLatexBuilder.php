@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Latex;
 
 
+use Mathematicator\Numbers\IMathBuilder;
 use Stringable;
 
-final class MathLatexBuilder implements Stringable
+/**
+ * @implements IMathBuilder<MathLatexBuilder>
+ */
+final class MathLatexBuilder implements IMathBuilder, Stringable
 {
 
 	/** @var MathLatexSnippet */
@@ -50,7 +54,7 @@ final class MathLatexBuilder implements Stringable
 	 */
 	public function plus($with): self
 	{
-		return $this->operator('+', $with);
+		return $this->operator(MathLatexToolkit::PLUS, $with);
 	}
 
 
@@ -60,7 +64,7 @@ final class MathLatexBuilder implements Stringable
 	 */
 	public function minus($with): self
 	{
-		return $this->operator('-', $with);
+		return $this->operator(MathLatexToolkit::MINUS, $with);
 	}
 
 
@@ -70,7 +74,7 @@ final class MathLatexBuilder implements Stringable
 	 */
 	public function multipliedBy($with): self
 	{
-		return $this->operator('\cdot', $with);
+		return $this->operator(MathLatexToolkit::MULTIPLY, $with);
 	}
 
 
@@ -80,7 +84,7 @@ final class MathLatexBuilder implements Stringable
 	 */
 	public function dividedBy($with): self
 	{
-		return $this->operator('\div', $with);
+		return $this->operator(MathLatexToolkit::DIVIDE, $with);
 	}
 
 
@@ -90,7 +94,7 @@ final class MathLatexBuilder implements Stringable
 	 */
 	public function equals($to): self
 	{
-		return $this->operator('=', $to);
+		return $this->operator(MathLatexToolkit::EQUALS, $to);
 	}
 
 

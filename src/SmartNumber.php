@@ -219,10 +219,10 @@ final class SmartNumber
 	/**
 	 * Returns a number in computer readable form (in LaTeX format).
 	 *
-	 * @param bool $preferFraction
+	 * @param bool $preferFraction Returns fraction instead of decimal number if true
 	 * @return string
 	 */
-	public function getLatex(bool $preferFraction = false): string
+	public function getLatex(bool $preferFraction = true): string
 	{
 		if ($this->isInteger()) {
 			return (string) $this->integer;
@@ -239,13 +239,18 @@ final class SmartNumber
 	/**
 	 * Returns a number in human readable form (valid search input).
 	 *
+	 * @param bool $preferFraction Returns fraction instead of decimal number if true
 	 * @return string
 	 * @throws NumberException
 	 */
-	public function getHumanString(): string
+	public function getHumanString(bool $preferFraction = true): string
 	{
 		if ($this->isInteger()) {
 			return (string) $this->integer;
+		}
+
+		if (!$preferFraction && $this->isFloat()) {
+			return (string) $this->decimal;
 		}
 
 		return FractionToHumanString::convert($this->getFraction());
