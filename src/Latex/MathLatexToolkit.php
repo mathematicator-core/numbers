@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Latex;
 
 
+use Mathematicator\Numbers\IMathToolkit;
 use Stringable;
 
-final class MathLatexToolkit
+/**
+ * @implements IMathToolkit<MathLatexBuilder>
+ */
+final class MathLatexToolkit implements IMathToolkit
 {
 	public const PI = '\pi';
 
@@ -16,6 +20,16 @@ final class MathLatexToolkit
 	public const DEGREE = '\deg';
 
 	public const PER_MILLE = '\permil';
+
+	public const PLUS = '+';
+
+	public const MINUS = '-';
+
+	public const MULTIPLY = '\cdot';
+
+	public const DIVIDE = '\div';
+
+	public const EQUALS = '=';
 
 	public const PERCENT = '\%';
 

@@ -42,6 +42,11 @@ composer require mathematicator-core/numbers
     - **MathLatexToolkit** - Statical library for LaTeX expressions
     (includes constants, functions, operators etc.)
     - **MathLatexSnippet** - Storage for LaTeX syntax.
+- **Human string support and processing:**
+    - **MathHumanStringBuilder** - same interface as MathLatexBuilder,
+    but produces human strings
+    - **MathHumanStringToolkit** - same interface as MathLatexToolkit,
+    but produces human strings (e.g. `1 / 2 * (3 + 1)`)
 - **Set generators**
     - Primary numbers
     - Even numbers
@@ -52,6 +57,9 @@ composer require mathematicator-core/numbers
     - Fraction to array
     - Fraction to human string
     - Fraction to LaTeX
+
+💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
+for advance user input string **tokenization**.
 
 ## Usage
 

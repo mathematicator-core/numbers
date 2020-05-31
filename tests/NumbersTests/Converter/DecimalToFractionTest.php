@@ -9,7 +9,7 @@ use Mathematicator\Numbers\Converter\DecimalToFraction;
 use Tester\Assert;
 use Tester\TestCase;
 
-require __DIR__ . '/../../Bootstrap.php';
+require_once __DIR__ . '/../../Bootstrap.php';
 
 class DecimalToFractionTest extends TestCase
 {
