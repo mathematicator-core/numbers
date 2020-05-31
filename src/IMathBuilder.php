@@ -7,46 +7,54 @@ namespace Mathematicator\Numbers;
 
 use Stringable;
 
+/**
+ * @template SelfClass
+ */
 interface IMathBuilder
 {
 	public function __toString(): string;
 
 	/**
 	 * @param string|Stringable $with
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function plus($with): self;
+	public function plus($with);
 
 	/**
 	 * @param string|Stringable $with
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function minus($with): self;
+	public function minus($with);
 
 	/**
 	 * @param string|Stringable $with
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function multipliedBy($with): self;
+	public function multipliedBy($with);
 
 	/**
 	 * @param string|Stringable $with
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function dividedBy($with): self;
+	public function dividedBy($with);
 
 	/**
 	 * @param string|Stringable $to
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function equals($to): self;
+	public function equals($to);
 
 	/**
 	 * @param string $operator
 	 * @param string|Stringable $to
-	 * @return self
+	 * @return SelfClass
 	 */
-	public function operator(string $operator, $to): self;
+	public function operator(string $operator, $to);
 
-	public function wrap(string $left, string $right = null): self;
+	/**
+	 * @param string $left
+	 * @param string|null $right
+	 * @return SelfClass
+	 */
+	public function wrap(string $left, string $right = null);
 }
