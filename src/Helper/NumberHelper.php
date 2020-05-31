@@ -70,17 +70,19 @@ class NumberHelper
 	 */
 	public static function preprocessInput(string $input, array $decimalPointSigns = [], array $thousandsSeparators = []): string
 	{
-		$mergedSeparators = array_merge($decimalPointSigns, $thousandsSeparators);
-		if (count(array_unique($mergedSeparators)) < count($mergedSeparators)) {
+		// Check parameters validity
+		if (count(array_intersect($decimalPointSigns, $thousandsSeparators))) {
 			throw new InvalidArgumentException('Decimal point signs and thousands separators have to be unique.');
 		}
-		foreach ($mergedSeparators as &$uniqueSeparator) {
-			$uniqueSeparator = (string) $uniqueSeparator;
-			if (in_array($uniqueSeparator, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/'], true)) {
-				throw new InvalidArgumentException('Decimal point signs nor thousands separators cannot contain number nor "/" sign.');
-			}
+
+		if (count(array_intersect(
+			array_merge($decimalPointSigns, $thousandsSeparators),
+			['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
+		))) {
+			throw new InvalidArgumentException('Decimal point signs nor thousands separators cannot contain number nor "/" sign.');
 		}
 
+		// Preprocess
 		$input = self::removeSpaces($input);
 		$input = str_replace($thousandsSeparators, '', $input);
 		$input = str_replace($decimalPointSigns, '.', $input);
