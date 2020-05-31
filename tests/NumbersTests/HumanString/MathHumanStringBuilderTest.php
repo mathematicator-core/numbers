@@ -17,7 +17,7 @@ class MathHumanStringBuilderTest extends TestCase
 	public function testMultipliedBy(): void
 	{
 		$latex = MathHumanStringToolkit::frac(1, 2)->multipliedBy('10');
-		Assert::same('1 / 2 * 10', (string) $latex);
+		Assert::same('1/2*10', (string) $latex);
 	}
 
 
@@ -26,7 +26,7 @@ class MathHumanStringBuilderTest extends TestCase
 		$latex = MathHumanStringToolkit::create(
 			MathHumanStringToolkit::frac(1, 2)
 		)->multipliedBy(BigInteger::of('10000000000000000000000'));
-		Assert::same('1 / 2 * 10000000000000000000000', (string) $latex);
+		Assert::same('1/2*10000000000000000000000', (string) $latex);
 	}
 }
 

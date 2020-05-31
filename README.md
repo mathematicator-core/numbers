@@ -17,7 +17,7 @@
 **A PHP library to safely store and represent numbers and its equivalents in PHP.**
 
 Store lots of number types exactly (**integers, decimals, fractions**) and convert them to each other.
-Expressions can be outputted as a **human string** (e.g. `1 / 2`) or **LaTeX** (e.g. `\frac{1}{2}`).
+Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.g. `\frac{1}{2}`).
 
 ## Installation
 
@@ -44,7 +44,7 @@ composer require mathematicator-core/numbers
     - **MathHumanStringBuilder** - same interface as MathLatexBuilder,
     but produces human strings
     - **MathHumanStringToolkit** - same interface as MathLatexToolkit,
-    but produces human strings (e.g. `1 / 2 * (3 + 1)`)
+    but produces human strings (e.g. `1/2*(3+1)`)
 - **Set generators**
     - Primary numbers
     - Even numbers

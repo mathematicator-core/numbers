@@ -7,6 +7,7 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
 
 final class FractionToHumanString
 {
@@ -25,7 +26,7 @@ final class FractionToHumanString
 		$numeratorString = self::convertPart($fraction->getNumerator(), false, $simplify);
 		$denominatorString = self::convertPart($fraction->getDenominator(), true, $simplify);
 
-		return $numeratorString . '/' . $denominatorString;
+		return (string) MathHumanStringToolkit::frac($numeratorString, $denominatorString);
 	}
 
 
@@ -44,7 +45,7 @@ final class FractionToHumanString
 			}
 			return '';
 		} elseif ($part instanceof Fraction) {
-			return '(' . self::convert($part, $simplify) . ')';
+			return (string) MathHumanStringToolkit::wrap(self::convert($part, $simplify), '(', ')');
 		} else {
 			return (string) $part;
 		}

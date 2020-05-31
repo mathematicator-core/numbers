@@ -117,6 +117,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 	 */
 	public static function operator($left, $right, string $operator): MathHumanStringBuilder
 	{
-		return new MathHumanStringBuilder("$left $operator $right");
+		return new MathHumanStringBuilder($left . $operator . $right);
 	}
 }
