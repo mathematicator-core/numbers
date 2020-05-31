@@ -83,19 +83,19 @@ arbitrary precision computing.
 
 ### Working with money
 
-Use on of these libraries if you work with money in you application.
+Use one of these libraries if you work with money in your application.
 
 - [brick/money](https://github.com/brick/money) - A money and currency library
-with interface like brick/math.
+with an interface like brick/math.
 - [moneyphp/money](https://github.com/moneyphp/money) - Widely adopted PHP
 implementation of Fowler's Money pattern.
 
 ## Why float is not safe?
 
-**Float stores you number as an approximation with a limited precision.**
+**Float stores your number as an approximation with limited precision.**
 
 You should never trust float to the last digit. Do not use floats
-directly for checking an equity if you rely on precision
+directly for checking equity if you rely on precision
 (not only monetary calculations).
 
 **Example:**
@@ -114,7 +114,7 @@ echo ($result == 0.3) ? 'true' : 'false'; // output: false
 
 ## Contribution
 
-> Please help improve this documentation by sending a Pull request.
+> Please help to improve this documentation by sending a Pull request.
 
 ### Tests
 
@@ -129,6 +129,6 @@ composer test
 
 Before PR, please run complete code check via command:
 ```bash
-composer cs:install # only first time
+composer cs:install # only the first time
 composer fix # otherwise pre-commit hook can fail
 ````
