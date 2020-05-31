@@ -14,6 +14,7 @@ use Mathematicator\Numbers\Converter\FractionToLatex;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\Helper\FractionHelper;
+use Mathematicator\Numbers\Helper\NumberHelper;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -264,9 +265,7 @@ final class SmartNumber
 	 */
 	public function setValue(string $value): void
 	{
-		// Preprocess input
-		$value = (string) preg_replace('/(\d)\s+(\d)/', '$1$2', $value);
-		$value = rtrim((string) preg_replace('/^(\d*\.\d*?)0+$/', '$1', $value), '.');
+		$value = NumberHelper::preprocessInput($value);
 
 		// Store input
 		$this->input = $value;
