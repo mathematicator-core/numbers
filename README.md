@@ -180,7 +180,7 @@ one to most abstract one:
         </td>
         <td>
             Install the whole pack as a REST API service
-            on your server (PHP+MySQL, Docker ready) or
+            on your server (Docker ready) or
             access it via public cloud REST API.
         </td>
     </tr>
