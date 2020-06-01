@@ -92,4 +92,4 @@ jobs:
           composer install --no-interaction --prefer-dist
 
       - name: Run benchmarks
-        run: composer run bench
+        run: phpbench run
