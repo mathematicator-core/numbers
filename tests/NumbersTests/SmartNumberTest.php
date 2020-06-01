@@ -113,6 +113,19 @@ class SmartNumberTest extends TestCase
 		Assert::same('\frac{161}{2}', (string) $smartNumber2->getLatex());
 		Assert::same('80.5', (string) $smartNumber2->getDecimal());
 	}
+
+
+	public function testBenchmarkCases(): void
+	{
+		$smartNumber = new SmartNumber(10, '158985102');
+		Assert::same('158985102', (string) $smartNumber->getFraction()[0]);
+
+		$smartNumber = new SmartNumber(10, '1482002/10');
+		Assert::same('1482002', (string) $smartNumber->getFraction(false)->getNumerator());
+
+		$smartNumber = new SmartNumber(10, '1482002/10');
+		Assert::same('741001', (string) $smartNumber->getRational(true)->getNumerator());
+	}
 }
 
 (new SmartNumberTest())->run();

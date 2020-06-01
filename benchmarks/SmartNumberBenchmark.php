@@ -44,8 +44,8 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateIntAndGetRationalNumeratorNonSimplified()
 	{
-		$smartNumber = new SmartNumber(10, '158985102');
-		$smartNumber->getRational()->getNumerator(false); // 158985102
+		$smartNumber = new SmartNumber(10, '1482002/10');
+		$smartNumber->getRational(false)->getNumerator(); // 1482002
 	}
 
 	/**
@@ -53,8 +53,8 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateIntAndGetRationalNumeratorSimplified()
 	{
-		$smartNumber = new SmartNumber(10, '158985102');
-		$smartNumber->getRational()->getNumerator(true); // 158985102
+		$smartNumber = new SmartNumber(10, '158985102/10');
+		$smartNumber->getRational(true)->getNumerator(); // 741001
 	}
 
 }

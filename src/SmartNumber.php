@@ -167,7 +167,7 @@ final class SmartNumber
 	 */
 	public function getFraction(?bool $simplify = null): FractionNumbersOnly
 	{
-		$simplify = !($simplify === null && $this->number instanceof BigRational);
+		$simplify = ($simplify === true || ($simplify === null && !($this->number instanceof BigRational)));
 
 		if ($this->cache[$simplify ? 'fractionSimplified' : 'fraction']) {
 			return clone $this->cache[$simplify ? 'fractionSimplified' : 'fraction'];
@@ -188,7 +188,7 @@ final class SmartNumber
 	 */
 	public function getRational(?bool $simplify = null): BigRational
 	{
-		$simplify = !($simplify === null && $this->number instanceof BigRational);
+		$simplify = ($simplify === true || ($simplify === null && !($this->number instanceof BigRational)));
 
 		if ($simplify) {
 			return $this->getRationalSimplified();

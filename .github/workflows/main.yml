@@ -65,3 +65,27 @@ jobs:
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: true
+
+  benchmark:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4'] # 8.0
+
+    name: Benchmark on PHP ${{ matrix.php }}
+    steps:
+      - name: Git clone
+        uses: actions/checkout@master
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: pcov
+
+      - name: Install composer dependencies
+        run: |
+          composer install --no-interaction --prefer-dist
+
+      - name: Run benchmarks
+        run: composer run bench
