@@ -61,7 +61,8 @@ composer require mathematicator-core/numbers
     - Fraction to LaTeX
 
 💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
-for advance user input string **tokenization**.
+for advance user input string **tokenization** or [mathematicator-core/calculator](https://github.com/mathematicator-core/calculator)
+for advance **calculations**.
 
 ## Usage
 
