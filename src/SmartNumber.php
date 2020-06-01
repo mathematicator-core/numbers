@@ -216,8 +216,8 @@ final class SmartNumber
 			$this->number->toScale(0);
 			return true;
 		} catch (RoundingNecessaryException $e) {
-			return false;
 		}
+		return false;
 	}
 
 
@@ -278,7 +278,7 @@ final class SmartNumber
 	 */
 	public function getString(): string
 	{
-		return $this->__toString();
+		return (string) $this;
 	}
 
 
