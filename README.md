@@ -19,6 +19,10 @@
 Store lots of number types exactly (**integers, decimals, fractions**) and convert them to each other.
 Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.g. `\frac{1}{2}`).
 
+It is highly recommended to make sure you have enabled [BCMath](https://www.php.net/manual/en/book.bc.php)
+or [GMP](https://www.php.net/manual/en/book.gmp.php) extension on your PHP server for much
+faster calculations.
+
 ## Installation
 
 ```bash
@@ -137,7 +141,8 @@ composer test
 
 For benchmarking, we use [phpbench](https://github.com/phpbench/phpbench). You can run benchmarks this way:
 ```bash
-composer bench
+composer global require phpbench/phpbench @dev # only the first time
+phpbench run
 ````
 
 Before PR, please run complete code check via command:

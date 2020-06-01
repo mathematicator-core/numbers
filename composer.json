@@ -18,7 +18,7 @@
 	],
 	"require": {
 		"php": ">=7.2",
-		"ext-bcmath": "*",
+		"ext-json": "*",
 		"nette/tester": "^2.3",
 		"nette/utils": "^3.0",
 		"brick/math": "^0.8.15",
@@ -26,9 +26,12 @@
 	},
 	"require-dev": {
 		"brainmaestro/composer-git-hooks": "dev-master",
-		"phpbench/phpbench": "@dev",
 		"phpstan/phpstan": "^0.12.18",
 		"phpstan/phpstan-nette": "^0.12.6"
+	},
+	"suggest": {
+		"ext-bcmath": "For faster math operations",
+		"ext-gmp": "Alternative for faster math operations"
 	},
 	"autoload": {
 		"psr-4": {
@@ -63,7 +66,6 @@
 			"composer test"
 		],
 		"test": "vendor/bin/tester -s -c tests/php.ini -p php tests --coverage coverage.xml --coverage-src src",
-		"bench": "vendor/bin/phpbench run",
 		"cghooks": "vendor/bin/cghooks"
 	},
 	"minimum-stability": "stable",

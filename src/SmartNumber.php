@@ -12,6 +12,7 @@ use Brick\Math\BigRational;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Converter\RationalToHumanString;
 use Mathematicator\Numbers\Converter\RationalToLatex;
@@ -360,7 +361,8 @@ final class SmartNumber
 		}
 
 		if (preg_match('/^(?<mantissa>-?\d*[.]?\d+)(e|E|^)(?<exponent>-?\d*[.]?\d+)$/', $input, $parseExponential)) {
-			$toString = bcmul($parseExponential['mantissa'], bcpow('10', $parseExponential['exponent'], $this->accuracy), $this->accuracy);
+			$calculator = Calculator::get();
+			$toString = $calculator->mul($parseExponential['mantissa'], $calculator->pow('10', $parseExponential['exponent']));
 
 			if (Strings::contains($toString, '.')) {
 				$floatPow = $parseExponential['mantissa'] * (10 ** $parseExponential['exponent']);

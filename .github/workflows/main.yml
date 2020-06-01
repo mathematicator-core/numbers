@@ -20,12 +20,11 @@ jobs:
 
       - name: Install composer dependencies
         run: |
+          # Install code check tools
           composer run cs:install
-
           # Install app dependencies
           composer install --no-interaction --prefer-dist
 
-      # Check code checker and coding standards
       - name: Check coding standards
         run: |
           composer run cs:check
@@ -37,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['7.2', '7.3', '7.4', '8.0'] # 8.0
+        php: ['7.2', '7.3', '7.4', '8.0']
 
     name: PHP ${{ matrix.php }} tests
     steps:
@@ -52,7 +51,9 @@ jobs:
 
       - name: Install composer dependencies
         run: |
-          composer remove phpstan/phpstan phpstan/phpstan-nette phpbench/phpbench --dev --no-interaction # Remove unnecesery packages
+          # Remove unnecesery packages
+          composer remove phpstan/phpstan phpstan/phpstan-nette --dev --no-interaction
+          # Install app dependencies
           composer install --no-interaction --prefer-dist
 
       - name: Run tests
@@ -71,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['7.4'] # 8.0
+        php: ['7.4']
 
     name: Benchmark on PHP ${{ matrix.php }}
     steps:
@@ -82,10 +83,12 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php }}
-          coverage: pcov
 
       - name: Install composer dependencies
         run: |
+          # Install benchmarking tool
+          composer global require phpbench/phpbench @dev
+          # Install app dependencies
           composer install --no-interaction --prefer-dist
 
       - name: Run benchmarks
