@@ -163,11 +163,11 @@ to create everything by yourself. Our tools are tested for bugs
 and tuned for performance, so you can save a significant amount
 of your time, money, and effort.
 
-We tend to be modular as much as possible, so you should be able
+Framework tend to be modular as much as possible, so you should be able
 to create an extension on each layer and its sublayers.
 
 **Mathematicator framework layers** ordered from the most concrete
-one to most abstract one:
+one to the most abstract one:
 
 <table>
     <tr>
