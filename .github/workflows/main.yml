@@ -52,6 +52,7 @@ jobs:
 
       - name: Install composer dependencies
         run: |
+          composer remove phpstan/phpstan phpbench/phpbench --dev --no-interaction # Remove unnecesery packages
           composer install --no-interaction --prefer-dist
 
       - name: Run tests
