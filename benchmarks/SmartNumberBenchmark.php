@@ -31,12 +31,30 @@ class SmartNumberBenchmark
 	}
 
 	/**
-	 * @Revs(1)
+	 * @Revs(1000)
 	 */
-	public function benchCreateIntAndGetFraction()
+	public function benchCreateIntAndGetFractionNumerator()
 	{
 		$smartNumber = new SmartNumber(10, '158985102');
 		$smartNumber->getFraction()[0]; // 158985102
+	}
+
+	/**
+	 * @Revs(1000)
+	 */
+	public function benchCreateIntAndGetRationalNumeratorNonSimplified()
+	{
+		$smartNumber = new SmartNumber(10, '158985102');
+		$smartNumber->getRational()->getNumerator(false); // 158985102
+	}
+
+	/**
+	 * @Revs(1000)
+	 */
+	public function benchCreateIntAndGetRationalNumeratorSimplified()
+	{
+		$smartNumber = new SmartNumber(10, '158985102');
+		$smartNumber->getRational()->getNumerator(true); // 158985102
 	}
 
 }

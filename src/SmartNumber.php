@@ -7,20 +7,23 @@ namespace Mathematicator\Numbers;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
+use Brick\Math\BigNumber;
+use Brick\Math\BigRational;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
-use Mathematicator\Numbers\Converter\DecimalToFraction;
-use Mathematicator\Numbers\Converter\FractionToHumanString;
-use Mathematicator\Numbers\Converter\FractionToLatex;
+use Mathematicator\Numbers\Converter\RationalToHumanString;
+use Mathematicator\Numbers\Converter\RationalToLatex;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberException;
-use Mathematicator\Numbers\Helper\FractionHelper;
 use Mathematicator\Numbers\Helper\NumberHelper;
+use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
+use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
+use Mathematicator\Numbers\Latex\MathLatexBuilder;
+use Mathematicator\Numbers\Latex\MathLatexToolkit;
 use Nette\SmartObject;
 use Nette\Utils\Strings;
-use Nette\Utils\Validators;
-use RuntimeException;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
@@ -37,10 +40,10 @@ use RuntimeException;
  * @property-read float $float
  * @property-read BigDecimal $decimal
  * @property-read FractionNumbersOnly $fraction
+ * @property-read BigRational $rational
  * @property-read string $string
- * @property-read string $latex
- * @property-read string $humanString
- * @property-write string $value
+ * @property-read MathLatexBuilder $latex
+ * @property-read MathHumanStringBuilder $humanString
  */
 final class SmartNumber
 {
@@ -49,42 +52,33 @@ final class SmartNumber
 	/** @var int */
 	private $accuracy;
 
-	/** @var string */
+	/**
+	 * Original user input
+	 * @var string
+	 */
 	private $input;
 
-	/** @var BigDecimal */
-	private $decimal;
-
-	/** @var FractionNumbersOnly|null */
-	private $fraction;
-
 	/**
-	 * Possible thousand separators (first is default)
-	 *
-	 * @var string[]|null
+	 * Number main storage
+	 * @var BigNumber
 	 */
-	private $thousandsSeparators;
+	private $number;
 
-	/**
-	 * Possible decimal point signs (first is default)
-	 *
-	 * @var string[]|null
-	 */
-	private $decimalPointSigns;
+	/** @var mixed[] */
+	private $cache = [];
 
 
 	/**
 	 * @param int|null $accuracy
-	 * @param string $number number or real user input
-	 * @param string[] $decimalPointSigns
-	 * @param string[] $thousandsSeparators
+	 * @param string $number Number in string.
+	 * Allowed formats are: 123456789, 12345.6789, 5/8
+	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws NumberException
 	 */
-	public function __construct(?int $accuracy, string $number, array $decimalPointSigns = ['.', ','], array $thousandsSeparators = ['', ' '])
+	public function __construct(?int $accuracy, string $number)
 	{
 		$this->accuracy = $accuracy ?? 100;
-		$this->decimalPointSigns = $decimalPointSigns;
-		$this->thousandsSeparators = $thousandsSeparators;
+		$this->invalidateCache(); // Only to define array cache indexes
 		$this->setValue($number);
 	}
 
@@ -107,7 +101,7 @@ final class SmartNumber
 	 */
 	public function getInteger(int $roundingMode = RoundingMode::FLOOR): BigInteger
 	{
-		return $this->decimal->toScale(0, $roundingMode)->toBigInteger();
+		return $this->number->toScale(0, $roundingMode)->toBigInteger();
 	}
 
 
@@ -133,7 +127,11 @@ final class SmartNumber
 	 */
 	public function getFloat(): float
 	{
-		return $this->getDecimal()->toFloat();
+		if ($this->cache['float']) {
+			return $this->cache['float'];
+		} else {
+			return $this->cache['float'] = $this->getDecimal()->toFloat();
+		}
 	}
 
 
@@ -142,7 +140,7 @@ final class SmartNumber
 	 */
 	public function getDecimal(): BigDecimal
 	{
-		return $this->decimal;
+		return $this->number->toBigDecimal();
 	}
 
 
@@ -162,16 +160,47 @@ final class SmartNumber
 	 * Return number converted to fraction.
 	 * For example `2.5` will be converted to `[5, 2]`.
 	 * The fraction is always shortened to the basic shape.
+	 * TIP: Use getRational() method instead for faster first result (limited functionality)
 	 *
+	 * @param bool $simplify Simplify fraction on output (null means to not simplify rational input, else simplify)
 	 * @return FractionNumbersOnly
 	 */
-	public function getFraction(): FractionNumbersOnly
+	public function getFraction(?bool $simplify = null): FractionNumbersOnly
 	{
-		if (!isset($this->fraction) || !$this->fraction->isValid()) {
-			throw new RuntimeException('Invalid fraction: Fraction must define numerator and denominator.');
+		$simplify = !($simplify === null && $this->number instanceof BigRational);
+
+		if ($this->cache[$simplify ? 'fractionSimplified' : 'fraction']) {
+			return clone $this->cache[$simplify ? 'fractionSimplified' : 'fraction'];
 		}
 
-		return $this->fraction;
+		$rationalNumber = $this->getRational($simplify);
+		return clone($this->cache[$simplify ? 'fractionSimplified' : 'fraction'] = new FractionNumbersOnly($rationalNumber->getNumerator(), $rationalNumber->getDenominator()));
+	}
+
+
+	/**
+	 * Returns simple rational number (similar to getFraction() but
+	 * without ArrayAccess and advance features).
+	 * TIP: Use getRational(false) for faster first result (returns not simplified rational number)
+	 *
+	 * @param bool|null $simplify Simplify rational number output (null means to not simplify rational input, else simplify)
+	 * @return BigRational
+	 */
+	public function getRational(?bool $simplify = null): BigRational
+	{
+		$simplify = !($simplify === null && $this->number instanceof BigRational);
+
+		if ($simplify) {
+			return $this->getRationalSimplified();
+		}
+
+		if ($this->cache['rational']) {
+			return $this->cache['rational'];
+		} elseif ($this->number instanceof BigRational) {
+			return $this->cache['rational'] = $this->number;
+		} else {
+			return $this->cache['rational'] = $this->number->toBigRational();
+		}
 	}
 
 
@@ -184,7 +213,7 @@ final class SmartNumber
 	public function isInteger(): bool
 	{
 		try {
-			$this->decimal->toScale(0);
+			$this->number->toScale(0);
 			return true;
 		} catch (RoundingNecessaryException $e) {
 			return false;
@@ -206,7 +235,7 @@ final class SmartNumber
 	 */
 	public function isPositive(): bool
 	{
-		return $this->decimal->isGreaterThan(0);
+		return $this->number->isGreaterThan(0);
 	}
 
 
@@ -215,7 +244,7 @@ final class SmartNumber
 	 */
 	public function isNegative(): bool
 	{
-		return $this->decimal->isLessThan(0);
+		return $this->number->isLessThan(0);
 	}
 
 
@@ -227,16 +256,18 @@ final class SmartNumber
 	 */
 	public function isZero(): bool
 	{
-		return $this->decimal->isEqualTo(0);
+		return $this->number->isEqualTo(0);
 	}
 
 
 	/**
+	 * Returns number represented by string (valid SmartNumber input)
+	 *
 	 * @return string
 	 */
 	public function __toString(): string
 	{
-		return $this->getLatex(true);
+		return (string) $this->getHumanString();
 	}
 
 
@@ -254,39 +285,48 @@ final class SmartNumber
 	/**
 	 * Returns a number in computer readable form (in LaTeX format).
 	 *
-	 * @param bool $preferFraction Returns fraction instead of decimal number if true
-	 * @return string
+	 * @return MathLatexBuilder
 	 */
-	public function getLatex(bool $preferFraction = true): string
+	public function getLatex(): MathLatexBuilder
 	{
-		if ($this->isInteger()) {
-			return (string) $this->getInteger();
-		} elseif (!$preferFraction) {
-			return (string) $this->decimal;
+		if ($this->cache['latex'] !== null) {
+			return $this->cache['latex'];
+		} elseif ($this->number instanceof BigRational) {
+			return $this->cache['latex'] = RationalToLatex::convert($this->getRational(false));
+		} elseif ($this->number instanceof BigDecimal) {
+			return $this->cache['latex'] = MathLatexToolkit::create((string) $this->number);
+		} else {
+			return $this->cache['latex'] = MathLatexToolkit::create((string) $this->number);
 		}
-
-		return (string) FractionToLatex::convert($this->getFraction());
 	}
 
 
 	/**
-	 * Returns a number in human readable form (valid search input).
+	 * Returns a number in human readable form (valid SmartNumber input).
 	 *
-	 * @param bool $preferFraction Returns fraction instead of decimal number if true
-	 * @return string
-	 * @throws NumberException
+	 * @return MathHumanStringBuilder
 	 */
-	public function getHumanString(bool $preferFraction = true): string
+	public function getHumanString(): MathHumanStringBuilder
 	{
-		if ($this->isInteger()) {
-			return (string) $this->getInteger();
+		if ($this->cache['humanString'] !== null) {
+			return $this->cache['humanString'];
+		} elseif ($this->number instanceof BigRational) {
+			return $this->cache['humanString'] = RationalToHumanString::convert($this->getRational(false));
+		} else {
+			return $this->cache['humanString'] = MathHumanStringToolkit::create((string) $this->number);
 		}
+	}
 
-		if (!$preferFraction && $this->isFloat()) {
-			return (string) $this->decimal;
+
+	private function getRationalSimplified(): BigRational
+	{
+		if ($this->cache['rationalSimplified']) {
+			return $this->cache['rationalSimplified'];
+		} elseif ($this->number instanceof BigRational) {
+			return $this->cache['rationalSimplified'] = $this->number->simplified();
+		} else {
+			return $this->cache['rationalSimplified'] = $this->number->toBigRational()->simplified();
 		}
-
-		return FractionToHumanString::convert($this->getFraction());
 	}
 
 
@@ -297,38 +337,70 @@ final class SmartNumber
 	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
 	 * Numbers are handled like a string.
 	 *
-	 * @param string $value
+	 * @param string $input
 	 * @throws NumberException
-	 * @internal
 	 */
-	public function setValue(string $value): void
+	private function setValue(string $input): void
 	{
-		$this->input = $value;
-		$value = NumberHelper::preprocessInput($value, $this->decimalPointSigns ?: [], $this->thousandsSeparators ?: []);
+		$this->invalidateCache();
+		$this->input = $input;
 
-		if (Validators::isNumeric($value)) {
-			$this->decimal = BigDecimal::of($value);
-			$this->fraction = DecimalToFraction::convert($value);
-		} elseif (preg_match('/^(?<mantissa>-?\d*[.]?\d+)(e|E|^)(?<exponent>-?\d*[.]?\d+)$/', $value, $parseExponential)) {
+		try {
+			$this->setValueDirectly($input);
+			return;
+		} catch (NumberFormatException $e) {
+		}
+
+		$input = NumberHelper::preprocessInput($input, ['.'], ['', ' ']);
+
+		try {
+			$this->setValueDirectly($input);
+			return;
+		} catch (NumberFormatException $e) {
+		}
+
+		if (preg_match('/^(?<mantissa>-?\d*[.]?\d+)(e|E|^)(?<exponent>-?\d*[.]?\d+)$/', $input, $parseExponential)) {
 			$toString = bcmul($parseExponential['mantissa'], bcpow('10', $parseExponential['exponent'], $this->accuracy), $this->accuracy);
 
 			if (Strings::contains($toString, '.')) {
 				$floatPow = $parseExponential['mantissa'] * (10 ** $parseExponential['exponent']);
-				$this->decimal = BigDecimal::of($floatPow);
-				$this->fraction = DecimalToFraction::convert($floatPow);
+				$this->number = BigNumber::of($floatPow);
 			} else {
-				$this->decimal = BigDecimal::of($toString);
-				$this->fraction = new FractionNumbersOnly($toString);
+				$this->number = BigNumber::of($toString);
 			}
-		} elseif (preg_match('/^(?<x>-?\d*[.]?\d+)\s*\/\s*(?<y>-?\d*[.]?\d+)$/', $value, $parseFraction)) {
-			$this->fraction = FractionHelper::toShortenForm(
-				new FractionNumbersOnly($parseFraction['x'], $parseFraction['y'])
-			);
-			$this->decimal = FractionHelper::evaluate($this->fraction, $this->accuracy, RoundingMode::FLOOR);
-		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $value, $parseOperators)) { // "---6"
+		} elseif (preg_match('/^(?<numerator>-?\d*[.]?\d+)\s*\/\s*(?<denominator>-?\d*[.]?\d+)$/', $input, $parseFraction)) {
+			$this->number = BigRational::nd($parseFraction['numerator'], $parseFraction['denominator']);
+		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $input, $parseOperators)) { // "---6"
 			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
 		} else {
-			NumberException::invalidInput($value);
+			NumberException::invalidInput($input);
 		}
+	}
+
+
+	/**
+	 * @param string $input
+	 * @throws NumberFormatException
+	 */
+	private function setValueDirectly(string $input): void
+	{
+		$this->number = BigNumber::of($input);
+	}
+
+
+	/**
+	 * Invalidates internal cache used for faster reading.
+	 */
+	private function invalidateCache(): void
+	{
+		$this->cache = [
+			'float' => null,
+			'fraction' => null,
+			'fractionSimplified' => null,
+			'humanString' => null,
+			'latex' => null,
+			'rational' => null,
+			'rationalSimplified' => null,
+		];
 	}
 }

@@ -19,7 +19,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $latex
+	 * @param int|string|Stringable $latex
 	 * @param string|null $delimiterLeft
 	 * @param string|null $delimiterRight
 	 */
@@ -49,7 +49,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return MathLatexBuilder
 	 */
 	public function plus($with): self
@@ -59,7 +59,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return MathLatexBuilder
 	 */
 	public function minus($with): self
@@ -69,7 +69,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return MathLatexBuilder
 	 */
 	public function multipliedBy($with): self
@@ -79,7 +79,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return MathLatexBuilder
 	 */
 	public function dividedBy($with): self
@@ -89,7 +89,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return MathLatexBuilder
 	 */
 	public function equals($to): self
@@ -100,7 +100,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param string $operator
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return MathLatexBuilder
 	 */
 	public function operator(string $operator, $to): self
@@ -111,6 +111,11 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 	}
 
 
+	/**
+	 * @param string $left
+	 * @param string|null $right
+	 * @return self
+	 */
 	public function wrap(string $left, string $right = null): self
 	{
 		$this->snippet->latex = (string) MathLatexToolkit::wrap($this->snippet->latex, $left, $right);

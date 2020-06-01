@@ -7,17 +7,18 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
 
 final class FractionToHumanString
 {
 	/**
 	 * @param Fraction $fraction
-	 * @param bool $simplify
-	 * @return string
+	 * @param bool $simplify Remove denominator if === 1
+	 * @return MathHumanStringBuilder
 	 * @throws NumberException
 	 */
-	public static function convert(Fraction $fraction, bool $simplify = true): string
+	public static function convert(Fraction $fraction, bool $simplify = true): MathHumanStringBuilder
 	{
 		if (!$fraction->isValid()) {
 			throw new NumberException('Fraction is not valid!');
@@ -26,14 +27,14 @@ final class FractionToHumanString
 		$numeratorString = self::convertPart($fraction->getNumerator(), false, $simplify);
 		$denominatorString = self::convertPart($fraction->getDenominator(), true, $simplify);
 
-		return (string) MathHumanStringToolkit::frac($numeratorString, $denominatorString);
+		return MathHumanStringToolkit::frac($numeratorString, $denominatorString);
 	}
 
 
 	/**
 	 * @param Fraction|string|null $part
 	 * @param bool $isDenominator
-	 * @param bool $simplify
+	 * @param bool $simplify Remove denominator if === 1
 	 * @return string
 	 * @throws NumberException
 	 */

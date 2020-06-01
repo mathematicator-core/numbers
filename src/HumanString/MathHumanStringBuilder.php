@@ -19,11 +19,11 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $latex
+	 * @param int|string|Stringable $humanString
 	 */
-	public function __construct($latex = '')
+	public function __construct($humanString = '')
 	{
-		$this->humanString = (string) $latex;
+		$this->humanString = (string) $humanString;
 	}
 
 
@@ -43,7 +43,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return self
 	 */
 	public function plus($with): self
@@ -53,7 +53,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return self
 	 */
 	public function minus($with): self
@@ -63,7 +63,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return self
 	 */
 	public function multipliedBy($with): self
@@ -73,7 +73,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return self
 	 */
 	public function dividedBy($with): self
@@ -83,7 +83,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return self
 	 */
 	public function equals($to): self
@@ -94,7 +94,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param string $operator
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return self
 	 */
 	public function operator(string $operator, $to): self
@@ -105,6 +105,11 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 	}
 
 
+	/**
+	 * @param string $left
+	 * @param string|null $right
+	 * @return self
+	 */
 	public function wrap(string $left, string $right = null): self
 	{
 		$this->humanString = (string) MathHumanStringToolkit::wrap($this->humanString, $left, $right);

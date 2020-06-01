@@ -15,38 +15,38 @@ interface IMathBuilder
 	public function __toString(): string;
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return SelfClass
 	 */
 	public function plus($with);
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return SelfClass
 	 */
 	public function minus($with);
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return SelfClass
 	 */
 	public function multipliedBy($with);
 
 	/**
-	 * @param string|Stringable $with
+	 * @param int|string|Stringable $with
 	 * @return SelfClass
 	 */
 	public function dividedBy($with);
 
 	/**
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return SelfClass
 	 */
 	public function equals($to);
 
 	/**
 	 * @param string $operator
-	 * @param string|Stringable $to
+	 * @param int|string|Stringable $to
 	 * @return SelfClass
 	 */
 	public function operator(string $operator, $to);

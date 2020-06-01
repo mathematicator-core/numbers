@@ -66,14 +66,18 @@ use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\SmartNumber;
 
 $smartNumber = new SmartNumber(10, '80.500'); // accuracy, number
-echo $smartNumber->getDecimal(); // 80.5
+echo $smartNumber->getDecimal(); // 80.500
 echo $smartNumber->getFraction()->getNumerator(); // 161
 echo $smartNumber->getFraction()->getDenominator(); // 2
-echo $smartNumber->getDecimal()->multipliedBy(-4); // -322.0
+echo $smartNumber->getDecimal()->multipliedBy(-4); // -322.000
 echo $smartNumber->getDecimal()->multipliedBy(-4)->abs()->toInt(); // 322
 echo $smartNumber->getDecimal()->toScale(0, RoundingMode::HALF_UP); // 81
-echo $smartNumber->getHumanString(); // 161/2
-echo $smartNumber->getLatex(); // \frac{161}{2}
+
+$smartNumber2 = new SmartNumber(10, '161/2'); // accuracy, number
+echo $smartNumber2->getHumanString(); // 161/2
+echo $smartNumber2->getHumanString()->plus(5)->equals('90.5'); // 161/2+10=90.5
+echo $smartNumber2->getLatex(); // \frac{161}{2}
+echo $smartNumber2->getDecimal();  // 80.5
 ```
 
 ## Recommended libraries
@@ -129,6 +133,11 @@ Before you send a PR, please, check all tests pass.
 This package uses [Nette Tester](https://tester.nette.org/). You can run tests via command:
 ```bash
 composer test
+````
+
+For benchmarking, we use [phpbench](https://github.com/phpbench/phpbench). You can run benchmarks this way:
+```bash
+composer bench
 ````
 
 Before PR, please run complete code check via command:

@@ -30,9 +30,6 @@
 		"phpstan/phpstan": "^0.12.18",
 		"phpstan/phpstan-nette": "^0.12.6"
 	},
-	"suggest": {
-		"brick/math": "(^0.8.15) For better basic math computing."
-	},
 	"autoload": {
 		"psr-4": {
 			"Mathematicator\\Numbers\\": "src/"
@@ -66,6 +63,7 @@
 			"composer test"
 		],
 		"test": "vendor/bin/tester -s -c tests/php.ini -p php tests --coverage coverage.xml --coverage-src src",
+		"bench": "vendor/bin/phpbench run",
 		"cghooks": "vendor/bin/cghooks"
 	},
 	"minimum-stability": "stable",
