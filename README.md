@@ -155,7 +155,7 @@ composer cs:install # only the first time
 composer fix # otherwise pre-commit hook can fail
 ````
 
-## Math Framework tools structure
+## Mathematicator Framework tools structure
 
 The biggest advantage is that you can choose which layer best fits
 your needs and start build on the top of it, immediately, without the need
@@ -166,24 +166,10 @@ of your time, money, and effort.
 We tend to be modular as much as possible, so you should be able
 to create an extension on each layer and its sublayers.
 
-**Mathematical framework layers** ordered from the most concrete
+**Mathematicator framework layers** ordered from the most concrete
 one to most abstract one:
 
 <table>
-    <tr>
-        <td>
-            <b>
-            <a href="https://github.com/cothema/math-php-api">
-                REST API
-            </a>
-            </b>
-        </td>
-        <td>
-            Install the whole pack as a REST API service
-            on your server (Docker ready) or
-            access it via public cloud REST API.
-        </td>
-    </tr>
     <tr>
         <td>
             <b>
@@ -272,6 +258,27 @@ one to most abstract one:
         <td>
             Fast & secure storage for numbers with arbitrary precision.
             It supports Human string and LaTeX output and basic conversions.
+        </td>
+    </tr>
+</table>
+
+**Third-party packages:**
+
+⚠️ Not guaranteed!
+
+<table>
+    <tr>
+        <td>
+            <b>
+            <a href="https://github.com/cothema/math-php-api">
+                REST API
+            </a>
+            </b>
+        </td>
+        <td>
+            Install the whole pack as a REST API service
+            on your server (Docker ready) or
+            access it via public cloud REST API.
         </td>
     </tr>
 </table>
