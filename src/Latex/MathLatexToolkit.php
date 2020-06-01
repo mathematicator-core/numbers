@@ -35,7 +35,7 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	/**
-	 * @param string|Stringable $latex
+	 * @param int|string|Stringable $latex
 	 * @param string|null $delimiterLeft
 	 * @param string|null $delimiterRight
 	 * @return MathLatexBuilder
@@ -47,8 +47,8 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	/**
-	 * @param string|Stringable $numerator
-	 * @param string|Stringable $denominator
+	 * @param int|string|Stringable $numerator
+	 * @param int|string|Stringable $denominator
 	 * @return MathLatexBuilder
 	 */
 	public static function frac($numerator, $denominator): MathLatexBuilder
@@ -58,8 +58,8 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	/**
-	 * @param string|Stringable $x
-	 * @param string|Stringable $pow
+	 * @param int|string|Stringable $x
+	 * @param int|string|Stringable $pow
 	 * @return MathLatexBuilder
 	 */
 	public static function pow($x, $pow): MathLatexBuilder
@@ -80,7 +80,7 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	/**
-	 * @param string|Stringable $content
+	 * @param int|string|Stringable $content
 	 * @param string $left
 	 * @param string|null $right
 	 * @return MathLatexBuilder
@@ -114,8 +114,8 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	/**
-	 * @param string|Stringable $left
-	 * @param string|Stringable $right
+	 * @param int|string|Stringable $left
+	 * @param int|string|Stringable $right
 	 * @param string $operator
 	 * @return MathLatexBuilder
 	 */

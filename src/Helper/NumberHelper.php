@@ -7,6 +7,7 @@ namespace Mathematicator\Numbers\Helper;
 
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\RoundingNecessaryException;
+use InvalidArgumentException;
 
 class NumberHelper
 {
@@ -63,11 +64,28 @@ class NumberHelper
 	 * Preprocess user input for further processing
 	 *
 	 * @param string $input
+	 * @param string[] $decimalPointSigns Default is a dot "." only
+	 * @param string[] $thousandsSeparators
 	 * @return string
 	 */
-	public static function preprocessInput(string $input): string
+	public static function preprocessInput(string $input, array $decimalPointSigns = [], array $thousandsSeparators = []): string
 	{
+		// Check parameters validity
+		if (count(array_intersect($decimalPointSigns, $thousandsSeparators))) {
+			throw new InvalidArgumentException('Decimal point signs and thousands separators have to be unique.');
+		}
+
+		if (count(array_intersect(
+			array_merge($decimalPointSigns, $thousandsSeparators),
+			['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
+		))) {
+			throw new InvalidArgumentException('Decimal point signs nor thousands separators cannot contain number nor "/" sign.');
+		}
+
+		// Preprocess
 		$input = self::removeSpaces($input);
+		$input = str_replace($thousandsSeparators, '', $input);
+		$input = str_replace($decimalPointSigns, '.', $input);
 		$input = self::removeTrailingZeros($input);
 		return $input;
 	}

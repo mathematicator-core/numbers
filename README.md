@@ -19,6 +19,10 @@
 Store lots of number types exactly (**integers, decimals, fractions**) and convert them to each other.
 Expressions can be outputted as a **human string** (e.g. `1/2`) or **LaTeX** (e.g. `\frac{1}{2}`).
 
+It is highly recommended to make sure you have enabled [BCMath](https://www.php.net/manual/en/book.bc.php)
+or [GMP](https://www.php.net/manual/en/book.gmp.php) extension on your PHP server for much
+faster calculations.
+
 ## Installation
 
 ```bash
@@ -57,19 +61,28 @@ composer require mathematicator-core/numbers
     - Fraction to LaTeX
 
 💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
-for advance user input string **tokenization**.
+for advance user input string **tokenization** or [mathematicator-core/calculator](https://github.com/mathematicator-core/calculator)
+for advance **calculations**.
 
 ## Usage
 
 ```php
+use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\SmartNumber;
 
 $smartNumber = new SmartNumber(10, '80.500'); // accuracy, number
-echo $smartNumber->getFloat(); // 80.5
+echo $smartNumber->getDecimal(); // 80.500
 echo $smartNumber->getFraction()->getNumerator(); // 161
 echo $smartNumber->getFraction()->getDenominator(); // 2
-echo $smartNumber->getHumanString(); // 161/2
-echo $smartNumber->getLatex(); // \frac{161}{2}
+echo $smartNumber->getDecimal()->multipliedBy(-4); // -322.000
+echo $smartNumber->getDecimal()->multipliedBy(-4)->abs()->toInt(); // 322
+echo $smartNumber->getDecimal()->toScale(0, RoundingMode::HALF_UP); // 81
+
+$smartNumber2 = new SmartNumber(10, '161/2'); // accuracy, number
+echo $smartNumber2->getHumanString(); // 161/2
+echo $smartNumber2->getHumanString()->plus(5)->equals('90.5'); // 161/2+10=90.5
+echo $smartNumber2->getLatex(); // \frac{161}{2}
+echo $smartNumber2->getDecimal();  // 80.5
 ```
 
 ## Recommended libraries
@@ -125,6 +138,12 @@ Before you send a PR, please, check all tests pass.
 This package uses [Nette Tester](https://tester.nette.org/). You can run tests via command:
 ```bash
 composer test
+````
+
+For benchmarking, we use [phpbench](https://github.com/phpbench/phpbench). You can run benchmarks this way:
+```bash
+composer global require phpbench/phpbench @dev # only the first time
+phpbench run
 ````
 
 Before PR, please run complete code check via command:

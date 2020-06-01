@@ -56,6 +56,23 @@ class Fraction implements ArrayAccess
 	}
 
 
+	public function __clone()
+	{
+		if (is_object($this->numerator)) {
+			$this->numerator = clone $this->numerator;
+		}
+		if (is_object($this->denominator)) {
+			$this->denominator = clone $this->denominator;
+		}
+		if (is_object($this->parentInNumerator)) {
+			$this->parentInNumerator = clone $this->parentInNumerator;
+		}
+		if (is_object($this->parentInDenominator)) {
+			$this->parentInDenominator = clone $this->parentInDenominator;
+		}
+	}
+
+
 	/**
 	 * Returns a human string (e.g. (5/2)/1).
 	 *
@@ -64,7 +81,7 @@ class Fraction implements ArrayAccess
 	 */
 	public function __toString(): string
 	{
-		return FractionToHumanString::convert($this);
+		return (string) FractionToHumanString::convert($this);
 	}
 
 

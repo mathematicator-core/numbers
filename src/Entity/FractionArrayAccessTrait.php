@@ -15,14 +15,14 @@ trait FractionArrayAccessTrait
 {
 
 	/**
-	 * @param int $offset
+	 * @param mixed $offset
 	 * @param int|string|Stringable|BigNumber|Fraction|null $value
 	 */
 	public function offsetSet($offset, $value): void
 	{
-		if ($offset === 0) {
+		if (in_array($offset, [0, 'numerator'], true)) {
 			$this->setNumerator($value);
-		} elseif ($offset === 1) {
+		} elseif (in_array($offset, [1, 'denominator'], true)) {
 			$this->setDenominator($value);
 		} else {
 			throw new RuntimeException("Offset $offset could not exist for fractions.");
@@ -36,7 +36,7 @@ trait FractionArrayAccessTrait
 	 */
 	public function offsetExists($offset): bool
 	{
-		return $offset === 0 || $offset === 1;
+		return in_array($offset, [0, 1, 'numerator', 'denominator'], true);
 	}
 
 
@@ -45,9 +45,9 @@ trait FractionArrayAccessTrait
 	 */
 	public function offsetUnset($offset): void
 	{
-		if ($offset === 0) {
+		if (in_array($offset, [0, 'numerator'], true)) {
 			$this->setNumerator(null);
-		} elseif ($offset === 1) {
+		} elseif (in_array($offset, [1, 'denominator'], true)) {
 			$this->setDenominator(null);
 		}
 	}
@@ -60,8 +60,6 @@ trait FractionArrayAccessTrait
 	 */
 	public function offsetGet($offset)
 	{
-		$arr = FractionToArray::convert($this);
-
-		return $arr[$offset] ?? null;
+		return FractionToArray::convert($this)[($offset === 'numerator' ? 0 : ($offset === 'denominator' ? 1 : $offset))];
 	}
 }
