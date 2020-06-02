@@ -6,6 +6,7 @@ namespace Mathematicator\Numbers\Latex;
 
 
 use Mathematicator\Numbers\IMathToolkit;
+use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -13,6 +14,8 @@ use Stringable;
  */
 final class MathLatexToolkit implements IMathToolkit
 {
+	use StaticClass;
+
 	public const PI = '\pi';
 
 	public const INFINITY = '\infty';

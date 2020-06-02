@@ -1,10 +1,4 @@
 {
 	"bootstrap": "vendor/autoload.php",
-	"path": "benchmarks",
-	"reports": {
-		"all": {
-			"extends": "smart-number",
-			"title": "Smart Number Benchmark"
-		}
-	}
+	"path": "benchmarks"
 }

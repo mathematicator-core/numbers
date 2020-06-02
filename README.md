@@ -55,11 +55,11 @@ composer require mathematicator-core/numbers
     - Even numbers
     - Odd numbers
 - **Converters:**
-    - Array to fraction
+    - Array to fraction and back
     - Decimal to fraction
-    - Fraction to array
     - Fraction to human string
     - Fraction to LaTeX
+    - Int to Roman and back
 
 💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
 for advance user input string **tokenization** or [mathematicator-core/calculator](https://github.com/mathematicator-core/calculator)
@@ -125,35 +125,6 @@ echo ($result == 0.3) ? 'true' : 'false'; // output: false
 [See in PHP manual](https://www.php.net/manual/en/language.types.float.php)
 
 [Read more about float on Wikipedia](https://en.wikipedia.org/wiki/Floating-point_arithmetic)
-
-## Contribution
-
-> Please help to improve this documentation by sending a Pull request.
-
-### Tests
-
-All new contributions should have its unit tests in `/tests` directory.
-
-Before you send a PR, please, check all tests pass.
-
-This package uses [Nette Tester](https://tester.nette.org/).
-You can run tests via command:
-```bash
-composer test
-````
-
-For benchmarking, we use [phpbench](https://github.com/phpbench/phpbench).
-You can run benchmarks this way:
-```bash
-composer global require phpbench/phpbench @dev # only the first time
-phpbench run
-````
-
-Before PR, please run complete code check via command:
-```bash
-composer cs:install # only the first time
-composer fix # otherwise pre-commit hook can fail
-````
 
 ## Mathematicator Framework tools structure
 
@@ -282,3 +253,33 @@ one to the most abstract one:
         </td>
     </tr>
 </table>
+
+
+## Contribution
+
+> Please help to improve this documentation by sending a Pull request.
+
+### Tests
+
+All new contributions should have its unit tests in `/tests` directory.
+
+Before you send a PR, please, check all tests pass.
+
+This package uses [Nette Tester](https://tester.nette.org/).
+You can run tests via command:
+```bash
+composer test
+````
+
+For benchmarking, we use [phpbench](https://github.com/phpbench/phpbench).
+You can run benchmarks this way:
+```bash
+composer global require phpbench/phpbench @dev # only the first time
+phpbench run
+````
+
+Before PR, please run complete code check via command:
+```bash
+composer cs:install # only the first time
+composer fix # otherwise pre-commit hook can fail
+````

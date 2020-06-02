@@ -22,6 +22,7 @@ class SmartNumberBenchmark
 		$smartNumber = (string) 158985102;
 	}
 
+
 	/**
 	 * @Revs(1000)
 	 */
@@ -29,6 +30,7 @@ class SmartNumberBenchmark
 	{
 		$smartNumber = new SmartNumber('158985102');
 	}
+
 
 	/**
 	 * @Revs(1000)
@@ -39,6 +41,7 @@ class SmartNumberBenchmark
 		$smartNumber->getFraction()[0]; // 158985102
 	}
 
+
 	/**
 	 * @Revs(1000)
 	 */
@@ -48,6 +51,7 @@ class SmartNumberBenchmark
 		$smartNumber->getRational(false)->getNumerator(); // 1482002
 	}
 
+
 	/**
 	 * @Revs(1000)
 	 */
@@ -56,5 +60,4 @@ class SmartNumberBenchmark
 		$smartNumber = new SmartNumber('158985102/10');
 		$smartNumber->getRational(true)->getNumerator(); // 741001
 	}
-
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\SetIterator;
 
 
+use InvalidArgumentException;
 use Iterator;
 
 /**
@@ -19,7 +20,7 @@ final class EvenNumberIterator extends SimpleInfiniteNumberIterator implements I
 	public function __construct(int $startValue = 0)
 	{
 		if ($startValue % 2 !== 0) {
-			throw new \InvalidArgumentException("$startValue is not an even value!");
+			throw new InvalidArgumentException("$startValue is not an even value!");
 		}
 
 		$this->startValue = $startValue;
