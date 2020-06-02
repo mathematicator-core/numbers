@@ -19,6 +19,7 @@
 	"require": {
 		"php": ">=7.2",
 		"ext-json": "*",
+		"ext-mbstring": "*",
 		"nette/utils": "^3.0",
 		"brick/math": "^0.8.15",
 		"symfony/polyfill-php80": "^1.17"
