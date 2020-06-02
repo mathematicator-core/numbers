@@ -12,7 +12,6 @@ use Brick\Math\BigRational;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
-use Brick\Math\Internal\Calculator;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Converter\RationalToHumanString;
 use Mathematicator\Numbers\Converter\RationalToLatex;
@@ -24,7 +23,6 @@ use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
 use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Mathematicator\Numbers\Latex\MathLatexToolkit;
 use Nette\SmartObject;
-use Nette\Utils\Strings;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
@@ -360,23 +358,24 @@ final class SmartNumber
 		} catch (NumberFormatException $e) {
 		}
 
-		if (preg_match('/^(?<mantissa>-?\d*[.]?\d+)(e|E|^)(?<exponent>-?\d*[.]?\d+)$/', $input, $parseExponential)) {
-			$calculator = Calculator::get();
-			$toString = $calculator->mul($parseExponential['mantissa'], $calculator->pow('10', $parseExponential['exponent']));
-
-			if (Strings::contains($toString, '.')) {
-				$floatPow = $parseExponential['mantissa'] * (10 ** $parseExponential['exponent']);
-				$this->number = BigNumber::of($floatPow);
-			} else {
-				$this->number = BigNumber::of($toString);
-			}
-		} elseif (preg_match('/^(?<numerator>-?\d*[.]?\d+)\s*\/\s*(?<denominator>-?\d*[.]?\d+)$/', $input, $parseFraction)) {
-			$this->number = BigRational::nd($parseFraction['numerator'], $parseFraction['denominator']);
-		} elseif (preg_match('/^([+-]{2,})(\d+.*)$/', $input, $parseOperators)) { // "---6"
-			$this->setValue((substr_count($parseOperators[1], '-') % 2 === 0 ? '' : '-') . $parseOperators[2]);
-		} else {
-			NumberException::invalidInput($input);
+		// Solve multiple positivity signs (e.g. --6 => 6, ---5 => -5, --5.2 => 5.2, --5/2 => 5/2)
+		if (preg_match('/^([+-]{2,})(.*)$/', $input, $parseResult)) {
+			$this->setValue((substr_count($parseResult[1], '-') % 2 === 0 ? '' : '-') . $parseResult[2]);
+			return;
 		}
+
+		// Solve fraction with decimals
+		if (preg_match('/^(\d*\.\d*)\/(\d*\.\d*)$/', $input, $parseResult)) {
+			$numerator = BigDecimal::of($parseResult[1]);
+			$denominator = BigDecimal::of($parseResult[2]);
+
+			$multiplier = 10 * (($numerator->getScale() > $denominator->getScale()) ? $numerator->getScale() : $denominator->getScale());
+
+			$this->number = BigRational::nd($parseResult[1] * $multiplier, $parseResult[2] * $multiplier);
+			return;
+		}
+
+		NumberException::invalidInput($input);
 	}
 
 

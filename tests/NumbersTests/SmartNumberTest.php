@@ -126,6 +126,47 @@ class SmartNumberTest extends TestCase
 		$smartNumber = new SmartNumber(10, '1482002/10');
 		Assert::same('741001', (string) $smartNumber->getRational(true)->getNumerator());
 	}
+
+
+	public function testNonStandardInputs()
+	{
+		$smartNumber = new SmartNumber(10, '25....');
+		Assert::same('25', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '4.');
+		Assert::same('4', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '-100/25');
+		Assert::same('-100/25', (string) $smartNumber->getRational());
+		Assert::same('-4', (string) $smartNumber->getInteger());
+		$smartNumber = new SmartNumber(10, '+4.');
+		Assert::same('4', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '+5');
+		Assert::same('5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '+10/2');
+		Assert::same('5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '++10/2');
+		Assert::same('5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '-+10/2');
+		Assert::same('-5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '--10/2');
+		Assert::same('5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '--(10/2)');
+		Assert::same('5', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '3.12e+2');
+		Assert::same('312', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '3.12e+2');
+		Assert::same('312', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '312e-2');
+		Assert::same('3.12', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '1.5E-10');
+		Assert::same('0.00000000015', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '-1.5E-10');
+		Assert::same('-0.00000000015', (string) $smartNumber->getDecimal());
+		Assert::same('-1.5E-10', (string) $smartNumber->getInput());
+		$smartNumber = new SmartNumber(10, '3.0012e2');
+		Assert::same('300.12', (string) $smartNumber->getDecimal());
+		$smartNumber = new SmartNumber(10, '10.2/6.4');
+		Assert::same('102/64', (string) $smartNumber->getRational());
+	}
 }
 
 (new SmartNumberTest())->run();

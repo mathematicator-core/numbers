@@ -87,6 +87,13 @@ class NumberHelper
 		$input = str_replace($thousandsSeparators, '', $input);
 		$input = str_replace($decimalPointSigns, '.', $input);
 		$input = self::removeTrailingZeros($input);
+		$input = self::removeWrapBrackets($input);
 		return $input;
+	}
+
+
+	public static function removeWrapBrackets(string $input): string
+	{
+		return (string) preg_replace('/^(\()(.*)(\))$/', '$2', $input);
 	}
 }
