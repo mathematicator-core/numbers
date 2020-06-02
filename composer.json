@@ -19,13 +19,13 @@
 	"require": {
 		"php": ">=7.2",
 		"ext-json": "*",
-		"nette/tester": "^2.3",
 		"nette/utils": "^3.0",
 		"brick/math": "^0.8.15",
 		"symfony/polyfill-php80": "^1.17"
 	},
 	"require-dev": {
 		"brainmaestro/composer-git-hooks": "dev-master",
+		"nette/tester": "^2.3",
 		"phpstan/phpstan": "^0.12.18",
 		"phpstan/phpstan-nette": "^0.12.6"
 	},
