@@ -7,9 +7,12 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
+use Nette\StaticClass;
 
 final class FractionToArray
 {
+	use StaticClass;
+
 	/**
 	 * @param Fraction $fraction
 	 * @param bool $simplify
@@ -26,6 +29,17 @@ final class FractionToArray
 		$denominatorOut = self::convertPart($fraction->getDenominator(), true, $simplify);
 
 		return [$numeratorOut, $denominatorOut];
+	}
+
+
+	/**
+	 * @param mixed[] $fraction
+	 * @return Fraction
+	 * @throws NumberException
+	 */
+	public static function reverse(array $fraction): Fraction
+	{
+		return ArrayToFraction::convert($fraction);
 	}
 
 

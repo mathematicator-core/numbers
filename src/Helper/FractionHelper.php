@@ -12,11 +12,13 @@ use Mathematicator\Numbers\Converter\DecimalToFraction;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\PrimaryNumber;
+use Nette\StaticClass;
 use Nette\Utils\Validators;
 use RuntimeException;
 
 class FractionHelper
 {
+	use StaticClass;
 
 	/**
 	 * Automatically converts a fraction to a shortened form.
@@ -99,13 +101,12 @@ class FractionHelper
 
 
 	/**
-	 * @todo Change scale to arbitrary using math expression
-	 *
 	 * @param FractionNumbersOnly $fraction
 	 * @param int|null $scale
 	 * @param int $roundingMode
 	 * @return BigDecimal
 	 * @throws NumberException
+	 * @todo Change scale to arbitrary using math expression
 	 */
 	public static function evaluate(FractionNumbersOnly $fraction, ?int $scale = 100, int $roundingMode = RoundingMode::FLOOR): BigDecimal
 	{

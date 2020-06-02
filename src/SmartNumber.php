@@ -26,6 +26,8 @@ use Nette\SmartObject;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
+ * Instance of SmartNumber is readonly since initialized. If you want to modify it,
+ * create a new one by new SmartNumber(...)
  *
  * The class can store the following data types:
  *
@@ -34,7 +36,7 @@ use Nette\SmartObject;
  * - Decimal number with adjustable accuracy
  * - Fraction
  *
- * @property-read string $input
+ * @property-read int|float|string|BigNumber $input
  * @property-read BigInteger $integer
  * @property-read float $float
  * @property-read BigDecimal $decimal
@@ -50,7 +52,7 @@ final class SmartNumber
 
 	/**
 	 * Original user input
-	 * @var string
+	 * @var int|float|string|BigNumber
 	 */
 	private $input;
 
@@ -65,12 +67,12 @@ final class SmartNumber
 
 
 	/**
-	 * @param string $number Number in string.
+	 * @param int|float|string|BigNumber $number
 	 * Allowed formats are: 123456789, 12345.6789, 5/8
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws NumberException
 	 */
-	public function __construct(string $number)
+	public function __construct($number)
 	{
 		$this->setValue($number);
 	}
@@ -79,9 +81,9 @@ final class SmartNumber
 	/**
 	 * User real input
 	 *
-	 * @return string
+	 * @return int|float|string|BigNumber
 	 */
-	public function getInput(): string
+	public function getInput()
 	{
 		return $this->input;
 	}
@@ -348,10 +350,10 @@ final class SmartNumber
 	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
 	 * Numbers are handled like a string.
 	 *
-	 * @param string $input
+	 * @param int|float|string|BigNumber $input
 	 * @throws NumberException
 	 */
-	private function setValue(string $input): void
+	private function setValue($input): void
 	{
 		$this->invalidateCache(); // Defines array cache indexes
 		$this->input = $input;
@@ -362,7 +364,7 @@ final class SmartNumber
 		} catch (NumberFormatException $e) {
 		}
 
-		$input = NumberHelper::preprocessInput($input, ['.'], ['', ' ']);
+		$input = NumberHelper::preprocessInput((string) $input, ['.'], ['', ' ']);
 
 		try {
 			$this->setValueDirectly($input);
@@ -392,10 +394,10 @@ final class SmartNumber
 
 
 	/**
-	 * @param string $input
+	 * @param int|float|string|BigNumber $input
 	 * @throws NumberFormatException
 	 */
-	private function setValueDirectly(string $input): void
+	private function setValueDirectly($input): void
 	{
 		$this->number = BigNumber::of($input);
 	}

@@ -8,9 +8,12 @@ namespace Mathematicator\Numbers\Helper;
 use Brick\Math\BigDecimal;
 use Brick\Math\Exception\RoundingNecessaryException;
 use InvalidArgumentException;
+use Nette\StaticClass;
 
 class NumberHelper
 {
+	use StaticClass;
+
 	public static function isModuloZero(BigDecimal $a, BigDecimal $b): bool
 	{
 		try {

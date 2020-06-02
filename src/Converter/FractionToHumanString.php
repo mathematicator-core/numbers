@@ -9,9 +9,12 @@ use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
+use Nette\StaticClass;
 
 final class FractionToHumanString
 {
+	use StaticClass;
+
 	/**
 	 * @param Fraction $fraction
 	 * @param bool $simplify Remove denominator if === 1

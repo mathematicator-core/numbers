@@ -55,11 +55,11 @@ composer require mathematicator-core/numbers
     - Even numbers
     - Odd numbers
 - **Converters:**
-    - Array to fraction
+    - Array to fraction and back
     - Decimal to fraction
-    - Fraction to array
     - Fraction to human string
     - Fraction to LaTeX
+    - Int to Roman and back
 
 💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
 for advance user input string **tokenization** or [mathematicator-core/calculator](https://github.com/mathematicator-core/calculator)

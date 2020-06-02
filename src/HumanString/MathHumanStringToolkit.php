@@ -6,6 +6,7 @@ namespace Mathematicator\Numbers\HumanString;
 
 
 use Mathematicator\Numbers\IMathToolkit;
+use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -13,6 +14,8 @@ use Stringable;
  */
 final class MathHumanStringToolkit implements IMathToolkit
 {
+	use StaticClass;
+
 	public const PI = 'π';
 
 	public const DEGREE = '°';
