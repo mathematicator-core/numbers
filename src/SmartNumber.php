@@ -48,9 +48,6 @@ final class SmartNumber
 {
 	use SmartObject;
 
-	/** @var int */
-	private $accuracy;
-
 	/**
 	 * Original user input
 	 * @var string
@@ -68,16 +65,13 @@ final class SmartNumber
 
 
 	/**
-	 * @param int|null $accuracy
 	 * @param string $number Number in string.
 	 * Allowed formats are: 123456789, 12345.6789, 5/8
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws NumberException
 	 */
-	public function __construct(?int $accuracy, string $number)
+	public function __construct(string $number)
 	{
-		$this->accuracy = $accuracy ?? 100;
-		$this->invalidateCache(); // Only to define array cache indexes
 		$this->setValue($number);
 	}
 
@@ -122,36 +116,54 @@ final class SmartNumber
 	 * WARNING! Float is only an approximation. Float data type is not precise!
 	 * Always use getDecimal() method for precise computing.
 	 *
+	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
+	 * @param int $rationalRoundingMode Rounding mode for rational numbers
 	 * @return float
 	 */
-	public function getFloat(): float
+	public function getFloat(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): float
 	{
-		if ($this->cache['float']) {
-			return $this->cache['float'];
+		$cacheKey = $rationalScaleLimit . '_' . $rationalRoundingMode;
+		if (isset($this->cache['float'][$cacheKey])) {
+			return $this->cache['float'][$cacheKey];
 		} else {
-			return $this->cache['float'] = $this->getDecimal()->toFloat();
+			return $this->cache['float'][$cacheKey] = $this->getDecimal($rationalScaleLimit, $rationalRoundingMode)->toFloat();
 		}
 	}
 
 
 	/**
+	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
+	 * @param int $rationalRoundingMode Rounding mode for rational numbers
 	 * @return BigDecimal
 	 */
-	public function getDecimal(): BigDecimal
+	public function getDecimal(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): BigDecimal
 	{
-		return $this->number->toBigDecimal();
+		$cacheKey = $rationalScaleLimit . '_' . $rationalRoundingMode;
+		if (isset($this->cache['decimal'][$cacheKey])) {
+			return $this->cache['decimal'][$cacheKey];
+		} else {
+			if ($this->number instanceof BigRational) {
+				$result = (string) $this->number->getNumerator()->toBigDecimal()
+					->dividedBy($this->number->getDenominator(), $rationalScaleLimit, $rationalRoundingMode);
+				return BigDecimal::of(NumberHelper::removeTrailingZeros($result));
+			}
+
+			return $this->cache['decimal'][$cacheKey] = $this->number->toBigDecimal();
+		}
 	}
 
 
 	/**
 	 * Return float number converted to string.
 	 *
+	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
+	 * @param int $rationalRoundingMode Rounding mode for rational numbers
 	 * @return string
 	 * @deprecated Use getDecimal() instead
 	 */
-	public function getFloatString(): string
+	public function getFloatString(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): string
 	{
-		return (string) $this->getDecimal();
+		return (string) $this->getDecimal($rationalScaleLimit, $rationalRoundingMode);
 	}
 
 
@@ -341,7 +353,7 @@ final class SmartNumber
 	 */
 	private function setValue(string $input): void
 	{
-		$this->invalidateCache();
+		$this->invalidateCache(); // Defines array cache indexes
 		$this->input = $input;
 
 		try {
