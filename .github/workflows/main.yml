@@ -17,7 +17,6 @@ jobs:
         with:
           php-version: 7.4
           coverage: pcov
-          extensions: bcmath, ctype, iconv, json, tokenizer, mbstring
 
       - name: Install composer dependencies
         run: |
@@ -49,7 +48,6 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: pcov
-          extensions: bcmath, ctype, iconv, json, tokenizer, mbstring
 
       - name: Install composer dependencies
         run: |
@@ -85,7 +83,6 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php }}
-          extensions: bcmath, ctype, iconv, json, tokenizer, mbstring
 
       - name: Install composer dependencies
         run: |
