@@ -43,7 +43,7 @@ class NumberHelper
 	 */
 	public static function removeTrailingZeros(string $input): string
 	{
-		$input = (string) preg_replace('/^(\d*\.\d*?)0+$/', '$1', $input);
+		$input = (string) preg_replace('/^([+-]*)(\d*\.\d*?)0+$/', '$1$2', $input);
 		return self::removeTrailingDot($input);
 	}
 
