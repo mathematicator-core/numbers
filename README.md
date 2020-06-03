@@ -33,7 +33,9 @@ composer require mathematicator-core/numbers
 ## Features
 
 - **SmartNumber** - Unified safe storage for all number types with
-    an arbitrary precision.
+    an arbitrary precision. It supports comparisons.
+    - **Entity\Number** Less magic universal arbitrary precision
+    number storage with basic features.
 - **Fractions:**
     - **Entity\Fraction** - Storage for simple or compound fraction that
     can consist from numbers and other expressions.
@@ -60,6 +62,7 @@ composer require mathematicator-core/numbers
     - Fraction to human string
     - Fraction to LaTeX
     - Int to Roman and back
+- **Calculation** - simple arithmetic operations ([brick/math](https://github.com/brick/math) decorator)
 
 💡 **TIP:** You can use [mathematicator-core/tokenizer](https://github.com/mathematicator-core/tokenizer)
 for advance user input string **tokenization** or [mathematicator-core/calculator](https://github.com/mathematicator-core/calculator)

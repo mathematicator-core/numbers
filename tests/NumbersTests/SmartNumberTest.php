@@ -7,7 +7,7 @@ namespace Mathematicator\Numbers\Tests;
 
 use Brick\Math\RoundingMode;
 use InvalidArgumentException;
-use Mathematicator\Numbers\Entity\Calculation;
+use Mathematicator\Numbers\Calculation;
 use Mathematicator\Numbers\Entity\Number;
 use Mathematicator\Numbers\Exception\DivisionByZeroException;
 use Mathematicator\Numbers\Exception\NumberFormatException;

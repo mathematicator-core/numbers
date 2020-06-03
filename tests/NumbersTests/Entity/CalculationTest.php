@@ -6,7 +6,7 @@ namespace Mathematicator\Numbers\Tests\Entity;
 
 
 use Brick\Math\RoundingMode;
-use Mathematicator\Numbers\Entity\Calculation;
+use Mathematicator\Numbers\Calculation;
 use Mathematicator\Numbers\Entity\Number;
 use Tester\Assert;
 use Tester\TestCase;

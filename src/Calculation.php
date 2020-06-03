@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Mathematicator\Numbers\Entity;
+namespace Mathematicator\Numbers;
 
 
 use Brick\Math\BigDecimal;
@@ -14,7 +14,6 @@ use Brick\Math\Exception\MathException;
 use Brick\Math\RoundingMode;
 use InvalidArgumentException;
 use Mathematicator\Numbers\Exception\UnsupportedCalcOperationException;
-use Mathematicator\Numbers\SmartNumber;
 
 /**
  * Class Calculation
