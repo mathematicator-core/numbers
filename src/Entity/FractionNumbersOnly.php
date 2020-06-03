@@ -8,7 +8,7 @@ namespace Mathematicator\Numbers\Entity;
 use ArrayAccess;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Stringable;
 
 /**
@@ -49,7 +49,7 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 	/**
 	 * @param int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator
 	 * @return self
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public function setNumerator($numerator)
 	{
@@ -57,7 +57,7 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 			$numerator->setParentInNumerator($this);
 			$this->numerator = $numerator;
 		} elseif ($numerator instanceof Fraction) {
-			throw new NumberException(sprintf('You can set only %s for %s compound numerator.', self::class, self::class));
+			throw new NumberFormatException(sprintf('You can set only %s for %s compound numerator.', self::class, self::class));
 		} else {
 			$this->numerator = BigDecimal::of((string) $numerator);
 		}
@@ -78,7 +78,7 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction $denominator
 	 * @return FractionNumbersOnly
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public function setDenominator($denominator): self
 	{
@@ -86,7 +86,7 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 			$denominator->setParentInDenominator($this);
 			$this->denominator = $denominator;
 		} elseif ($denominator instanceof Fraction) {
-			throw new NumberException(sprintf('You can set only %s for %s compound denominator.', self::class, self::class));
+			throw new NumberFormatException(sprintf('You can set only %s for %s compound denominator.', self::class, self::class));
 		} else {
 			$this->denominator = BigDecimal::of((string) $denominator);
 		}

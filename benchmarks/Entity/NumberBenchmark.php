@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Benchmarks;
 
-use Mathematicator\Numbers\SmartNumber;
+use Mathematicator\Numbers\Entity\Number;
 
 /**
  * @Iterations(5)
  */
-class SmartNumberBenchmark
+class NumberBenchmark
 {
 
 	/**
@@ -28,7 +28,7 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateInt()
 	{
-		$smartNumber = new SmartNumber('158985102');
+		$smartNumber = new Number('158985102');
 	}
 
 
@@ -37,7 +37,7 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateIntAndGetFractionNumerator()
 	{
-		$smartNumber = new SmartNumber('158985102');
+		$smartNumber = new Number('158985102');
 		$smartNumber->toFraction()[0]; // 158985102
 	}
 
@@ -47,7 +47,7 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateIntAndGetRationalNumeratorNonSimplified()
 	{
-		$smartNumber = new SmartNumber('1482002/10');
+		$smartNumber = new Number('1482002/10');
 		$smartNumber->toBigRational(false)->getNumerator(); // 1482002
 	}
 
@@ -57,7 +57,7 @@ class SmartNumberBenchmark
 	 */
 	public function benchCreateIntAndGetRationalNumeratorSimplified()
 	{
-		$smartNumber = new SmartNumber('158985102/10');
+		$smartNumber = new Number('158985102/10');
 		$smartNumber->toBigRational(true)->getNumerator(); // 741001
 	}
 }

@@ -7,7 +7,7 @@ namespace Mathematicator\Numbers\Entity;
 
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToArray;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use RuntimeException;
 use Stringable;
 
@@ -56,7 +56,7 @@ trait FractionArrayAccessTrait
 	/**
 	 * @param mixed $offset
 	 * @return mixed[]|string|null Returns recursively [string, string] or string value
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public function offsetGet($offset)
 	{

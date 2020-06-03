@@ -6,7 +6,7 @@ namespace Mathematicator\Numbers\Converter;
 
 
 use Mathematicator\Numbers\Entity\Fraction;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 use Stringable;
 
@@ -17,12 +17,12 @@ final class ArrayToFraction
 	/**
 	 * @param mixed[] $fraction
 	 * @return Fraction
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function convert(array $fraction): Fraction
 	{
 		if (!isset($fraction[0])) {
-			throw new NumberException('Fraction does not have numerator!');
+			throw new NumberFormatException('Fraction does not have numerator!');
 		}
 
 		$numeratorOut = self::convertPart($fraction[0]);
@@ -41,7 +41,7 @@ final class ArrayToFraction
 	 * @param Fraction $fraction
 	 * @param bool $simplify
 	 * @return mixed[]
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function reverse(Fraction $fraction, bool $simplify = true)
 	{
@@ -52,7 +52,7 @@ final class ArrayToFraction
 	/**
 	 * @param mixed[]|string|Stringable|int|float|null $part
 	 * @return Fraction|string|null
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	private static function convertPart($part)
 	{

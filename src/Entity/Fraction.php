@@ -8,7 +8,7 @@ namespace Mathematicator\Numbers\Entity;
 use ArrayAccess;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToHumanString;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Stringable;
 
 /**
@@ -77,7 +77,7 @@ class Fraction implements ArrayAccess
 	 * Returns a human string (e.g. (5/2)/1).
 	 *
 	 * @return string
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public function __toString(): string
 	{

@@ -8,7 +8,7 @@ namespace Mathematicator\Numbers\Converter;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 use Stringable;
 
@@ -61,7 +61,7 @@ final class IntToRoman
 	/**
 	 * @param string $romanNumber
 	 * @return BigInteger
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function reverse($romanNumber): BigInteger
 	{

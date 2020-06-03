@@ -7,7 +7,7 @@ namespace Mathematicator\Numbers\Converter;
 
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 use Nette\Utils\Strings;
 use Stringable;
@@ -42,7 +42,7 @@ final class RomanToInt
 	/**
 	 * @param string $romanNumber
 	 * @return BigInteger
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function convert(string $romanNumber): BigInteger
 	{
@@ -78,12 +78,12 @@ final class RomanToInt
 	/**
 	 * @param string $romanChar
 	 * @return int
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	private static function convertSingleChar(string $romanChar): int
 	{
 		if (!isset(self::$conversionTable[$romanChar])) {
-			NumberException::invalidInput("$romanChar");
+			NumberFormatException::invalidInput("$romanChar");
 		}
 
 		return self::$conversionTable[$romanChar];
