@@ -71,19 +71,19 @@ for advance **calculations**.
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\SmartNumber;
 
-$smartNumber = new SmartNumber(10, '80.500'); // accuracy, number
-echo $smartNumber->getDecimal(); // 80.500
-echo $smartNumber->getFraction()->getNumerator(); // 161
-echo $smartNumber->getFraction()->getDenominator(); // 2
-echo $smartNumber->getDecimal()->multipliedBy(-4); // -322.000
-echo $smartNumber->getDecimal()->multipliedBy(-4)->abs()->toInt(); // 322
-echo $smartNumber->getDecimal()->toScale(0, RoundingMode::HALF_UP); // 81
+$smartNumber = SmartNumber::of('80.500');
+echo $smartNumber->toBigDecimal(); // 80.500
+echo $smartNumber->toFraction()->getNumerator(); // 161
+echo $smartNumber->toFraction()->getDenominator(); // 2
+echo Calculation::of($smartNumber)->multipliedBy(-4); // -322.000
+echo Calculation::of($smartNumber)->multipliedBy(-4)->abs()->getResult()->toInt(); // 322
+echo $smartNumber->toBigDecimal()->toScale(0, RoundingMode::HALF_UP); // 81
 
-$smartNumber2 = new SmartNumber(10, '161/2'); // accuracy, number
-echo $smartNumber2->getHumanString(); // 161/2
-echo $smartNumber2->getHumanString()->plus(5)->equals('90.5'); // 161/2+10=90.5
-echo $smartNumber2->getLatex(); // \frac{161}{2}
-echo $smartNumber2->getDecimal();  // 80.5
+$smartNumber2 = SmartNumber::of('161/2');
+echo $smartNumber2->toHumanString(); // 161/2
+echo $smartNumber2->toHumanString()->plus(5)->equals('90.5'); // 161/2+10=90.5
+echo $smartNumber2->toLatex(); // \frac{161}{2}
+echo $smartNumber2->toBigDecimal();  // 80.5
 ```
 
 ## Recommended libraries
