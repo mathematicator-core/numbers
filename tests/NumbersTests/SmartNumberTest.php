@@ -7,6 +7,8 @@ namespace Mathematicator\Numbers\Tests;
 
 use Brick\Math\RoundingMode;
 use InvalidArgumentException;
+use Mathematicator\Numbers\Exception\DivisionByZeroException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Helper\NumberHelper;
 use Mathematicator\Numbers\SmartNumber;
 use Tester\Assert;
@@ -28,7 +30,7 @@ class SmartNumberTest extends TestCase
 		$smartNumber = new SmartNumber('10.125');
 		Assert::same('10', (string) $smartNumber->getInteger());
 		Assert::same(10.125, $smartNumber->getFloat());
-		Assert::same('10.125', $smartNumber->getFloatString());
+		Assert::same('10.125', (string) $smartNumber->getDecimal());
 	}
 
 
@@ -178,6 +180,22 @@ class SmartNumberTest extends TestCase
 
 		$smartNumber = new SmartNumber('4/3');
 		Assert::same('1', (string) $smartNumber->getInteger());
+	}
+
+
+	public function testDivisionByZero()
+	{
+		Assert::throws(function () {
+			return new SmartNumber('4/0');
+		}, DivisionByZeroException::class);
+	}
+
+
+	public function testBlankInput()
+	{
+		Assert::throws(function () {
+			return new SmartNumber('');
+		}, NumberFormatException::class);
 	}
 }
 

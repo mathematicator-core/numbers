@@ -10,7 +10,8 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Converter\DecimalToFraction;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\DivisionByZeroException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\PrimaryNumber;
 use Nette\StaticClass;
 use Nette\Utils\Validators;
@@ -28,7 +29,7 @@ class FractionHelper
 	 * @param int $level
 	 * @param int $maxLevel
 	 * @return FractionNumbersOnly
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function toShortenForm(FractionNumbersOnly $fraction, int $level = 0, int $maxLevel = 100): FractionNumbersOnly
 	{
@@ -49,7 +50,7 @@ class FractionHelper
 		}
 
 		if ($denominatorValue->isEqualTo(0)) {
-			NumberException::canNotDivisionFractionByZero((string) $numeratorValue, (string) $denominatorValue);
+			DivisionByZeroException::canNotDivisionFractionByZero((string) $numeratorValue, (string) $denominatorValue);
 		}
 
 		$fractionValue = self::evaluate($fraction);
@@ -105,13 +106,13 @@ class FractionHelper
 	 * @param int|null $scale
 	 * @param int $roundingMode
 	 * @return BigDecimal
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 * @todo Change scale to arbitrary using math expression
 	 */
 	public static function evaluate(FractionNumbersOnly $fraction, ?int $scale = 100, int $roundingMode = RoundingMode::FLOOR): BigDecimal
 	{
 		if (!$fraction->isValid()) {
-			throw new NumberException('Cannot enumerate fraction without numerator.');
+			throw new NumberFormatException('Cannot enumerate fraction without numerator.');
 		}
 
 		/** @var FractionNumbersOnly|BigDecimal $numerator */

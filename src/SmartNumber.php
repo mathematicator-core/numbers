@@ -9,6 +9,7 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
+use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
@@ -16,7 +17,6 @@ use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Converter\RationalToHumanString;
 use Mathematicator\Numbers\Converter\RationalToLatex;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
-use Mathematicator\Numbers\Exception\NumberException;
 use Mathematicator\Numbers\Helper\NumberHelper;
 use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
@@ -26,7 +26,7 @@ use Nette\SmartObject;
 
 /**
  * This is an implementation of an easy-to-use entity for interpreting numbers.
- * Instance of SmartNumber is readonly since initialized. If you want to modify it,
+ * Instance of SmartNumber is immutable (readonly since initialized). If you want to modify it,
  * create a new one by new SmartNumber(...)
  *
  * The class can store the following data types:
@@ -45,6 +45,7 @@ use Nette\SmartObject;
  * @property-read string $string
  * @property-read MathLatexBuilder $latex
  * @property-read MathHumanStringBuilder $humanString
+ * @property-read BigNumber $number
  */
 final class SmartNumber
 {
@@ -70,7 +71,7 @@ final class SmartNumber
 	 * @param int|float|string|BigNumber $number
 	 * Allowed formats are: 123456789, 12345.6789, 5/8
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
-	 * @throws NumberException
+	 * @throws Exception\NumberFormatException
 	 */
 	public function __construct($number)
 	{
@@ -97,20 +98,6 @@ final class SmartNumber
 	public function getInteger(int $roundingMode = RoundingMode::FLOOR): BigInteger
 	{
 		return $this->number->toScale(0, $roundingMode)->toBigInteger();
-	}
-
-
-	/**
-	 * Returns stringable representation of absolute value rounded to integer.
-	 *
-	 * @param int $roundingMode
-	 * @return int
-	 * @throws MathException If the number is too big and cannot be converted to a native integer.
-	 * @deprecated Use getInteger()->abs() instead.
-	 */
-	public function getAbsoluteInteger(int $roundingMode = RoundingMode::FLOOR): int
-	{
-		return $this->getInteger()->abs()->toInt();
 	}
 
 
@@ -156,20 +143,6 @@ final class SmartNumber
 
 
 	/**
-	 * Return float number converted to string.
-	 *
-	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
-	 * @param int $rationalRoundingMode Rounding mode for rational numbers
-	 * @return string
-	 * @deprecated Use getDecimal() instead
-	 */
-	public function getFloatString(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): string
-	{
-		return (string) $this->getDecimal($rationalScaleLimit, $rationalRoundingMode);
-	}
-
-
-	/**
 	 * Return number converted to fraction.
 	 * For example `2.5` will be converted to `[5, 2]`.
 	 * The fraction is always shortened to the basic shape.
@@ -188,6 +161,17 @@ final class SmartNumber
 
 		$rationalNumber = $this->getRational($simplify);
 		return clone($this->cache[$simplify ? 'fractionSimplified' : 'fraction'] = new FractionNumbersOnly($rationalNumber->getNumerator(), $rationalNumber->getDenominator()));
+	}
+
+
+	/**
+	 * Returns number in same type as stored
+	 *
+	 * @return BigNumber
+	 */
+	public function getNumber(): BigNumber
+	{
+		return $this->number;
 	}
 
 
@@ -231,45 +215,6 @@ final class SmartNumber
 		} catch (RoundingNecessaryException $e) {
 		}
 		return false;
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isFloat(): bool
-	{
-		return !$this->isInteger();
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isPositive(): bool
-	{
-		return $this->number->isGreaterThan(0);
-	}
-
-
-	/**
-	 * @return bool
-	 */
-	public function isNegative(): bool
-	{
-		return $this->number->isLessThan(0);
-	}
-
-
-	/**
-	 * Detects that the number is zero.
-	 * For very small decimal number, the function can only return approximate result.
-	 *
-	 * @return bool
-	 */
-	public function isZero(): bool
-	{
-		return $this->number->isEqualTo(0);
 	}
 
 
@@ -331,6 +276,109 @@ final class SmartNumber
 	}
 
 
+	/**
+	 * Checks if this number is strictly positive.
+	 *
+	 * @return bool
+	 */
+	public function isPositive(): bool
+	{
+		return $this->number->isPositive();
+	}
+
+
+	/**
+	 * Checks if this number is strictly negative.
+	 *
+	 * @return bool
+	 */
+	public function isNegative(): bool
+	{
+		return $this->number->isNegative();
+	}
+
+
+	/**
+	 * Checks if this number equals zero.
+	 *
+	 * @return bool
+	 */
+	public function isZero(): bool
+	{
+		return $this->number->isZero();
+	}
+
+
+	/**
+	 * Checks if this number is equal to the given one.
+	 *
+	 * @param BigNumber|int|float|string $that
+	 *
+	 * @return bool
+	 */
+	public function isEqualTo($that): bool
+	{
+		return $this->number->isEqualTo($that);
+	}
+
+
+	/**
+	 * Checks if this number is strictly lower than the given one.
+	 *
+	 * @param BigNumber|int|float|string $that
+	 *
+	 * @return bool
+	 */
+	public function isLessThan($that): bool
+	{
+		return $this->number->isLessThan($that);
+	}
+
+
+	/**
+	 * Checks if this number is lower than or equal to the given one.
+	 *
+	 * @param BigNumber|int|float|string $that
+	 *
+	 * @return bool
+	 */
+	public function isLessThanOrEqualTo($that): bool
+	{
+		return $this->number->isLessThanOrEqualTo($that);
+	}
+
+
+	/**
+	 * Checks if this number is strictly greater than the given one.
+	 *
+	 * @param BigNumber|int|float|string $that
+	 *
+	 * @return bool
+	 */
+	public function isGreaterThan($that): bool
+	{
+		return $this->number->isGreaterThan($that);
+	}
+
+
+	/**
+	 * Checks if this number is greater than or equal to the given one.
+	 *
+	 * @param BigNumber|int|float|string $that
+	 *
+	 * @return bool
+	 */
+	public function isGreaterThanOrEqualTo($that): bool
+	{
+		return $this->number->isGreaterThanOrEqualTo($that);
+	}
+
+
+	/**
+	 * Returns rational number in normal form
+	 *
+	 * @return BigRational
+	 */
 	private function getRationalSimplified(): BigRational
 	{
 		if ($this->cache['rationalSimplified']) {
@@ -345,13 +393,11 @@ final class SmartNumber
 
 	/**
 	 * Converts any user input to the internal state of the object.
-	 * This method must be called before reading any getter, otherwise the number information will not be available.
-	 *
 	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
 	 * Numbers are handled like a string.
 	 *
 	 * @param int|float|string|BigNumber $input
-	 * @throws NumberException
+	 * @throws Exception\NumberFormatException
 	 */
 	private function setValue($input): void
 	{
@@ -362,8 +408,11 @@ final class SmartNumber
 			$this->setValueDirectly($input);
 			return;
 		} catch (NumberFormatException $e) {
+		} catch (DivisionByZeroException $e) {
+			throw new Exception\DivisionByZeroException($e->getMessage());
 		}
 
+		// Handle some other softly invalid cases
 		$input = NumberHelper::preprocessInput((string) $input, ['.'], ['', ' ']);
 
 		try {
@@ -389,7 +438,7 @@ final class SmartNumber
 			return;
 		}
 
-		NumberException::invalidInput($input);
+		Exception\NumberFormatException::invalidInput($input);
 	}
 
 

@@ -6,7 +6,7 @@ namespace Mathematicator\Numbers\Converter;
 
 
 use Mathematicator\Numbers\Entity\Fraction;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 
 final class FractionToArray
@@ -17,12 +17,12 @@ final class FractionToArray
 	 * @param Fraction $fraction
 	 * @param bool $simplify
 	 * @return mixed[]
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function convert(Fraction $fraction, bool $simplify = true): array
 	{
 		if (!$fraction->isValid()) {
-			throw new NumberException('Fraction is not valid!');
+			throw new NumberFormatException('Fraction is not valid!');
 		}
 
 		$numeratorOut = self::convertPart($fraction->getNumerator(), false, $simplify);
@@ -35,7 +35,7 @@ final class FractionToArray
 	/**
 	 * @param mixed[] $fraction
 	 * @return Fraction
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function reverse(array $fraction): Fraction
 	{
@@ -48,7 +48,7 @@ final class FractionToArray
 	 * @param bool $isDenominator
 	 * @param bool $simplify
 	 * @return string|mixed[]|null
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	private static function convertPart($part, bool $isDenominator, bool $simplify)
 	{

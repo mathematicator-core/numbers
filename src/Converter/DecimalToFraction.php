@@ -8,7 +8,7 @@ namespace Mathematicator\Numbers\Converter;
 use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
-use Mathematicator\Numbers\Exception\NumberException;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Helper\FractionHelper;
 use Nette\StaticClass;
 use Stringable;
@@ -23,7 +23,7 @@ final class DecimalToFraction
 	 *
 	 * @param float|int|string|Stringable|BigNumber $decimalInput
 	 * @return FractionNumbersOnly
-	 * @throws NumberException
+	 * @throws NumberFormatException
 	 */
 	public static function convert($decimalInput): FractionNumbersOnly
 	{
