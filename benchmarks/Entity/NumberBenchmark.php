@@ -38,7 +38,7 @@ class NumberBenchmark
 	public function benchCreateIntAndGetFractionNumerator()
 	{
 		$smartNumber = new Number('158985102');
-		$smartNumber->getFraction()[0]; // 158985102
+		$smartNumber->toFraction()[0]; // 158985102
 	}
 
 
@@ -48,7 +48,7 @@ class NumberBenchmark
 	public function benchCreateIntAndGetRationalNumeratorNonSimplified()
 	{
 		$smartNumber = new Number('1482002/10');
-		$smartNumber->getRational(false)->getNumerator(); // 1482002
+		$smartNumber->toBigRational(false)->getNumerator(); // 1482002
 	}
 
 
@@ -58,6 +58,6 @@ class NumberBenchmark
 	public function benchCreateIntAndGetRationalNumeratorSimplified()
 	{
 		$smartNumber = new Number('158985102/10');
-		$smartNumber->getRational(true)->getNumerator(); // 741001
+		$smartNumber->toBigRational(true)->getNumerator(); // 741001
 	}
 }
