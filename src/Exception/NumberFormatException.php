@@ -12,7 +12,7 @@ class NumberFormatException extends NumberException
 
 	/**
 	 * @param string $haystack
-	 * @throws NumberFormatException
+	 * @throws self
 	 */
 	public static function invalidInput(string $haystack): void
 	{

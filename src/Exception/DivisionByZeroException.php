@@ -12,7 +12,7 @@ class DivisionByZeroException extends NumberException
 	/**
 	 * @param string $x
 	 * @param string $y
-	 * @throws NumberException
+	 * @throws self
 	 */
 	public static function canNotDivisionFractionByZero(string $x, string $y): void
 	{

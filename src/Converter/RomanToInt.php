@@ -61,7 +61,13 @@ final class RomanToInt
 			}
 		}
 
-		return BigInteger::of($return);
+		$result = BigInteger::of($return);
+
+		if ($result->isGreaterThanOrEqualTo(4000)) {
+			NumberFormatException::invalidInput($romanNumber);
+		}
+
+		return $result;
 	}
 
 
