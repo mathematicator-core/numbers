@@ -10,9 +10,9 @@
 
 [![Integrity check](https://github.com/mathematicator-core/numbers/workflows/Integrity%20check/badge.svg)](https://github.com/mathematicator-core/numbers/actions?query=workflow%3A%22Integrity+check%22)
 [![codecov](https://codecov.io/gh/mathematicator-core/numbers/branch/master/graph/badge.svg)](https://codecov.io/gh/mathematicator-core/numbers)
+[![Latest stable version](https://poser.pugx.org/mathematicator-core/numbers/v/stable)](https://packagist.org/packages/mathematicator-core/numbers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](./LICENSE)
 [![PHPStan Enabled](https://img.shields.io/badge/PHPStan-enabled%20L8-brightgreen.svg?style=flat)](https://phpstan.org/)
-
 
 **A PHP library to safely store and represent numbers and its equivalents in PHP.**
 
