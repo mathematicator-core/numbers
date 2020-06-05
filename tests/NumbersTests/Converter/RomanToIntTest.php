@@ -6,6 +6,7 @@ namespace Mathematicator\Numbers\Tests\Converter;
 
 
 use Mathematicator\Numbers\Converter\RomanToInt;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -19,6 +20,27 @@ class RomanToIntTest extends TestCase
 		Assert::same('2601', (string) RomanToInt::convert('MMDCI'));
 		Assert::same('28', (string) RomanToInt::convert('XXVIII'));
 		Assert::same('XXXII', (string) RomanToInt::reverse('32'));
+	}
+
+
+	/**
+	 * @dataProvider getInvalidInputs
+	 * @param string $input
+	 */
+	public function testInvalidInputs(string $input): void
+	{
+		Assert::throws(function () use ($input) {
+			RomanToInt::convert($input);
+		}, NumberFormatException::class);
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getInvalidInputs(): array
+	{
+		return [['0'], ['-1'], ['-X'], ['-I'], ['MMMCMXCIXI']];
 	}
 }
 

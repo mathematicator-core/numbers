@@ -11,6 +11,7 @@ use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Brick\Math\Exception\DivisionByZeroException;
 use Brick\Math\Exception\MathException;
+use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use InvalidArgumentException;
 use Mathematicator\Numbers\Exception\UnsupportedCalcOperationException;
@@ -109,7 +110,13 @@ class Calculation
 	 */
 	public function multipliedBy($that): self
 	{
-		return self::of($this->getBigNumber()->multipliedBy($that));
+		$thisNumber = $this->getBigNumber();
+
+		try {
+			return self::of($this->getBigNumber()->multipliedBy($that));
+		} catch (RoundingNecessaryException $e) {
+			return self::of($thisNumber->toBigRational()->multipliedBy(BigRational::of($that)));
+		}
 	}
 
 
@@ -117,17 +124,15 @@ class Calculation
 	 * Returns the result of the division of this number by the given one, at the given scale.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor.
-	 * @param int|null $scale The desired scale, or null to use the scale of this number.
-	 * @param int $roundingMode An optional rounding mode.
 	 *
 	 * @return self The result.
 	 *
 	 * @throws InvalidArgumentException  If the scale or rounding mode is invalid.
 	 * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
 	 */
-	public function dividedBy($that, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
+	public function dividedBy($that): self
 	{
-		return self::of($this->getBigNumber()->dividedBy($that, $scale, $roundingMode));
+		return self::of($this->getBigNumber()->toBigRational()->dividedBy(BigRational::of($that)));
 	}
 
 
@@ -152,15 +157,40 @@ class Calculation
 	/**
 	 * Returns this number exponentiated to the given value.
 	 *
-	 * @param int $exponent The exponent.
+	 * @param BigNumber|int $exponent The exponent.
+	 * @param int|null $scale The desired scale, or null to use the scale of this number.
+	 * @param int $roundingMode An optional rounding mode.
 	 *
 	 * @return self The result.
 	 *
 	 * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
 	 */
-	public function power(int $exponent): self
+	public function power($exponent, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
 	{
-		return self::of($this->getBigNumber()->power($exponent));
+		if ($exponent instanceof BigNumber) {
+			$exponent = $exponent->toInt();
+		}
+
+		if ($exponent < 0) {
+			$thisDecimal = $this->getBigNumber()->toBigDecimal();
+
+			return self::of(
+				BigDecimal::one()
+					->dividedBy(
+						$thisDecimal->power($exponent * -1),
+						$scale,
+						$roundingMode
+					)
+			);
+		} else {
+			$result = $this->getBigNumber()->power($exponent);
+
+			if ($scale != null && $result instanceof BigDecimal) {
+				$result->toScale($scale, $roundingMode);
+			}
+
+			return self::of($result);
+		}
 	}
 
 
