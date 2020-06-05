@@ -7,132 +7,45 @@ namespace Mathematicator\Numbers\Converter;
 
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
-use Brick\Math\BigRational;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
-use Mathematicator\Numbers\Exception\NumberFormatException;
-use Mathematicator\Numbers\Exception\OutOfRomanNumberSetException;
-use Nette\StaticClass;
+use Mathematicator\Numbers\Exception\OutOfSetException;
 use Stringable;
 
 /**
- * Convert integer to roman numerals
+ * Convert an integer to roman numerals
+ *
+ * Tip: Use validators if you want to do custom checks (e.g. not zero, or in original ancient set)
  *
  * @see https://en.wikipedia.org/wiki/Roman_numerals
+ * @see https://www.wolframalpha.com/input/?i=1000000+to+roman
+ * @see https://www.calculatorsoup.com/calculators/conversions/roman-numeral-converter.php
  */
-final class IntToRoman
+final class IntToRoman extends IntToRomanBasic
 {
-	use StaticClass;
-
-	/** @var int[] */
-	private static $conversionTable = [
-		'M' => 1000,
-		'CM' => 900,
-		'D' => 500,
-		'CD' => 400,
-		'C' => 100,
-		'XC' => 90,
-		'L' => 50,
-		'XL' => 40,
-		'X' => 10,
-		'IX' => 9,
-		'V' => 5,
-		'IV' => 4,
-		'I' => 1,
-	];
-
-	/** @var string[] */
-	private static $fractionConversionTable = [
-		'1/12' => '·',
-		'2/12' => '··',
-		'3/12' => '···',
-		'4/12' => '····',
-		'5/12' => '·····',
-		'6/12' => 'S',
-		'7/12' => 'S·',
-		'8/12' => 'S··',
-		'9/12' => 'S···',
-		'10/12' => 'S····',
-		'11/12' => 'S·····',
-	];
-
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
 	 * @return string
-	 * @throws OutOfRomanNumberSetException
+	 * @throws OutOfSetException
 	 */
 	public static function convert($input): string
 	{
-		try {
-			$integer = BigInteger::of((string) $input);
-		} catch (RoundingNecessaryException $e) {
-			return self::convertRationalNumber($input);
-		}
+		$allowedSetDescription = 'integers >= 0';
 
-		return self::convertInteger($integer);
-	}
-
-
-	/**
-	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
-	 * @throws OutOfRomanNumberSetException
-	 * @see https://en.wikipedia.org/wiki/Roman_numerals (Fractions)
-	 */
-	public static function convertRationalNumber($input): string
-	{
-		$rationalNumber = BigRational::of((string) $input)->simplified();
-
-		if ($rationalNumber->isLessThan('1/12')) {
-			throw new OutOfRomanNumberSetException((string) $input);
-		}
-
-		$denominatorOriginal = $rationalNumber->getDenominator();
-
-		if (in_array((string) $denominatorOriginal, ['2', '3', '4', '6', '12'], true) && $denominatorOriginal->isLessThanOrEqualTo(12)) {
-			$toFinalMultiplier = BigInteger::of(12)->dividedBy($denominatorOriginal)->toInt();
-			$numeratorMultiplied = $rationalNumber->getNumerator()->multipliedBy($toFinalMultiplier);
-
-			$intFinal = $numeratorMultiplied->quotient(12);
-			$numeratorFinal = $numeratorMultiplied->mod(12)->toInt();
-
-			$out = '';
-
-			// Integer part
-			if ($intFinal->isGreaterThan(0)) {
-				$out .= self::convertInteger($intFinal);
-			}
-
-			// + fraction part
-			return $out . self::$fractionConversionTable["$numeratorFinal/12"];
-		} else {
-			throw new OutOfRomanNumberSetException((string) $input);
-		}
-	}
-
-
-	/**
-	 * @param BigInteger|int|string|Stringable $input
-	 * @return string
-	 * @throws OutOfRomanNumberSetException
-	 */
-	public static function convertInteger($input): string
-	{
 		try {
 			$int = BigInteger::of((string) $input);
 		} catch (RoundingNecessaryException $e) {
-			throw new OutOfRomanNumberSetException((string) $input);
+			throw new OutOfSetException($input . ' (not integer)', $allowedSetDescription);
 		}
 
-		// According to Wikipedia, largest valid roman number is 3999: https://en.wikipedia.org/wiki/Roman_numerals
-		if ($int->isLessThan(1) || $int->isGreaterThan(3999)) {
-			throw new OutOfRomanNumberSetException((string) $input);
+		if ($int->isLessThan(0)) {
+			throw new OutOfSetException($input . ' (negative)', $allowedSetDescription);
 		}
 
 		$out = '';
 
-		$conversionTable = self::$conversionTable;
+		$conversionTable = self::getConversionTable($int);
 
 		foreach ($conversionTable as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();
@@ -145,12 +58,59 @@ final class IntToRoman
 
 
 	/**
-	 * @param string $romanNumber
-	 * @return BigInteger
-	 * @throws NumberFormatException
+	 * @param BigNumber|int|string|Stringable $input
+	 * @return string
+	 * @throws OutOfSetException
 	 */
-	public static function reverse($romanNumber): BigInteger
+	public static function convertToLatex($input): string
 	{
-		return RomanToInt::convert($romanNumber);
+		$out = self::convert($input);
+
+		// Get count of leading underscores (e.g. 2 for __M)
+		preg_match('/^_*/', $out, $leadingUnderscoresMatches);
+		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0]) ? strlen($leadingUnderscoresMatches[0]) : 0;
+
+		// Convert underscores to latex overline
+		for ($i = $leadingUnderscoresCount; $i > 0; $i--) {
+			$out = (string) preg_replace('/_([IVXLCDM]|(\\\overline\{[\w{}]*\}))/', '\\overline{$1}', $out);
+		}
+
+		return $out;
+	}
+
+
+	/**
+	 * @param BigInteger $number
+	 * @return int[]
+	 */
+	private static function getConversionTable(BigInteger $number): array
+	{
+		$outTable = self::$conversionTable;
+		$numberLength = strlen((string) $number);
+
+		$numberThousands = ($numberLength - $numberLength % 3) / 3;
+
+		for ($thousandsIterator = 1; $thousandsIterator <= $numberThousands; $thousandsIterator++) {
+			$prependString = str_repeat('_', $thousandsIterator);
+			foreach (self::$conversionTable as $tableLineKey => $tableLine) {
+				if ($tableLineKey === 'I') {
+					continue;
+				}
+
+				// Handle e.g. X => _X
+				$prependedRomanNumeral = $prependString . substr((string) $tableLineKey, 0, 1);
+
+				// Handle e.g. IX => _I_X
+				if (substr((string) $tableLineKey, 1, 1)) {
+					$prependedRomanNumeral .= $prependString . substr((string) $tableLineKey, 1, 1);
+				}
+
+				$outTable[$prependedRomanNumeral] = (int) $tableLine * (1000 ** $thousandsIterator);
+			}
+		}
+
+		arsort($outTable);
+
+		return $outTable;
 	}
 }
