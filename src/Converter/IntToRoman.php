@@ -43,17 +43,17 @@ final class IntToRoman
 
 	/** @var string[] */
 	private static $fractionConversionTable = [
-		'·',
-		'··',
-		'···',
-		'····',
-		'·····',
-		'S',
-		'S·',
-		'S··',
-		'S···',
-		'S····',
-		'S·····',
+		'1/12' => '·',
+		'2/12' => '··',
+		'3/12' => '···',
+		'4/12' => '····',
+		'5/12' => '·····',
+		'6/12' => 'S',
+		'7/12' => 'S·',
+		'8/12' => 'S··',
+		'9/12' => 'S···',
+		'10/12' => 'S····',
+		'11/12' => 'S·····',
 	];
 
 
@@ -105,7 +105,7 @@ final class IntToRoman
 			}
 
 			// + fraction part
-			return $out . self::$fractionConversionTable[$numeratorFinal - 1];
+			return $out . self::$fractionConversionTable["$numeratorFinal/12"];
 		} else {
 			throw new OutOfRomanNumberSetException((string) $input);
 		}
