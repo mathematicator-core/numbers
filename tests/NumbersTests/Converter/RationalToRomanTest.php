@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../Bootstrap.php';
 
 class RationalToRomanTest extends TestCase
 {
-	public function test1(): void
+	public function testConvert(): void
 	{
 		Assert::same('LXI', (string) RationalToRoman::convert('61'));
 		Assert::same('MMDCI', (string) RationalToRoman::convert('2601'));

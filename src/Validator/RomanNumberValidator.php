@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Validator;
 
 
+use Mathematicator\Numbers\Converter\RomanToInt;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 use Nette\Utils\Strings;
 
@@ -21,6 +23,32 @@ final class RomanNumberValidator
 	 * @return bool
 	 */
 	public static function validate(string $romanNumber, bool $allowZero = true): bool
+	{
+		if (strlen($romanNumber) === 0) {
+			return false;
+		}
+
+		$normalizedInput = Strings::upper($romanNumber);
+
+		if ($allowZero && $normalizedInput === 'N') {
+			return true;
+		}
+
+		try {
+			RomanToInt::convert($romanNumber);
+		} catch (NumberFormatException $e) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
+	 * @param string $romanNumber
+	 * @param bool $allowZero
+	 * @return bool
+	 */
+	public static function isOptimal(string $romanNumber, bool $allowZero = true): bool
 	{
 		if (strlen($romanNumber) === 0) {
 			return false;

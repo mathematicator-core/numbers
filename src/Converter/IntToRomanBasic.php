@@ -23,24 +23,6 @@ class IntToRomanBasic
 {
 	use StaticClass;
 
-	/** @var int[] */
-	protected static $conversionTable = [
-		'M' => 1000,
-		'CM' => 900,
-		'D' => 500,
-		'CD' => 400,
-		'C' => 100,
-		'XC' => 90,
-		'L' => 50,
-		'XL' => 40,
-		'X' => 10,
-		'IX' => 9,
-		'V' => 5,
-		'IV' => 4,
-		'I' => 1,
-	];
-
-
 	/**
 	 * @param BigNumber|int|string|Stringable $input
 	 * @return string
@@ -54,14 +36,13 @@ class IntToRomanBasic
 			throw new OutOfSetException($input . ' (not integer)');
 		}
 
-		// According to Wikipedia, largest valid roman number is 3999: https://en.wikipedia.org/wiki/Roman_numerals
-		if ($int->isLessThan(0) || $int->isGreaterThan(3999)) {
-			throw new OutOfSetException((string) $input, 'integers 0 - 3999');
+		if ($int->isLessThan(0)) {
+			throw new OutOfSetException((string) $input, 'integers >= 0');
 		}
 
 		$out = '';
 
-		$conversionTable = self::$conversionTable;
+		$conversionTable = RomanToInt::getConversionTable(0);
 
 		foreach ($conversionTable as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();

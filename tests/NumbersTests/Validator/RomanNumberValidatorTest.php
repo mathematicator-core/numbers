@@ -34,6 +34,26 @@ class RomanNumberValidatorTest extends TestCase
 	}
 
 
+	/**
+	 * @dataProvider getOptimalInputs
+	 * @param string $input
+	 */
+	public function testOptimalInputs(string $input): void
+	{
+		Assert::true(RomanNumberValidator::isOptimal($input));
+	}
+
+
+	/**
+	 * @dataProvider getNotOptimalInputs
+	 * @param string $input
+	 */
+	public function testNotOptimalInputs(string $input): void
+	{
+		Assert::false(RomanNumberValidator::isOptimal($input));
+	}
+
+
 	public function testZeroHandling(): void
 	{
 		Assert::true(RomanNumberValidator::validate('N', true));
@@ -46,7 +66,7 @@ class RomanNumberValidatorTest extends TestCase
 	 */
 	public function getValidInputs(): array
 	{
-		return [['i'], ['I'], ['XII'], ['L'], ['_M'], ['N'], ['_MX']];
+		return [['i'], ['I'], ['XII'], ['L'], ['_M'], ['N'], ['_MX'], ['MMMM']];
 	}
 
 
@@ -55,7 +75,25 @@ class RomanNumberValidatorTest extends TestCase
 	 */
 	public function getInvalidInputs(): array
 	{
-		return [[''], ['a'], ['-X'], ['-I'], ['aMMMCMXCIXI'], ['MMMM']];
+		return [[''], ['a'], ['-X'], ['-I'], ['aMMMCMXCIXI']];
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getOptimalInputs(): array
+	{
+		return [['i'], ['I'], ['XII'], ['L'], ['_M'], ['N'], ['_MX']];
+	}
+
+
+	/**
+	 * @return string[]
+	 */
+	public function getNotOptimalInputs(): array
+	{
+		return [['VIIIIIIIII'], ['XXXXXX'], ['MMMM']];
 	}
 }
 

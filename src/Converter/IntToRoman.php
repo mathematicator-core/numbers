@@ -45,8 +45,12 @@ final class IntToRoman extends IntToRomanBasic
 
 		$out = '';
 
-		$conversionTable = self::getConversionTable($int);
+		// Prepare a conversion table
+		$numberLength = strlen((string) $int);
+		$numberThousands = ($numberLength - $numberLength % 3) / 3;
+		$conversionTable = RomanToInt::getConversionTable($numberThousands);
 
+		// Process each roman numeral
 		foreach ($conversionTable as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();
 			$out .= str_repeat($roman, $matches);
@@ -76,41 +80,5 @@ final class IntToRoman extends IntToRomanBasic
 		}
 
 		return $out;
-	}
-
-
-	/**
-	 * @param BigInteger $number
-	 * @return int[]
-	 */
-	private static function getConversionTable(BigInteger $number): array
-	{
-		$outTable = self::$conversionTable;
-		$numberLength = strlen((string) $number);
-
-		$numberThousands = ($numberLength - $numberLength % 3) / 3;
-
-		for ($thousandsIterator = 1; $thousandsIterator <= $numberThousands; $thousandsIterator++) {
-			$prependString = str_repeat('_', $thousandsIterator);
-			foreach (self::$conversionTable as $tableLineKey => $tableLine) {
-				if ($tableLineKey === 'I') {
-					continue;
-				}
-
-				// Handle e.g. X => _X
-				$prependedRomanNumeral = $prependString . substr((string) $tableLineKey, 0, 1);
-
-				// Handle e.g. IX => _I_X
-				if (substr((string) $tableLineKey, 1, 1)) {
-					$prependedRomanNumeral .= $prependString . substr((string) $tableLineKey, 1, 1);
-				}
-
-				$outTable[$prependedRomanNumeral] = (int) $tableLine * (1000 ** $thousandsIterator);
-			}
-		}
-
-		arsort($outTable);
-
-		return $outTable;
 	}
 }

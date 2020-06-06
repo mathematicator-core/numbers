@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Validator;
 
 
+use Mathematicator\Numbers\Converter\RomanToInt;
+use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\StaticClass;
 use Nette\Utils\Strings;
 
@@ -19,9 +21,44 @@ final class RomanNumberBasicValidator
 	 * @param string $romanNumber
 	 * @param bool $allowZero
 	 * @return bool
+	 * @see https://php.vrana.cz/prevod-rimskych-cislic.php
+	 */
+	public static function validate(string $romanNumber, bool $allowZero = false): bool
+	{
+		if (strlen($romanNumber) === 0) {
+			return false;
+		}
+
+		$normalizedInput = Strings::upper($romanNumber);
+
+		if ($allowZero && $normalizedInput === 'N') {
+			return true;
+		}
+
+
+		preg_match('/_/', $romanNumber, $underscoresMatches);
+
+		if (count($underscoresMatches) > 0) {
+			// Numeral with underscore (overline) is not valid in basic Roman set
+			return false;
+		}
+
+		try {
+			RomanToInt::convert($romanNumber);
+		} catch (NumberFormatException $e) {
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
+	 * @param string $romanNumber
+	 * @param bool $allowZero
+	 * @return bool
 	 * @see https://stackoverflow.com/a/267405/1044198
 	 */
-	public static function validate(string $romanNumber, $allowZero = false)
+	public static function isOptimal(string $romanNumber, bool $allowZero = false): bool
 	{
 		if (strlen($romanNumber) === 0) {
 			return false;
