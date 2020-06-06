@@ -6,7 +6,7 @@ namespace Mathematicator\Numbers\Tests\Converter;
 
 
 use Mathematicator\Numbers\Converter\IntToRoman;
-use Mathematicator\Numbers\Exception\OutOfRomanNumberSetException;
+use Mathematicator\Numbers\Exception\OutOfSetException;
 use Tester\Assert;
 use Tester\TestCase;
 
@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../Bootstrap.php';
 
 class IntToRomanTest extends TestCase
 {
-	public function test1(): void
+	public function testConvert(): void
 	{
 		Assert::same('LXI', (string) IntToRoman::convert('61'));
 		Assert::same('MMDCI', (string) IntToRoman::convert('2601'));
@@ -22,12 +22,18 @@ class IntToRomanTest extends TestCase
 		Assert::same('21', (string) IntToRoman::reverse('XXI'));
 		Assert::same('C', (string) IntToRoman::convert('1e2'));
 		Assert::same('C', (string) IntToRoman::convert('1e2'));
-		Assert::same('I', (string) IntToRoman::convert('12/12'));
-		Assert::same('X', (string) IntToRoman::convert('120/12'));
-		Assert::same('·', (string) IntToRoman::convert('1/12'));
-		Assert::same('S', (string) IntToRoman::convert('6/12'));
-		Assert::same('IS·', (string) IntToRoman::convert('19/12'));
 		Assert::same('MMMCMXCIX', (string) IntToRoman::convert('3999'));
+		Assert::same('_I_V', (string) IntToRoman::convert('4000'));
+		Assert::same('_X_LI', (string) IntToRoman::convert('40001'));
+		Assert::same('_C_M_L_V', (string) IntToRoman::convert('955000'));
+		Assert::same('__X__C__I__X_C_M_L_VMDXCIX', (string) IntToRoman::convert('99956599'));
+	}
+
+
+	public function testConvertToLatex(): void
+	{
+		Assert::same('\\overline{C}\\overline{M}\\overline{L}\\overline{V}', (string) IntToRoman::convertToLatex('955000'));
+		Assert::same('\\overline{\\overline{X}}\\overline{\\overline{C}}\\overline{\\overline{I}}\\overline{\\overline{X}}\\overline{C}\\overline{M}\\overline{L}\\overline{V}MDXCIX', (string) IntToRoman::convertToLatex('99956599'));
 	}
 
 
@@ -39,7 +45,7 @@ class IntToRomanTest extends TestCase
 	{
 		Assert::throws(function () use ($input) {
 			IntToRoman::convert($input);
-		}, OutOfRomanNumberSetException::class);
+		}, OutOfSetException::class);
 	}
 
 
@@ -50,8 +56,8 @@ class IntToRomanTest extends TestCase
 	public function testOutOfIntegerSetInputs(string $input): void
 	{
 		Assert::throws(function () use ($input) {
-			IntToRoman::convertInteger($input);
-		}, OutOfRomanNumberSetException::class);
+			IntToRoman::convert($input);
+		}, OutOfSetException::class);
 	}
 
 
@@ -60,7 +66,7 @@ class IntToRomanTest extends TestCase
 	 */
 	public function getOutOfSetInputs(): array
 	{
-		return [['0'], ['-1'], ['-256'], ['-9998123456'], ['-25.2'], ['1.3'], ['4000'], ['1000000'], ['54856178844']];
+		return [['-1'], ['-256'], ['-9998123456'], ['-25.2'], ['1.3']];
 	}
 
 
@@ -69,7 +75,7 @@ class IntToRomanTest extends TestCase
 	 */
 	public function getOutOfIntegerSetInputs(): array
 	{
-		return [['0'], ['-1'], ['-256'], ['-9998123456'], ['-25.2'], ['1/2'], ['1.3']];
+		return [['-1'], ['-256'], ['-9998123456'], ['-25.2'], ['1/2'], ['1.3'], ['6/12'], ['15/12']];
 	}
 }
 

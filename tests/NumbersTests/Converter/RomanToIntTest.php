@@ -14,11 +14,12 @@ require_once __DIR__ . '/../../Bootstrap.php';
 
 class RomanToIntTest extends TestCase
 {
-	public function test1(): void
+	public function testConvert(): void
 	{
 		Assert::same('61', (string) RomanToInt::convert('LXI'));
 		Assert::same('2601', (string) RomanToInt::convert('MMDCI'));
 		Assert::same('28', (string) RomanToInt::convert('XXVIII'));
+		Assert::same('4000', (string) RomanToInt::convert('MMMCMXCIXI')); // not optimal, but valid
 		Assert::same('XXXII', (string) RomanToInt::reverse('32'));
 	}
 
@@ -40,7 +41,7 @@ class RomanToIntTest extends TestCase
 	 */
 	public function getInvalidInputs(): array
 	{
-		return [['0'], ['-1'], ['-X'], ['-I'], ['MMMCMXCIXI']];
+		return [['0'], ['-1'], ['-X'], ['-I'], ['IMMMCMXCIXI']];
 	}
 }
 

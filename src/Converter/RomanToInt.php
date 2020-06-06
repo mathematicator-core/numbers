@@ -38,36 +38,44 @@ final class RomanToInt
 		'I' => 1,
 	];
 
+	/** @var int[][] */
+	private static $conversionTableCache = [];
+
 
 	/**
-	 * @param string $romanNumber
+	 * @param string $romanNumberInput
 	 * @return BigInteger
 	 * @throws NumberFormatException
 	 */
-	public static function convert(string $romanNumber): BigInteger
+	public static function convert(string $romanNumberInput): BigInteger
 	{
-		$romanNumber = Strings::upper($romanNumber);
-		$romanLength = Strings::length($romanNumber);
+		$romanNumber = Strings::upper($romanNumberInput);
+		$romanNumberSplit = (array) preg_split('/(?<=[IVXLCDM])(?=[_IVXLCDM])/', $romanNumber, -1, PREG_SPLIT_NO_EMPTY);
+		$romanLength = count($romanNumberSplit);
+
+		// Get count of leading underscores (e.g. 2 for __M)
+		preg_match('/^_*/', $romanNumber, $leadingUnderscoresMatches);
+		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0]) ? strlen($leadingUnderscoresMatches[0]) : 0;
+		$conversionTable = self::getConversionTable($leadingUnderscoresCount);
+
 		$return = 0;
 		for ($i = 0; $i < $romanLength; $i++) {
-			$convertedIntValue = self::convertSingleChar(Strings::substring($romanNumber, $i, 1));
-			$nextIntValue = ($i + 1 < $romanLength) ? self::convertSingleChar(Strings::substring($romanNumber, $i + 1, 1)) : null;
+			$actualChar = (string) $romanNumberSplit[$i];
+
+			// Check whether is there a next roman numeral
+			$nextChar = ($i + 1 < $romanLength) ? (string) $romanNumberSplit[$i + 1] : null;
+
+			[$convertedIntValue, $nextIntValue] = self::convertCharPair($actualChar, $conversionTable, $nextChar);
 
 			if ($nextIntValue !== null && $nextIntValue > $convertedIntValue) {
 				$return += $nextIntValue - $convertedIntValue;
-				$i++;
+				$i++; // skip next number (already solved)
 			} else {
 				$return += $convertedIntValue;
 			}
 		}
 
-		$result = BigInteger::of($return);
-
-		if ($result->isGreaterThanOrEqualTo(4000)) {
-			NumberFormatException::invalidInput($romanNumber);
-		}
-
-		return $result;
+		return BigInteger::of($return);
 	}
 
 
@@ -82,16 +90,71 @@ final class RomanToInt
 
 
 	/**
-	 * @param string $romanChar
-	 * @return int
-	 * @throws NumberFormatException
+	 * @param int $underscoresCount
+	 * @return int[]
 	 */
-	private static function convertSingleChar(string $romanChar): int
+	public static function getConversionTable(int $underscoresCount = 0): array
 	{
-		if (!isset(self::$conversionTable[$romanChar])) {
+		if (isset(self::$conversionTableCache[(string) $underscoresCount])) {
+			return self::$conversionTableCache[(string) $underscoresCount];
+		}
+
+		$outTable = self::$conversionTable;
+
+		for ($thousandsIterator = 1; $thousandsIterator <= $underscoresCount; $thousandsIterator++) {
+			$prependString = str_repeat('_', $thousandsIterator);
+			foreach (self::$conversionTable as $tableLineKey => $tableLine) {
+				if ($tableLineKey === 'I') {
+					continue;
+				}
+
+				// Handle e.g. X => _X
+				$prependedRomanNumeral = $prependString . substr((string) $tableLineKey, 0, 1);
+
+				// Handle e.g. IX => _I_X
+				if (substr((string) $tableLineKey, 1, 1)) {
+					$prependedRomanNumeral .= $prependString . substr((string) $tableLineKey, 1, 1);
+				}
+
+				$outTable[$prependedRomanNumeral] = (int) $tableLine * (1000 ** $thousandsIterator);
+			}
+		}
+
+		arsort($outTable);
+
+		self::$conversionTableCache[(string) $underscoresCount] = $outTable;
+
+		return $outTable;
+	}
+
+
+	/**
+	 * Translates current and next character (if provided) from a given translation table and removes all higher
+	 * values from the table to maintain Roman numeral validity.
+	 *
+	 * @param string $romanChar
+	 * @param int[] $conversionTable
+	 * @param string|null $nextRomanChar
+	 * @return array<int, int|null>
+	 */
+	private static function convertCharPair(string $romanChar, array &$conversionTable, ?string $nextRomanChar = null): array
+	{
+		if (!isset($conversionTable[$romanChar]) || ($nextRomanChar !== null && !isset($conversionTable[$nextRomanChar]))) {
 			NumberFormatException::invalidInput("$romanChar");
 		}
 
-		return self::$conversionTable[$romanChar];
+		$out = [$conversionTable[$romanChar], $nextRomanChar ? $conversionTable[$nextRomanChar] : null];
+
+		foreach ($conversionTable as $conversionTableKey => $conversionTableItem) {
+			if ($conversionTableKey === $romanChar || $conversionTableKey === $romanChar . $nextRomanChar) {
+				// E.g. if X || IX
+				break;
+			} else {
+				// Removes all higher values from the table to maintain Roman numeral validity.
+				unset($conversionTable[$conversionTableKey]);
+			}
+		}
+
+		return $out;
 	}
 }
