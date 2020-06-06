@@ -11,8 +11,8 @@ class OutOfSetException extends NumberException
 {
 	public function __construct(string $haystack = '', ?string $allowed = null)
 	{
-		$allowed = $allowed ? " (allowed: $allowed)" : '';
+		$allowed = $allowed ? ' (allowed: ' . $allowed . ')' : '';
 
-		parent::__construct("Input \"$haystack\" cannot be converted to the final set$allowed.");
+		parent::__construct('Input "' . $haystack . '" cannot be converted to the final set' . $allowed . ').');
 	}
 }
