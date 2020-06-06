@@ -79,6 +79,6 @@ final class RomanNumberValidator
 	 */
 	private static function getRegex($underscoreCount = 0): string
 	{
-		return '(_' . $underscoreCount. 'M){0,3}((_' . $underscoreCount. 'CM)|(_' . $underscoreCount. 'CD)|(_' . $underscoreCount. 'D)?(_' . $underscoreCount. 'C){0,3})((_' . $underscoreCount. 'XC)|(_' . $underscoreCount. 'XL)|(_' . $underscoreCount. 'L)?(_' . $underscoreCount. 'X){0,3})((_' . $underscoreCount. 'IX)|(_' . $underscoreCount. 'IV)|(_' . $underscoreCount. 'V)?(_' . $underscoreCount. 'I){0,3})';
+		return '(_{' . $underscoreCount . '}M){0,3}((_{' . $underscoreCount . '}CM)|(_{' . $underscoreCount . '}CD)|(_{' . $underscoreCount . '}D)?(_{' . $underscoreCount . '}C){0,3})((_{' . $underscoreCount . '}XC)|(_{' . $underscoreCount . '}XL)|(_{' . $underscoreCount . '}L)?(_{' . $underscoreCount . '}X){0,3})((_{' . $underscoreCount . '}IX)|(_{' . $underscoreCount . '}IV)|(_{' . $underscoreCount . '}V)?(_{' . $underscoreCount . '}I){0,3})';
 	}
 }
