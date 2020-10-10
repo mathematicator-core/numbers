@@ -41,12 +41,14 @@ class Number
 
 	/**
 	 * Number main storage
+	 *
 	 * @var BigNumber
 	 */
 	protected $_number;
 
 	/**
 	 * Original user input
+	 *
 	 * @var int|float|string|BigNumber
 	 */
 	private $input;
@@ -56,7 +58,7 @@ class Number
 
 
 	/**
-	 * @param int|float|string|BigNumber|Number $number
+	 * @param int|float|string|BigNumber|self $number
 	 * Allowed formats are: 123456789, 12345.6789, 5/8
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws \Mathematicator\Numbers\Exception\NumberFormatException
@@ -161,6 +163,7 @@ class Number
 			if ($this->_number instanceof BigRational) {
 				$result = (string) $this->_number->getNumerator()->toBigDecimal()
 					->dividedBy($this->_number->getDenominator(), $rationalScaleLimit, $rationalRoundingMode);
+
 				return BigDecimal::of(NumberHelper::removeTrailingZeros($result));
 			}
 
@@ -213,6 +216,7 @@ class Number
 		}
 
 		$rationalNumber = $this->toBigRational($simplify);
+
 		return clone($this->cache[$simplify ? 'fractionSimplified' : 'fraction'] = new FractionNumbersOnly($rationalNumber->getNumerator(), $rationalNumber->getDenominator()));
 	}
 
@@ -263,9 +267,11 @@ class Number
 	{
 		try {
 			$this->_number->toScale(0);
+
 			return true;
 		} catch (RoundingNecessaryException $e) {
 		}
+
 		return false;
 	}
 
@@ -324,10 +330,11 @@ class Number
 	{
 		if ($this->cache['rationalSimplified']) {
 			return $this->cache['rationalSimplified'];
-		} elseif ($this->_number instanceof BigRational) {
-			return $this->cache['rationalSimplified'] = $this->_number->simplified();
-		} else {
-			return $this->cache['rationalSimplified'] = $this->_number->toBigRational()->simplified();
 		}
+		if ($this->_number instanceof BigRational) {
+			return $this->cache['rationalSimplified'] = $this->_number->simplified();
+		}
+
+		return $this->cache['rationalSimplified'] = $this->_number->toBigRational()->simplified();
 	}
 }
