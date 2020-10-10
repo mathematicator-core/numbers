@@ -172,12 +172,6 @@ class NumberTest extends TestCase
 			return Number::of('25....');
 		}, NumberFormatException::class);
 		Assert::throws(function () {
-			return Number::of('4.');
-		}, NumberFormatException::class);
-		Assert::throws(function () {
-			return Number::of('+4.');
-		}, NumberFormatException::class);
-		Assert::throws(function () {
 			return Number::of('++10/2');
 		}, NumberFormatException::class);
 		Assert::throws(function () {
