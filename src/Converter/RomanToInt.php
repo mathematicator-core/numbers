@@ -22,7 +22,7 @@ final class RomanToInt
 	use StaticClass;
 
 	/** @var int[] */
-	private static $conversionTable = [
+	private static array $conversionTable = [
 		'M' => 1000,
 		'CM' => 900,
 		'D' => 500,
@@ -39,12 +39,10 @@ final class RomanToInt
 	];
 
 	/** @var int[][] */
-	private static $conversionTableCache = [];
+	private static array $conversionTableCache = [];
 
 
 	/**
-	 * @param string $romanNumberInput
-	 * @return BigInteger
 	 * @throws NumberFormatException
 	 */
 	public static function convert(string $romanNumberInput): BigInteger
@@ -81,7 +79,6 @@ final class RomanToInt
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
 	 */
 	public static function reverse($input): string
 	{
@@ -90,7 +87,6 @@ final class RomanToInt
 
 
 	/**
-	 * @param int $underscoresCount
 	 * @return int[]
 	 */
 	public static function getConversionTable(int $underscoresCount = 0): array
@@ -132,9 +128,7 @@ final class RomanToInt
 	 * Translates current and next character (if provided) from a given translation table and removes all higher
 	 * values from the table to maintain Roman numeral validity.
 	 *
-	 * @param string $romanChar
 	 * @param int[] $conversionTable
-	 * @param string|null $nextRomanChar
 	 * @return array<int, int|null>
 	 */
 	private static function convertCharPair(string $romanChar, array &$conversionTable, ?string $nextRomanChar = null): array
@@ -149,10 +143,9 @@ final class RomanToInt
 			if ($conversionTableKey === $romanChar || $conversionTableKey === $romanChar . $nextRomanChar) {
 				// E.g. if X || IX
 				break;
-			} else {
-				// Removes all higher values from the table to maintain Roman numeral validity.
-				unset($conversionTable[$conversionTableKey]);
 			}
+			// Removes all higher values from the table to maintain Roman numeral validity.
+			unset($conversionTable[$conversionTableKey]);
 		}
 
 		return $out;

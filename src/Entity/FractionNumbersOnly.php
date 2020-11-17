@@ -48,7 +48,6 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 
 	/**
 	 * @param int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator
-	 * @return self
 	 * @throws NumberFormatException
 	 */
 	public function setNumerator($numerator)
@@ -77,7 +76,6 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction $denominator
-	 * @return FractionNumbersOnly
 	 * @throws NumberFormatException
 	 */
 	public function setDenominator($denominator): self
@@ -100,7 +98,6 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 	 */
 	public function getDenominatorNotNull()
 	{
-		$denominator = $this->getDenominator();
-		return ($denominator !== null) ? $denominator : BigDecimal::of('1');
+		return $this->getDenominator() ?? BigDecimal::of('1');
 	}
 }

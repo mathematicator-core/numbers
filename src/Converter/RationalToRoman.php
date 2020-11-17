@@ -22,7 +22,7 @@ final class RationalToRoman
 	use StaticClass;
 
 	/** @var string[] */
-	protected static $fractionConversionTable = [
+	protected static array $fractionConversionTable = [
 		'1/12' => '·',
 		'2/12' => '··',
 		'3/12' => '···',
@@ -39,7 +39,6 @@ final class RationalToRoman
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
 	 * @throws OutOfSetException
 	 * @see https://en.wikipedia.org/wiki/Roman_numerals (Fractions)
 	 */
@@ -74,8 +73,8 @@ final class RationalToRoman
 			}
 
 			return $out;
-		} else {
-			throw new OutOfSetException((string) $input);
 		}
+
+		throw new OutOfSetException((string) $input);
 	}
 }

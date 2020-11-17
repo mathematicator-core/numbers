@@ -18,6 +18,7 @@ class NumberHelper
 	{
 		try {
 			$a->dividedBy($b)->toScale(0);
+
 			return true;
 		} catch (RoundingNecessaryException $e) {
 			// Fraction cannot be evaluated to simple number directly. So go on…
@@ -26,37 +27,23 @@ class NumberHelper
 	}
 
 
-	/**
-	 * Removes unnecessary whitespaces in number string.
-	 *
-	 * @param string $input
-	 * @return string
-	 */
+	/** Removes unnecessary whitespaces in number string. */
 	public static function removeSpaces(string $input): string
 	{
 		return trim((string) preg_replace('/(\d)\s+(\d)/', '$1$2', $input));
 	}
 
 
-	/**
-	 * Removes trailing zeros from decimals. E.g. 250.0000 results in 250
-	 *
-	 * @param string $input
-	 * @return string
-	 */
+	/** Removes trailing zeros from decimals. E.g. 250.0000 results in 250 */
 	public static function removeTrailingZeros(string $input): string
 	{
 		$input = (string) preg_replace('/^([+-]*)(\d*\.\d*?)0+$/', '$1$2', $input);
+
 		return self::removeTrailingDot($input);
 	}
 
 
-	/**
-	 * Removes trailing dot. E.g. 265. results in 265
-	 *
-	 * @param string $input
-	 * @return string
-	 */
+	/** Removes trailing dot. E.g. 265. results in 265 */
 	public static function removeTrailingDot(string $input): string
 	{
 		return rtrim($input, '.');
@@ -66,10 +53,8 @@ class NumberHelper
 	/**
 	 * Preprocess user input for further processing
 	 *
-	 * @param string $input
 	 * @param string[] $decimalPointSigns Default is a dot "." only
 	 * @param string[] $thousandsSeparators
-	 * @return string
 	 */
 	public static function preprocessInput(string $input, array $decimalPointSigns = [], array $thousandsSeparators = []): string
 	{
@@ -77,7 +62,6 @@ class NumberHelper
 		if (count(array_intersect($decimalPointSigns, $thousandsSeparators))) {
 			throw new InvalidArgumentException('Decimal point signs and thousands separators have to be unique.');
 		}
-
 		if (count(array_intersect(
 			array_merge($decimalPointSigns, $thousandsSeparators),
 			['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
@@ -85,12 +69,12 @@ class NumberHelper
 			throw new InvalidArgumentException('Decimal point signs nor thousands separators cannot contain number nor "/" sign.');
 		}
 
-		// Preprocess
 		$input = self::removeSpaces($input);
-		$input = str_replace($thousandsSeparators, '', $input);
-		$input = str_replace($decimalPointSigns, '.', $input);
+		$input = (string) str_replace($thousandsSeparators, '', $input);
+		$input = (string) str_replace($decimalPointSigns, '.', $input);
 		$input = self::removeTrailingZeros($input);
 		$input = self::removeWrapBrackets($input);
+
 		return $input;
 	}
 

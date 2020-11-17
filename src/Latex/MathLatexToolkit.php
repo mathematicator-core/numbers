@@ -39,9 +39,6 @@ final class MathLatexToolkit implements IMathToolkit
 
 	/**
 	 * @param int|string|Stringable $latex
-	 * @param string|null $delimiterLeft
-	 * @param string|null $delimiterRight
-	 * @return MathLatexBuilder
 	 */
 	public static function create($latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null): MathLatexBuilder
 	{
@@ -52,7 +49,6 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $numerator
 	 * @param int|string|Stringable $denominator
-	 * @return MathLatexBuilder
 	 */
 	public static function frac($numerator, $denominator): MathLatexBuilder
 	{
@@ -63,7 +59,6 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $x
 	 * @param int|string|Stringable $pow
-	 * @return MathLatexBuilder
 	 */
 	public static function pow($x, $pow): MathLatexBuilder
 	{
@@ -74,7 +69,6 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $expression
 	 * @param int|string|Stringable|null $n
-	 * @return MathLatexBuilder
 	 */
 	public static function sqrt($expression, $n = null): MathLatexBuilder
 	{
@@ -84,9 +78,6 @@ final class MathLatexToolkit implements IMathToolkit
 
 	/**
 	 * @param int|string|Stringable $content
-	 * @param string $left
-	 * @param string|null $right
-	 * @return MathLatexBuilder
 	 */
 	public static function wrap($content, string $left, string $right = null): MathLatexBuilder
 	{
@@ -97,10 +88,8 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * Render function to valid LaTeX formula.
 	 *
-	 * @param string $name
 	 * @param array<int|string|Stringable|null> $arguments
 	 * @param int|string|Stringable|null $root
-	 * @return MathLatexBuilder
 	 */
 	public static function func(string $name, $arguments = [], $root = null): MathLatexBuilder
 	{
@@ -119,8 +108,6 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $left
 	 * @param int|string|Stringable $right
-	 * @param string $operator
-	 * @return MathLatexBuilder
 	 */
 	public static function operator($left, $right, string $operator): MathLatexBuilder
 	{

@@ -37,7 +37,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 
 	/**
 	 * @param int|string|Stringable $humanString
-	 * @return MathHumanStringBuilder
 	 */
 	public static function create($humanString = ''): MathHumanStringBuilder
 	{
@@ -48,7 +47,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $numerator
 	 * @param int|string|Stringable $denominator
-	 * @return MathHumanStringBuilder
 	 */
 	public static function frac($numerator, $denominator): MathHumanStringBuilder
 	{
@@ -59,7 +57,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $x
 	 * @param int|string|Stringable $pow
-	 * @return MathHumanStringBuilder
 	 */
 	public static function pow($x, $pow): MathHumanStringBuilder
 	{
@@ -70,7 +67,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $expression
 	 * @param int|string|Stringable|null $n
-	 * @return MathHumanStringBuilder
 	 */
 	public static function sqrt($expression, $n = null): MathHumanStringBuilder
 	{
@@ -80,9 +76,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 
 	/**
 	 * @param int|string|Stringable $content
-	 * @param string $left
-	 * @param string|null $right
-	 * @return MathHumanStringBuilder
 	 */
 	public static function wrap($content, string $left, string $right = null): MathHumanStringBuilder
 	{
@@ -93,10 +86,8 @@ final class MathHumanStringToolkit implements IMathToolkit
 	/**
 	 * Render function to valid human string formula.
 	 *
-	 * @param string $name
 	 * @param array<int|string|Stringable|null> $arguments
 	 * @param int|string|Stringable|null $root
-	 * @return MathHumanStringBuilder
 	 */
 	public static function func(string $name, $arguments = [], $root = null): MathHumanStringBuilder
 	{
@@ -115,8 +106,6 @@ final class MathHumanStringToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $left
 	 * @param int|string|Stringable $right
-	 * @param string $operator
-	 * @return MathHumanStringBuilder
 	 */
 	public static function operator($left, $right, string $operator): MathHumanStringBuilder
 	{

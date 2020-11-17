@@ -32,7 +32,6 @@ trait FractionArrayAccessTrait
 
 	/**
 	 * @param mixed $offset
-	 * @return bool
 	 */
 	public function offsetExists($offset): bool
 	{

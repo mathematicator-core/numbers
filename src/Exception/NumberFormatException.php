@@ -9,11 +9,6 @@ namespace Mathematicator\Numbers\Exception;
  */
 class NumberFormatException extends NumberException
 {
-
-	/**
-	 * @param string $haystack
-	 * @throws self
-	 */
 	public static function invalidInput(string $haystack): void
 	{
 		throw new self('Invalid input format, because haystack "' . $haystack . '" given.');

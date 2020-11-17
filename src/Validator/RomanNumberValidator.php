@@ -17,11 +17,6 @@ final class RomanNumberValidator
 {
 	use StaticClass;
 
-	/**
-	 * @param string $romanNumber
-	 * @param bool $allowZero
-	 * @return bool
-	 */
 	public static function validate(string $romanNumber, bool $allowZero = true): bool
 	{
 		if (strlen($romanNumber) === 0) {
@@ -39,15 +34,11 @@ final class RomanNumberValidator
 		} catch (NumberFormatException $e) {
 			return false;
 		}
+
 		return true;
 	}
 
 
-	/**
-	 * @param string $romanNumber
-	 * @param bool $allowZero
-	 * @return bool
-	 */
 	public static function isOptimal(string $romanNumber, bool $allowZero = true): bool
 	{
 		if (strlen($romanNumber) === 0) {
@@ -73,10 +64,6 @@ final class RomanNumberValidator
 	}
 
 
-	/**
-	 * @param int $underscoreCount
-	 * @return string
-	 */
 	private static function getRegex($underscoreCount = 0): string
 	{
 		return '(_{' . $underscoreCount . '}M){0,3}((_{' . $underscoreCount . '}CM)|(_{' . $underscoreCount . '}CD)|(_{' . $underscoreCount . '}D)?(_{' . $underscoreCount . '}C){0,3})((_{' . $underscoreCount . '}XC)|(_{' . $underscoreCount . '}XL)|(_{' . $underscoreCount . '}L)?(_{' . $underscoreCount . '}X){0,3})((_{' . $underscoreCount . '}IX)|(_{' . $underscoreCount . '}IV)|(_{' . $underscoreCount . '}V)?(_{' . $underscoreCount . '}I){0,3})';

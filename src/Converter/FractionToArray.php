@@ -14,8 +14,6 @@ final class FractionToArray
 	use StaticClass;
 
 	/**
-	 * @param Fraction $fraction
-	 * @param bool $simplify
 	 * @return mixed[]
 	 * @throws NumberFormatException
 	 */
@@ -25,16 +23,15 @@ final class FractionToArray
 			throw new NumberFormatException('Fraction is not valid!');
 		}
 
-		$numeratorOut = self::convertPart($fraction->getNumerator(), false, $simplify);
-		$denominatorOut = self::convertPart($fraction->getDenominator(), true, $simplify);
-
-		return [$numeratorOut, $denominatorOut];
+		return [
+			self::convertPart($fraction->getNumerator(), false, $simplify),
+			self::convertPart($fraction->getDenominator(), true, $simplify),
+		];
 	}
 
 
 	/**
 	 * @param mixed[] $fraction
-	 * @return Fraction
 	 * @throws NumberFormatException
 	 */
 	public static function reverse(array $fraction): Fraction
@@ -45,8 +42,6 @@ final class FractionToArray
 
 	/**
 	 * @param Fraction|string|null $part
-	 * @param bool $isDenominator
-	 * @param bool $simplify
 	 * @return string|mixed[]|null
 	 * @throws NumberFormatException
 	 */
@@ -56,11 +51,13 @@ final class FractionToArray
 			if (!$simplify) {
 				return '1';
 			}
+
 			return null;
-		} elseif ($part instanceof Fraction) {
-			return self::convert($part, $simplify);
-		} else {
-			return (string) $part;
 		}
+		if ($part instanceof Fraction) {
+			return self::convert($part, $simplify);
+		}
+
+		return (string) $part;
 	}
 }

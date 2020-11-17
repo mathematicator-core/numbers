@@ -14,10 +14,6 @@ final class RationalToHumanString
 {
 	use StaticClass;
 
-	/**
-	 * @param BigRational $rationalNumber
-	 * @return MathHumanStringBuilder
-	 */
 	public static function convert(BigRational $rationalNumber): MathHumanStringBuilder
 	{
 		return MathHumanStringToolkit::frac(

@@ -20,7 +20,7 @@ final class OddNumberIterator extends SimpleInfiniteNumberIterator implements It
 	public function __construct(int $startValue = 1)
 	{
 		if ($startValue % 2 === 0) {
-			throw new InvalidArgumentException("$startValue is not an odd value!");
+			throw new InvalidArgumentException('Start value "' . $startValue . '" is not an odd value.');
 		}
 
 		$this->startValue = $startValue;

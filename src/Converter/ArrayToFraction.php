@@ -16,7 +16,6 @@ final class ArrayToFraction
 
 	/**
 	 * @param mixed[] $fraction
-	 * @return Fraction
 	 * @throws NumberFormatException
 	 */
 	public static function convert(array $fraction): Fraction
@@ -26,7 +25,6 @@ final class ArrayToFraction
 		}
 
 		$numeratorOut = self::convertPart($fraction[0]);
-
 		if (isset($fraction[1])) {
 			$denominatorOut = self::convertPart($fraction[1]);
 		} else {
@@ -38,12 +36,10 @@ final class ArrayToFraction
 
 
 	/**
-	 * @param Fraction $fraction
-	 * @param bool $simplify
 	 * @return mixed[]
 	 * @throws NumberFormatException
 	 */
-	public static function reverse(Fraction $fraction, bool $simplify = true)
+	public static function reverse(Fraction $fraction, bool $simplify = true): array
 	{
 		return FractionToArray::convert($fraction, $simplify);
 	}
@@ -58,10 +54,11 @@ final class ArrayToFraction
 	{
 		if ($part === null) {
 			return null;
-		} elseif (is_array($part)) {
-			return self::convert($part);
-		} else {
-			return (string) $part;
 		}
+		if (is_array($part)) {
+			return self::convert($part);
+		}
+
+		return (string) $part;
 	}
 }

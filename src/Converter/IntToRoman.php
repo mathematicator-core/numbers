@@ -26,7 +26,6 @@ final class IntToRoman extends IntToRomanBasic
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
 	 * @throws OutOfSetException
 	 */
 	public static function convert($input): string
@@ -48,10 +47,9 @@ final class IntToRoman extends IntToRomanBasic
 		// Prepare a conversion table
 		$numberLength = strlen((string) $int);
 		$numberThousands = ($numberLength - $numberLength % 3) / 3;
-		$conversionTable = RomanToInt::getConversionTable($numberThousands);
 
 		// Process each roman numeral
-		foreach ($conversionTable as $roman => $value) {
+		foreach (RomanToInt::getConversionTable($numberThousands) as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();
 			$out .= str_repeat($roman, $matches);
 			$int = $int->mod($value);
@@ -63,7 +61,6 @@ final class IntToRoman extends IntToRomanBasic
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
 	 * @throws OutOfSetException
 	 */
 	public static function convertToLatex($input): string

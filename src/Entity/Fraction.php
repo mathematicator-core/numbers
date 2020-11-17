@@ -26,19 +26,11 @@ class Fraction implements ArrayAccess
 	/** @var Fraction|string|null */
 	protected $denominator;
 
-	/**
-	 * Superior fraction (if in compound structure)
-	 *
-	 * @var Fraction|null
-	 */
-	protected $parentInNumerator;
+	/** Superior fraction (if in compound structure) */
+	protected ?Fraction $parentInNumerator = null;
 
-	/**
-	 * Superior fraction (if in compound structure)
-	 *
-	 * @var Fraction|null
-	 */
-	protected $parentInDenominator;
+	/** Superior fraction (if in compound structure) */
+	protected ?Fraction $parentInDenominator = null;
 
 
 	/**
@@ -76,7 +68,6 @@ class Fraction implements ArrayAccess
 	/**
 	 * Returns a human string (e.g. (5/2)/1).
 	 *
-	 * @return string
 	 * @throws NumberFormatException
 	 */
 	public function __toString(): string
@@ -85,11 +76,7 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * Checks whether the fraction is valid for further computing.
-	 *
-	 * @return bool
-	 */
+	/** Checks whether the fraction is valid for further computing.  */
 	public function isValid(): bool
 	{
 		return $this->numerator !== null;
@@ -107,9 +94,8 @@ class Fraction implements ArrayAccess
 
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction|null $numerator
-	 * @return self
 	 */
-	public function setNumerator($numerator)
+	public function setNumerator($numerator): self
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);
@@ -135,9 +121,8 @@ class Fraction implements ArrayAccess
 
 	/**
 	 * @param int|string|Stringable|BigNumber|Fraction|null $denominator
-	 * @return self
 	 */
-	public function setDenominator($denominator)
+	public function setDenominator($denominator): self
 	{
 		if ($denominator instanceof self) {
 			$denominator->setParentInDenominator($this);
@@ -167,10 +152,6 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @param Fraction|null $parentInNumerator
-	 * @return Fraction
-	 */
 	public function setParentInNumerator(?self $parentInNumerator): self
 	{
 		$this->parentInDenominator = null;
@@ -180,10 +161,6 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @param Fraction|null $parentInDenominator
-	 * @return Fraction
-	 */
 	public function setParentInDenominator(?self $parentInDenominator): self
 	{
 		$this->parentInNumerator = null;

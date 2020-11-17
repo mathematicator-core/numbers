@@ -20,7 +20,7 @@ final class EvenNumberIterator extends SimpleInfiniteNumberIterator implements I
 	public function __construct(int $startValue = 0)
 	{
 		if ($startValue % 2 !== 0) {
-			throw new InvalidArgumentException("$startValue is not an even value!");
+			throw new InvalidArgumentException('Start value "' . $startValue . '" is not an even value.');
 		}
 
 		$this->startValue = $startValue;

@@ -39,12 +39,8 @@ class Number
 {
 	use SmartObject;
 
-	/**
-	 * Number main storage
-	 *
-	 * @var BigNumber
-	 */
-	protected $_number;
+	/** Number main storage */
+	protected BigNumber $_number;
 
 	/**
 	 * Original user input
@@ -54,7 +50,7 @@ class Number
 	private $input;
 
 	/** @var mixed[] */
-	private $cache = [];
+	private array $cache = [];
 
 
 	/**
@@ -79,19 +75,14 @@ class Number
 
 	/**
 	 * @param int|float|string|BigNumber|Number $number
-	 * @return self
 	 */
-	public static function of($number)
+	public static function of($number): self
 	{
 		return new self($number);
 	}
 
 
-	/**
-	 * Returns number in same type as stored
-	 *
-	 * @return BigNumber
-	 */
+	/** Returns number in same type as stored. */
 	public function getNumber(): BigNumber
 	{
 		return $this->_number;
@@ -109,10 +100,6 @@ class Number
 	}
 
 
-	/**
-	 * @param int $roundingMode
-	 * @return int
-	 */
 	public function toInt(int $roundingMode = RoundingMode::FLOOR): int
 	{
 		return $this->toBigInteger($roundingMode)->toInt();
@@ -125,22 +112,19 @@ class Number
 	 *
 	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
 	 * @param int $rationalRoundingMode Rounding mode for rational numbers
-	 * @return float
 	 */
 	public function toFloat(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): float
 	{
 		$cacheKey = $rationalScaleLimit . '_' . $rationalRoundingMode;
 		if (isset($this->cache['float'][$cacheKey])) {
 			return $this->cache['float'][$cacheKey];
-		} else {
-			return $this->cache['float'][$cacheKey] = $this->toBigDecimal($rationalScaleLimit, $rationalRoundingMode)->toFloat();
 		}
+
+		return $this->cache['float'][$cacheKey] = $this->toBigDecimal($rationalScaleLimit, $rationalRoundingMode)->toFloat();
 	}
 
 
 	/**
-	 * @param int $roundingMode
-	 * @return BigInteger
 	 * @throws RoundingNecessaryException
 	 */
 	public function toBigInteger(int $roundingMode = RoundingMode::FLOOR): BigInteger
@@ -152,23 +136,22 @@ class Number
 	/**
 	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
 	 * @param int $rationalRoundingMode Rounding mode for rational numbers
-	 * @return BigDecimal
 	 */
 	public function toBigDecimal(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): BigDecimal
 	{
 		$cacheKey = $rationalScaleLimit . '_' . $rationalRoundingMode;
 		if (isset($this->cache['decimal'][$cacheKey])) {
 			return $this->cache['decimal'][$cacheKey];
-		} else {
-			if ($this->_number instanceof BigRational) {
-				$result = (string) $this->_number->getNumerator()->toBigDecimal()
-					->dividedBy($this->_number->getDenominator(), $rationalScaleLimit, $rationalRoundingMode);
-
-				return BigDecimal::of(NumberHelper::removeTrailingZeros($result));
-			}
-
-			return $this->cache['decimal'][$cacheKey] = $this->_number->toBigDecimal();
 		}
+
+		if ($this->_number instanceof BigRational) {
+			$result = (string) $this->_number->getNumerator()->toBigDecimal()
+				->dividedBy($this->_number->getDenominator(), $rationalScaleLimit, $rationalRoundingMode);
+
+			return BigDecimal::of(NumberHelper::removeTrailingZeros($result));
+		}
+
+		return $this->cache['decimal'][$cacheKey] = $this->_number->toBigDecimal();
 	}
 
 
@@ -178,23 +161,20 @@ class Number
 	 * TIP: Use toBigRational(false) for faster first result (returns not simplified rational number)
 	 *
 	 * @param bool|null $simplify Simplify rational number output (null means to not simplify rational input, else simplify)
-	 * @return BigRational
 	 */
 	public function toBigRational(?bool $simplify = null): BigRational
 	{
-		$simplify = ($simplify === true || ($simplify === null && !($this->_number instanceof BigRational)));
-
-		if ($simplify) {
+		if ($simplify === true || ($simplify === null && !($this->_number instanceof BigRational))) {
 			return $this->toBigRationalSimplified();
 		}
-
 		if ($this->cache['rational']) {
 			return $this->cache['rational'];
-		} elseif ($this->_number instanceof BigRational) {
-			return $this->cache['rational'] = $this->_number;
-		} else {
-			return $this->cache['rational'] = $this->_number->toBigRational();
 		}
+		if ($this->_number instanceof BigRational) {
+			return $this->cache['rational'] = $this->_number;
+		}
+
+		return $this->cache['rational'] = $this->_number->toBigRational();
 	}
 
 
@@ -204,8 +184,7 @@ class Number
 	 * The fraction is always shortened to the basic shape.
 	 * TIP: Use toBigRational() method instead for faster first result (limited functionality)
 	 *
-	 * @param bool $simplify Simplify fraction on output (null means to not simplify rational input, else simplify)
-	 * @return FractionNumbersOnly
+	 * @param bool|null $simplify Simplify fraction on output (null means to not simplify rational input, else simplify)
 	 */
 	public function toFraction(?bool $simplify = null): FractionNumbersOnly
 	{
@@ -221,47 +200,40 @@ class Number
 	}
 
 
-	/**
-	 * Returns a number in computer readable form (in LaTeX format).
-	 *
-	 * @return MathLatexBuilder
-	 */
+	/** Returns a number in computer readable form (in LaTeX format). */
 	public function toLatex(): MathLatexBuilder
 	{
 		if ($this->cache['latex'] !== null) {
 			return $this->cache['latex'];
-		} elseif ($this->_number instanceof BigRational) {
+		}
+		if ($this->_number instanceof BigRational) {
 			return $this->cache['latex'] = RationalToLatex::convert($this->toBigRational(false));
-		} elseif ($this->_number instanceof BigDecimal) {
-			return $this->cache['latex'] = MathLatexToolkit::create((string) $this->_number);
-		} else {
+		}
+		if ($this->_number instanceof BigDecimal) {
 			return $this->cache['latex'] = MathLatexToolkit::create((string) $this->_number);
 		}
+
+		return $this->cache['latex'] = MathLatexToolkit::create((string) $this->_number);
 	}
 
 
-	/**
-	 * Returns a number in human readable form (valid SmartNumber input).
-	 *
-	 * @return MathHumanStringBuilder
-	 */
+	/** Returns a number in human readable form (valid SmartNumber input). */
 	public function toHumanString(): MathHumanStringBuilder
 	{
 		if ($this->cache['humanString'] !== null) {
 			return $this->cache['humanString'];
-		} elseif ($this->_number instanceof BigRational) {
-			return $this->cache['humanString'] = RationalToHumanString::convert($this->toBigRational(false));
-		} else {
-			return $this->cache['humanString'] = MathHumanStringToolkit::create((string) $this->_number);
 		}
+		if ($this->_number instanceof BigRational) {
+			return $this->cache['humanString'] = RationalToHumanString::convert($this->toBigRational(false));
+		}
+
+		return $this->cache['humanString'] = MathHumanStringToolkit::create((string) $this->_number);
 	}
 
 
 	/**
 	 * Detects that the number passed is integer.
 	 * Advanced methods through fractional truncation are used for detection.
-	 *
-	 * @return bool
 	 */
 	public function isInteger(): bool
 	{
@@ -276,11 +248,7 @@ class Number
 	}
 
 
-	/**
-	 * Returns number represented by string (valid SmartNumber input)
-	 *
-	 * @return string
-	 */
+	/** Returns number represented by string (valid SmartNumber input) */
 	public function __toString(): string
 	{
 		return (string) $this->toHumanString();
@@ -321,11 +289,7 @@ class Number
 	}
 
 
-	/**
-	 * Returns rational number in normal form
-	 *
-	 * @return BigRational
-	 */
+	/** Returns rational number in normal form */
 	private function toBigRationalSimplified(): BigRational
 	{
 		if ($this->cache['rationalSimplified']) {

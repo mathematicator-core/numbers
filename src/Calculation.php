@@ -16,21 +16,11 @@ use Brick\Math\RoundingMode;
 use InvalidArgumentException;
 use Mathematicator\Numbers\Exception\UnsupportedCalcOperationException;
 
-/**
- * Class Calculation
- * @package Mathematicator\Numbers\Entity
- */
 class Calculation
 {
-
-	/** @var SmartNumber */
-	private $number;
+	private SmartNumber $number;
 
 
-	/**
-	 * Calculation constructor.
-	 * @param SmartNumber $number
-	 */
 	public function __construct(SmartNumber $number)
 	{
 		$this->number = $number;
@@ -39,15 +29,14 @@ class Calculation
 
 	/**
 	 * @param int|float|string|BigNumber|SmartNumber $number
-	 * @return Calculation
 	 */
-	public static function of($number)
+	public static function of($number): self
 	{
 		if ($number instanceof SmartNumber) {
 			return new self($number);
-		} else {
-			return new self(new SmartNumber($number));
 		}
+
+		return new self(new SmartNumber($number));
 	}
 
 
@@ -57,7 +46,7 @@ class Calculation
 	}
 
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return (string) $this->number;
 	}
@@ -69,9 +58,6 @@ class Calculation
 	 * The result has a scale of `max($this->scale, $that->scale)`.
 	 *
 	 * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigDecimal.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
 	 */
 	public function plus($that): self
@@ -86,9 +72,6 @@ class Calculation
 	 * The result has a scale of `max($this->scale, $that->scale)`.
 	 *
 	 * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigDecimal.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
 	 */
 	public function minus($that): self
@@ -103,9 +86,6 @@ class Calculation
 	 * The result has a scale of `$this->scale + $that->scale`.
 	 *
 	 * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigDecimal.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
 	 */
 	public function multipliedBy($that): self
@@ -124,9 +104,6 @@ class Calculation
 	 * Returns the result of the division of this number by the given one, at the given scale.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws InvalidArgumentException  If the scale or rounding mode is invalid.
 	 * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
 	 */
@@ -142,9 +119,6 @@ class Calculation
 	 * The scale of the result is automatically calculated to fit all the fraction digits.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
 	 *                       or the result yields an infinite number of digits.
 	 */
@@ -160,9 +134,6 @@ class Calculation
 	 * @param BigNumber|int $exponent The exponent.
 	 * @param int|null $scale The desired scale, or null to use the scale of this number.
 	 * @param int $roundingMode An optional rounding mode.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
 	 */
 	public function power($exponent, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
@@ -170,7 +141,6 @@ class Calculation
 		if ($exponent instanceof BigNumber) {
 			$exponent = $exponent->toInt();
 		}
-
 		if ($exponent < 0) {
 			$thisDecimal = $this->getBigNumber()->toBigDecimal();
 
@@ -182,15 +152,15 @@ class Calculation
 						$roundingMode
 					)
 			);
-		} else {
-			$result = $this->getBigNumber()->power($exponent);
-
-			if ($scale != null && $result instanceof BigDecimal) {
-				$result->toScale($scale, $roundingMode);
-			}
-
-			return self::of($result);
 		}
+
+		$result = $this->getBigNumber()->power($exponent);
+
+		if ($scale !== null && $result instanceof BigDecimal) {
+			$result->toScale($scale, $roundingMode);
+		}
+
+		return self::of($result);
 	}
 
 
@@ -198,9 +168,6 @@ class Calculation
 	 * Returns the quotient of the division of this number by the given one.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws DivisionByZeroException If the divisor is zero.
 	 */
 	public function quotient($that): self
@@ -215,9 +182,6 @@ class Calculation
 	 * The remainder, when non-zero, has the same sign as the dividend.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
-	 *
-	 * @return self The result.
-	 *
 	 * @throws DivisionByZeroException If the divisor is zero.
 	 */
 	public function remainder($that): self
@@ -226,22 +190,14 @@ class Calculation
 	}
 
 
-	/**
-	 * Returns the absolute value of this number.
-	 *
-	 * @return self
-	 */
+	/** Returns the absolute value of this number. */
 	public function abs(): self
 	{
 		return self::of($this->getBigNumber()->abs());
 	}
 
 
-	/**
-	 * Returns the inverse of this number.
-	 *
-	 * @return self
-	 */
+	/** Returns the inverse of this number. */
 	public function negated(): self
 	{
 		return self::of($this->getBigNumber()->negated());

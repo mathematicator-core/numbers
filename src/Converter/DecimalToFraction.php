@@ -22,7 +22,6 @@ final class DecimalToFraction
 	 * The fraction is automatically converted to the basic abbreviated form.
 	 *
 	 * @param float|int|string|Stringable|BigNumber $decimalInput
-	 * @return FractionNumbersOnly
 	 * @throws NumberFormatException
 	 */
 	public static function convert($decimalInput): FractionNumbersOnly

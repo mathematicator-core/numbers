@@ -25,7 +25,6 @@ class IntToRomanBasic
 
 	/**
 	 * @param BigNumber|int|string|Stringable $input
-	 * @return string
 	 * @throws OutOfSetException
 	 */
 	public static function convert($input): string
@@ -41,10 +40,7 @@ class IntToRomanBasic
 		}
 
 		$out = '';
-
-		$conversionTable = RomanToInt::getConversionTable(0);
-
-		foreach ($conversionTable as $roman => $value) {
+		foreach (RomanToInt::getConversionTable(0) as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();
 			$out .= str_repeat($roman, $matches);
 			$int = $int->mod($value);
@@ -55,11 +51,9 @@ class IntToRomanBasic
 
 
 	/**
-	 * @param string $romanNumber
-	 * @return BigInteger
 	 * @throws NumberFormatException
 	 */
-	public static function reverse($romanNumber): BigInteger
+	public static function reverse(string $romanNumber): BigInteger
 	{
 		return RomanToInt::convert($romanNumber);
 	}

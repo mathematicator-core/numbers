@@ -12,11 +12,9 @@ use Iterator;
  */
 abstract class SimpleInfiniteNumberIterator implements Iterator
 {
-	/** @var int */
-	protected $startValue;
+	protected int $startValue;
 
-	/** @var int */
-	protected $position = 0;
+	protected int $position = 0;
 
 
 	abstract public function __construct(int $startValue);

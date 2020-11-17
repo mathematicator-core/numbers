@@ -25,10 +25,6 @@ class FractionHelper
 	 * Automatically converts a fraction to a shortened form.
 	 * A prime division is used to shorten the fractions. It is the fastest method for calculation.
 	 *
-	 * @param FractionNumbersOnly $fraction
-	 * @param int $level
-	 * @param int $maxLevel
-	 * @return FractionNumbersOnly
 	 * @throws NumberFormatException
 	 */
 	public static function toShortenForm(FractionNumbersOnly $fraction, int $level = 0, int $maxLevel = 100): FractionNumbersOnly
@@ -48,7 +44,6 @@ class FractionHelper
 		} else {
 			$denominatorValue = $denominator;
 		}
-
 		if ($denominatorValue->isEqualTo(0)) {
 			DivisionByZeroException::canNotDivisionFractionByZero((string) $numeratorValue, (string) $denominatorValue);
 		}
@@ -65,13 +60,11 @@ class FractionHelper
 		if ($level > $maxLevel) {
 			return new FractionNumbersOnly($numeratorValue, $denominatorValue);
 		}
-
 		try {
 			return new FractionNumbersOnly($fractionValue->toScale(0));
 		} catch (RoundingNecessaryException $e) {
 			// Fraction cannot be evaluated to simple number directly. So go on…
 		}
-
 		foreach (PrimaryNumber::getList() as $primaryNumber) {
 			$primaryNumber = BigDecimal::of($primaryNumber);
 
@@ -81,7 +74,6 @@ class FractionHelper
 			) {
 				break;
 			}
-
 			if (
 				NumberHelper::isModuloZero($numeratorValueAbs, $primaryNumber)
 				&& NumberHelper::isModuloZero($denominatorValueAbs, $primaryNumber)
@@ -102,10 +94,6 @@ class FractionHelper
 
 
 	/**
-	 * @param FractionNumbersOnly $fraction
-	 * @param int|null $scale
-	 * @param int $roundingMode
-	 * @return BigDecimal
 	 * @throws NumberFormatException
 	 * @todo Change scale to arbitrary using math expression
 	 */
@@ -132,8 +120,6 @@ class FractionHelper
 			$denominatorEval = $denominator;
 		}
 
-		$number = $numeratorEval->dividedBy($denominatorEval, $scale, $roundingMode);
-
-		return $number;
+		return $numeratorEval->dividedBy($denominatorEval, $scale, $roundingMode);
 	}
 }

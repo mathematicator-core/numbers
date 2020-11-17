@@ -9,11 +9,6 @@ namespace Mathematicator\Numbers\Exception;
  */
 class DivisionByZeroException extends NumberException
 {
-	/**
-	 * @param string $x
-	 * @param string $y
-	 * @throws self
-	 */
 	public static function canNotDivisionFractionByZero(string $x, string $y): void
 	{
 		throw new self('Can not division fraction [' . $x . ' / ' . $y . '] by zero.');

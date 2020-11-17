@@ -13,9 +13,7 @@ use Stringable;
  */
 final class MathHumanStringBuilder implements IMathBuilder, Stringable
 {
-
-	/** @var string */
-	private $humanString;
+	private string $humanString;
 
 
 	/**
@@ -27,9 +25,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 	}
 
 
-	/**
-	 * @return string
-	 */
 	public function getHumanString(): string
 	{
 		return $this->humanString;
@@ -44,7 +39,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param int|string|Stringable $with
-	 * @return self
 	 */
 	public function plus($with): self
 	{
@@ -54,7 +48,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param int|string|Stringable $with
-	 * @return self
 	 */
 	public function minus($with): self
 	{
@@ -64,7 +57,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param int|string|Stringable $with
-	 * @return self
 	 */
 	public function multipliedBy($with): self
 	{
@@ -74,7 +66,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param int|string|Stringable $with
-	 * @return self
 	 */
 	public function dividedBy($with): self
 	{
@@ -84,7 +75,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 	/**
 	 * @param int|string|Stringable $to
-	 * @return self
 	 */
 	public function equals($to): self
 	{
@@ -93,9 +83,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 
 
 	/**
-	 * @param string $operator
 	 * @param int|string|Stringable $to
-	 * @return self
 	 */
 	public function operator(string $operator, $to): self
 	{
@@ -105,11 +93,6 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 	}
 
 
-	/**
-	 * @param string $left
-	 * @param string|null $right
-	 * @return self
-	 */
 	public function wrap(string $left, string $right = null): self
 	{
 		$this->humanString = (string) MathHumanStringToolkit::wrap($this->humanString, $left, $right);

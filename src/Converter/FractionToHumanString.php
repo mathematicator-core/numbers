@@ -16,9 +16,7 @@ final class FractionToHumanString
 	use StaticClass;
 
 	/**
-	 * @param Fraction $fraction
 	 * @param bool $simplify Remove denominator if === 1
-	 * @return MathHumanStringBuilder
 	 * @throws NumberFormatException
 	 */
 	public static function convert(Fraction $fraction, bool $simplify = true): MathHumanStringBuilder
@@ -36,21 +34,21 @@ final class FractionToHumanString
 
 	/**
 	 * @param Fraction|string|null $part
-	 * @param bool $isDenominator
 	 * @param bool $simplify Remove denominator if === 1
-	 * @return string
 	 */
-	private static function convertPart($part, bool $isDenominator, bool $simplify)
+	private static function convertPart($part, bool $isDenominator, bool $simplify): string
 	{
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {
 				return '1';
 			}
+
 			return '';
-		} elseif ($part instanceof Fraction) {
-			return (string) MathHumanStringToolkit::wrap(self::convert($part, $simplify), '(', ')');
-		} else {
-			return (string) $part;
 		}
+		if ($part instanceof Fraction) {
+			return (string) MathHumanStringToolkit::wrap(self::convert($part, $simplify), '(', ')');
+		}
+
+		return (string) $part;
 	}
 }
