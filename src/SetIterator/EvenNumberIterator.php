@@ -13,7 +13,6 @@ use Iterator;
  */
 final class EvenNumberIterator extends SimpleInfiniteNumberIterator implements Iterator
 {
-
 	/**
 	 * @param int $startValue Even integer where you want to start iterate
 	 */

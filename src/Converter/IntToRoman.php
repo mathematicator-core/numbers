@@ -23,7 +23,6 @@ use Stringable;
  */
 final class IntToRoman extends IntToRomanBasic
 {
-
 	/**
 	 * @param BigNumber|int|string|Stringable $input
 	 * @throws OutOfSetException
@@ -69,7 +68,9 @@ final class IntToRoman extends IntToRomanBasic
 
 		// Get count of leading underscores (e.g. 2 for __M)
 		preg_match('/^_*/', $out, $leadingUnderscoresMatches);
-		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0]) ? strlen($leadingUnderscoresMatches[0]) : 0;
+		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0])
+			? strlen($leadingUnderscoresMatches[0])
+			: 0;
 
 		// Convert underscores to latex overline
 		for ($i = $leadingUnderscoresCount; $i > 0; $i--) {

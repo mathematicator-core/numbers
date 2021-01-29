@@ -40,8 +40,11 @@ final class MathLatexToolkit implements IMathToolkit
 	/**
 	 * @param int|string|Stringable $latex
 	 */
-	public static function create($latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null): MathLatexBuilder
-	{
+	public static function create(
+		$latex = '',
+		?string $delimiterLeft = null,
+		?string $delimiterRight = null
+	): MathLatexBuilder {
 		return new MathLatexBuilder($latex, $delimiterLeft, $delimiterRight);
 	}
 

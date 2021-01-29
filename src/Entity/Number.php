@@ -137,8 +137,10 @@ class Number
 	 * @param int $rationalScaleLimit Limit scale if rounding is needed (rational numbers). Default: 10
 	 * @param int $rationalRoundingMode Rounding mode for rational numbers
 	 */
-	public function toBigDecimal(int $rationalScaleLimit = 10, int $rationalRoundingMode = RoundingMode::FLOOR): BigDecimal
-	{
+	public function toBigDecimal(
+		int $rationalScaleLimit = 10,
+		int $rationalRoundingMode = RoundingMode::FLOOR
+	): BigDecimal {
 		$cacheKey = $rationalScaleLimit . '_' . $rationalRoundingMode;
 		if (isset($this->cache['decimal'][$cacheKey])) {
 			return $this->cache['decimal'][$cacheKey];

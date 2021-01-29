@@ -18,7 +18,7 @@ final class RationalToHumanString
 	{
 		return MathHumanStringToolkit::frac(
 			(string) $rationalNumber->getNumerator(),
-			(string) $rationalNumber->getDenominator()
+			(string) $rationalNumber->getDenominator(),
 		);
 	}
 }

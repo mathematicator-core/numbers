@@ -39,8 +39,8 @@ final class DecimalToFraction
 		return FractionHelper::toShortenForm(
 			new FractionNumbersOnly(
 				BigDecimal::of($numerator)->multipliedBy($decimal->getSign()),
-				BigDecimal::of($denominator)
-			)
+				BigDecimal::of($denominator),
+			),
 		);
 	}
 }

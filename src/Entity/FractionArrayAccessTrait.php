@@ -13,7 +13,6 @@ use Stringable;
 
 trait FractionArrayAccessTrait
 {
-
 	/**
 	 * @param mixed $offset
 	 * @param int|string|Stringable|BigNumber|Fraction|null $value

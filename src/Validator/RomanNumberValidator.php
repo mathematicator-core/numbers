@@ -53,7 +53,9 @@ final class RomanNumberValidator
 
 		preg_match('/^_*/', $normalizedInput, $leadingUnderscoresMatches);
 
-		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0]) ? strlen($leadingUnderscoresMatches[0]) : 0;
+		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0])
+			? strlen($leadingUnderscoresMatches[0])
+			: 0;
 
 		$regex = '';
 		for ($i = $leadingUnderscoresCount; $i >= 0; $i--) {

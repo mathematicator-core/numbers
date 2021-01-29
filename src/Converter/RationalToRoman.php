@@ -52,7 +52,10 @@ final class RationalToRoman
 
 		$denominatorOriginal = $rationalNumber->getDenominator();
 
-		if (in_array((string) $denominatorOriginal, ['1', '2', '3', '4', '6', '12'], true) && $denominatorOriginal->isLessThanOrEqualTo(12)) {
+		if (
+			in_array((string) $denominatorOriginal, ['1', '2', '3', '4', '6', '12'], true)
+			&& $denominatorOriginal->isLessThanOrEqualTo(12)
+		) {
 			$toFinalMultiplier = BigInteger::of(12)->dividedBy($denominatorOriginal)->toInt();
 			$numeratorMultiplied = $rationalNumber->getNumerator()->multipliedBy($toFinalMultiplier);
 

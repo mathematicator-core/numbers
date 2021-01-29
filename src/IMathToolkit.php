@@ -12,7 +12,6 @@ use Stringable;
  */
 interface IMathToolkit
 {
-
 	/**
 	 * @param string|Stringable $numerator
 	 * @param string|Stringable $denominator

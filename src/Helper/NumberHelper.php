@@ -56,15 +56,18 @@ class NumberHelper
 	 * @param string[] $decimalPointSigns Default is a dot "." only
 	 * @param string[] $thousandsSeparators
 	 */
-	public static function preprocessInput(string $input, array $decimalPointSigns = [], array $thousandsSeparators = []): string
-	{
+	public static function preprocessInput(
+		string $input,
+		array $decimalPointSigns = [],
+		array $thousandsSeparators = []
+	): string {
 		// Check parameters validity
 		if (count(array_intersect($decimalPointSigns, $thousandsSeparators))) {
 			throw new InvalidArgumentException('Decimal point signs and thousands separators have to be unique.');
 		}
 		if (count(array_intersect(
 			array_merge($decimalPointSigns, $thousandsSeparators),
-			['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/']
+			['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/'],
 		))) {
 			throw new InvalidArgumentException('Decimal point signs nor thousands separators cannot contain number nor "/" sign.');
 		}
@@ -73,9 +76,7 @@ class NumberHelper
 		$input = (string) str_replace($thousandsSeparators, '', $input);
 		$input = (string) str_replace($decimalPointSigns, '.', $input);
 		$input = self::removeTrailingZeros($input);
-		$input = self::removeWrapBrackets($input);
-
-		return $input;
+		return self::removeWrapBrackets($input);
 	}
 
 

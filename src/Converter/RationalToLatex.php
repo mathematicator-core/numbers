@@ -18,7 +18,7 @@ final class RationalToLatex
 	{
 		return MathLatexToolkit::frac(
 			(string) $rationalNumber->getNumerator(),
-			(string) $rationalNumber->getDenominator()
+			(string) $rationalNumber->getDenominator(),
 		);
 	}
 }

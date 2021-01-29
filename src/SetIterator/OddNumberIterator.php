@@ -13,7 +13,6 @@ use Iterator;
  */
 final class OddNumberIterator extends SimpleInfiniteNumberIterator implements Iterator
 {
-
 	/**
 	 * @param int $startValue Odd integer where you want to start iterate
 	 */

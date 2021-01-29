@@ -53,7 +53,9 @@ final class RomanToInt
 
 		// Get count of leading underscores (e.g. 2 for __M)
 		preg_match('/^_*/', $romanNumber, $leadingUnderscoresMatches);
-		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0]) ? strlen($leadingUnderscoresMatches[0]) : 0;
+		$leadingUnderscoresCount = isset($leadingUnderscoresMatches[0])
+			? strlen($leadingUnderscoresMatches[0])
+			: 0;
 		$conversionTable = self::getConversionTable($leadingUnderscoresCount);
 
 		$return = 0;
@@ -61,7 +63,9 @@ final class RomanToInt
 			$actualChar = (string) $romanNumberSplit[$i];
 
 			// Check whether is there a next roman numeral
-			$nextChar = ($i + 1 < $romanLength) ? (string) $romanNumberSplit[$i + 1] : null;
+			$nextChar = $i + 1 < $romanLength
+				? (string) $romanNumberSplit[$i + 1]
+				: null;
 
 			[$convertedIntValue, $nextIntValue] = self::convertCharPair($actualChar, $conversionTable, $nextChar);
 
@@ -131,9 +135,18 @@ final class RomanToInt
 	 * @param int[] $conversionTable
 	 * @return array<int, int|null>
 	 */
-	private static function convertCharPair(string $romanChar, array &$conversionTable, ?string $nextRomanChar = null): array
-	{
-		if (!isset($conversionTable[$romanChar]) || ($nextRomanChar !== null && !isset($conversionTable[$nextRomanChar]))) {
+	private static function convertCharPair(
+		string $romanChar,
+		array &$conversionTable,
+		?string $nextRomanChar = null
+	): array {
+		if (
+			!isset($conversionTable[$romanChar])
+			|| (
+				$nextRomanChar !== null
+				&& !isset($conversionTable[$nextRomanChar])
+			)
+		) {
 			NumberFormatException::invalidInput("$romanChar");
 		}
 

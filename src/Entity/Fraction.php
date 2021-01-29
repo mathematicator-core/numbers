@@ -43,7 +43,7 @@ class Fraction implements ArrayAccess
 			$this->setNumerator($numerator);
 		}
 		if ($denominator !== null || $numerator !== null) {
-			$this->setDenominator(($denominator !== null) ? $denominator : 1);
+			$this->setDenominator($denominator ?? 1);
 		}
 	}
 

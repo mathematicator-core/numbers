@@ -27,8 +27,11 @@ class FractionHelper
 	 *
 	 * @throws NumberFormatException
 	 */
-	public static function toShortenForm(FractionNumbersOnly $fraction, int $level = 0, int $maxLevel = 100): FractionNumbersOnly
-	{
+	public static function toShortenForm(
+		FractionNumbersOnly $fraction,
+		int $level = 0,
+		int $maxLevel = 100
+	): FractionNumbersOnly {
 		$numerator = $fraction->getNumerator();
 		if ($numerator instanceof FractionNumbersOnly) {
 			$numeratorValue = self::evaluate($numerator);
@@ -81,10 +84,10 @@ class FractionHelper
 				return self::toShortenForm(
 					new FractionNumbersOnly(
 						$numeratorValue->dividedBy($primaryNumber),
-						$denominatorValue->dividedBy($primaryNumber)
+						$denominatorValue->dividedBy($primaryNumber),
 					),
 					$level + 1,
-					$maxLevel
+					$maxLevel,
 				);
 			}
 		}
@@ -97,8 +100,11 @@ class FractionHelper
 	 * @throws NumberFormatException
 	 * @todo Change scale to arbitrary using math expression
 	 */
-	public static function evaluate(FractionNumbersOnly $fraction, ?int $scale = 100, int $roundingMode = RoundingMode::FLOOR): BigDecimal
-	{
+	public static function evaluate(
+		FractionNumbersOnly $fraction,
+		?int $scale = 100,
+		int $roundingMode = RoundingMode::FLOOR
+	): BigDecimal {
 		if (!$fraction->isValid()) {
 			throw new NumberFormatException('Cannot enumerate fraction without numerator.');
 		}

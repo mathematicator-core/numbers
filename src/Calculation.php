@@ -149,8 +149,8 @@ class Calculation
 					->dividedBy(
 						$thisDecimal->power($exponent * -1),
 						$scale,
-						$roundingMode
-					)
+						$roundingMode,
+					),
 			);
 		}
 
@@ -220,6 +220,6 @@ class Calculation
 			return $number;
 		}
 
-		throw new UnsupportedCalcOperationException();
+		throw new UnsupportedCalcOperationException;
 	}
 }

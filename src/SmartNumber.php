@@ -29,7 +29,6 @@ use Mathematicator\Numbers\Helper\NumberHelper;
  */
 final class SmartNumber extends Number
 {
-
 	/**
 	 * @param int|float|string|BigNumber|Number $number
 	 * @return self
@@ -176,7 +175,7 @@ final class SmartNumber extends Number
 			$numerator = BigDecimal::of($parseResult[1]);
 			$denominator = BigDecimal::of($parseResult[2]);
 
-			$multiplier = 10 * (($numerator->getScale() > $denominator->getScale()) ? $numerator->getScale() : $denominator->getScale());
+			$multiplier = 10 * ($numerator->getScale() > $denominator->getScale() ? $numerator->getScale() : $denominator->getScale());
 
 			$this->_number = BigRational::nd($parseResult[1] * $multiplier, $parseResult[2] * $multiplier);
 			return;
