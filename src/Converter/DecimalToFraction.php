@@ -10,7 +10,6 @@ use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Helper\FractionHelper;
-use Stringable;
 
 final class DecimalToFraction
 {

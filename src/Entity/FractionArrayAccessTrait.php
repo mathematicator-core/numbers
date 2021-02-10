@@ -9,7 +9,6 @@ use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToArray;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use RuntimeException;
-use Stringable;
 
 trait FractionArrayAccessTrait
 {

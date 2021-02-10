@@ -6,7 +6,6 @@ namespace Mathematicator\Numbers\Latex;
 
 
 use Mathematicator\Numbers\IMathToolkit;
-use Stringable;
 
 /**
  * @implements IMathToolkit<MathLatexBuilder>

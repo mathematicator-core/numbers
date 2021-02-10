@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Latex;
 
 
-use Stringable;
-
 final class MathLatexSnippet implements Stringable
 {
 

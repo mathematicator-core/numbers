@@ -9,7 +9,6 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Mathematicator\Numbers\Exception\OutOfSetException;
-use Stringable;
 
 /**
  * Convert rational number to basic roman fractions (original ancient set)

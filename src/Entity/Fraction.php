@@ -9,7 +9,6 @@ use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToHumanString;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Stringable;
 
 /**
  * Entity to store simple and compound fractions

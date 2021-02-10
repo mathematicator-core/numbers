@@ -6,7 +6,6 @@ namespace Mathematicator\Numbers\HumanString;
 
 
 use Mathematicator\Numbers\IMathToolkit;
-use Stringable;
 
 /**
  * @implements IMathToolkit<MathHumanStringBuilder>
@@ -41,8 +40,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 	public static function frac(
 		int|string|Stringable $numerator,
 		int|string|Stringable $denominator
-	): MathHumanStringBuilder
-	{
+	): MathHumanStringBuilder {
 		return self::operator($numerator, $denominator, self::DIVIDE);
 	}
 
@@ -56,8 +54,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 	public static function sqrt(
 		int|string|Stringable $expression,
 		int|string|Stringable |null $n = null
-	): MathHumanStringBuilder
-	{
+	): MathHumanStringBuilder {
 		return self::func('sqrt', [$expression], $n);
 	}
 
@@ -66,8 +63,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 		int|string|Stringable $content,
 		string $left,
 		string $right = null
-	): MathHumanStringBuilder
-	{
+	): MathHumanStringBuilder {
 		return new MathHumanStringBuilder($left . $content . ($right ?: $left));
 	}
 
@@ -81,8 +77,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 		string $name,
 		iterable $arguments = [],
 		int|string|Stringable |null $root = null
-	): MathHumanStringBuilder
-	{
+	): MathHumanStringBuilder {
 		$return = $name;
 		if ($root) {
 			$return .= '[' . $root . ']';
@@ -99,8 +94,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 		int|string|Stringable $left,
 		int|string|Stringable $right,
 		string $operator
-	): MathHumanStringBuilder
-	{
+	): MathHumanStringBuilder {
 		return new MathHumanStringBuilder($left . $operator . $right);
 	}
 }

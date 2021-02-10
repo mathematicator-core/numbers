@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers;
 
 
-use Stringable;
-
 /**
  * @template SelfClass
  */

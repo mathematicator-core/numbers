@@ -7,7 +7,6 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Stringable;
 
 final class ArrayToFraction
 {

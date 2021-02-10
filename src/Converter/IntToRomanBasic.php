@@ -11,7 +11,6 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Exception\OutOfSetException;
-use Stringable;
 
 /**
  * Convert integer to basic roman numerals (original ancient set)

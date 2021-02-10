@@ -45,8 +45,7 @@ final class FractionToArray
 		Fraction|string |null $part,
 		bool $isDenominator,
 		bool $simplify
-	): string|array|null
-	{
+	): string|array|null {
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {
 				return '1';

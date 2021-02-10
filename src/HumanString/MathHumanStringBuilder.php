@@ -6,7 +6,6 @@ namespace Mathematicator\Numbers\HumanString;
 
 
 use Mathematicator\Numbers\IMathBuilder;
-use Stringable;
 
 /**
  * @implements IMathBuilder<MathHumanStringBuilder>

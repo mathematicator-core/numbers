@@ -9,7 +9,6 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Nette\Utils\Strings;
-use Stringable;
 
 /**
  * Convert roman numerals to integer

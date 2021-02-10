@@ -10,7 +10,6 @@ use Brick\Math\BigNumber;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Exception\OutOfSetException;
-use Stringable;
 
 /**
  * Convert an integer to roman numerals
