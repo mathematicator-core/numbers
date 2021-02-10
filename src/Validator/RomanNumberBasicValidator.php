@@ -32,7 +32,7 @@ final class RomanNumberBasicValidator
 
 		try {
 			RomanToInt::convert($romanNumber);
-		} catch (NumberFormatException $e) {
+		} catch (NumberFormatException) {
 			return false;
 		}
 

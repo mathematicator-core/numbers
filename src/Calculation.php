@@ -91,7 +91,7 @@ class Calculation
 
 		try {
 			return self::of($this->getBigNumber()->multipliedBy($that));
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 			return self::of($thisNumber->toBigRational()->multipliedBy(BigRational::of($that)));
 		}
 	}

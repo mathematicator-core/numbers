@@ -62,7 +62,7 @@ class FractionHelper
 		}
 		try {
 			return new FractionNumbersOnly($fractionValue->toScale(0));
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 			// Fraction cannot be evaluated to simple number directly. So go on…
 		}
 		foreach (PrimaryNumber::getList() as $primaryNumber) {

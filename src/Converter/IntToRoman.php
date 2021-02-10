@@ -32,7 +32,7 @@ final class IntToRoman extends IntToRomanBasic
 
 		try {
 			$int = BigInteger::of((string) $input);
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 			throw new OutOfSetException($input . ' (not integer)', $allowedSetDescription);
 		}
 		if ($int->isLessThan(0)) {

@@ -27,7 +27,7 @@ class IntToRomanBasic
 	{
 		try {
 			$int = BigInteger::of((string) $input);
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 			throw new OutOfSetException($input . ' (not integer)');
 		}
 

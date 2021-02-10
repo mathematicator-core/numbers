@@ -26,7 +26,7 @@ use Mathematicator\Numbers\Helper\NumberHelper;
  */
 final class SmartNumber extends Number
 {
-	public static function of(int|float|string|BigNumber|Number $number): self
+	public static function of(int|float|string|BigNumber|Number $number): static
 	{
 		return new self($number);
 	}
@@ -100,7 +100,7 @@ final class SmartNumber extends Number
 		try {
 			parent::setValue($input);
 			return;
-		} catch (Exception\NumberFormatException $e) {
+		} catch (Exception\NumberFormatException) {
 		} catch (Exception\DivisionByZeroException $e) {
 			throw new Exception\DivisionByZeroException($e->getMessage());
 		}
@@ -111,7 +111,7 @@ final class SmartNumber extends Number
 		try {
 			parent::setValue($input);
 			return;
-		} catch (Exception\NumberFormatException $e) {
+		} catch (Exception\NumberFormatException) {
 		}
 
 		// Solve multiple positivity signs (e.g. --6 => 6, ---5 => -5, --5.2 => 5.2, --5/2 => 5/2)

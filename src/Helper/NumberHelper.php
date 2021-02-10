@@ -17,7 +17,7 @@ class NumberHelper
 			$a->dividedBy($b)->toScale(0);
 
 			return true;
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 			// Fraction cannot be evaluated to simple number directly. So go on…
 			return false;
 		}

@@ -226,7 +226,7 @@ class Number
 			$this->_number->toScale(0);
 
 			return true;
-		} catch (RoundingNecessaryException $e) {
+		} catch (RoundingNecessaryException) {
 		}
 
 		return false;
