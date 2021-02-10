@@ -39,9 +39,9 @@ final class MathHumanStringToolkit implements IMathToolkit
 
 
 	public static function frac(
-        int|string|Stringable $numerator,
-        int|string|Stringable $denominator
-    ): MathHumanStringBuilder
+		int|string|Stringable $numerator,
+		int|string|Stringable $denominator
+	): MathHumanStringBuilder
 	{
 		return self::operator($numerator, $denominator, self::DIVIDE);
 	}
@@ -54,19 +54,19 @@ final class MathHumanStringToolkit implements IMathToolkit
 
 
 	public static function sqrt(
-        int|string|Stringable $expression,
-        int|string|Stringable |null $n = null
-    ): MathHumanStringBuilder
+		int|string|Stringable $expression,
+		int|string|Stringable |null $n = null
+	): MathHumanStringBuilder
 	{
 		return self::func('sqrt', [$expression], $n);
 	}
 
 
 	public static function wrap(
-        int|string|Stringable $content,
-        string $left,
-        string $right = null
-    ): MathHumanStringBuilder
+		int|string|Stringable $content,
+		string $left,
+		string $right = null
+	): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($left . $content . ($right ?: $left));
 	}
@@ -78,10 +78,10 @@ final class MathHumanStringToolkit implements IMathToolkit
 	 * @param array<int|string|Stringable|null> $arguments
 	 */
 	public static function func(
-        string $name,
-        iterable $arguments = [],
-        int|string|Stringable |null $root = null
-    ): MathHumanStringBuilder
+		string $name,
+		iterable $arguments = [],
+		int|string|Stringable |null $root = null
+	): MathHumanStringBuilder
 	{
 		$return = $name;
 		if ($root) {
@@ -96,10 +96,10 @@ final class MathHumanStringToolkit implements IMathToolkit
 
 
 	public static function operator(
-        int|string|Stringable $left,
-        int|string|Stringable $right,
-        string $operator
-    ): MathHumanStringBuilder
+		int|string|Stringable $left,
+		int|string|Stringable $right,
+		string $operator
+	): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($left . $operator . $right);
 	}

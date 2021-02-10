@@ -72,7 +72,7 @@ class Fraction
 	}
 
 
-	/** Checks whether the fraction is valid for further computing.  */
+	/** Checks whether the fraction is valid for further computing. */
 	public function isValid(): bool
 	{
 		return $this->numerator !== null;

@@ -17,10 +17,10 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 
 
 	public function __construct(
-        int|string|Stringable $latex = '',
-        ?string $delimiterLeft = null,
-        ?string $delimiterRight = null
-    )
+		int|string|Stringable $latex = '',
+		?string $delimiterLeft = null,
+		?string $delimiterRight = null
+	)
 	{
 		$this->snippet = new MathLatexSnippet((string) $latex);
 

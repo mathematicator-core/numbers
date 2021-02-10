@@ -100,8 +100,8 @@ class Calculation
 	/**
 	 * Returns the result of the division of this number by the given one, at the given scale.
 	 *
-	 * @throws InvalidArgumentException  If the scale or rounding mode is invalid.
-	 * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
+	 * @throws InvalidArgumentException If the scale or rounding mode is invalid.
+	 * @throws MathException If the number is invalid, is zero, or rounding was necessary.
 	 */
 	public function dividedBy(BigNumber|int|float|string $that): self
 	{
@@ -115,8 +115,7 @@ class Calculation
 	 * The scale of the result is automatically calculated to fit all the fraction digits.
 	 *
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigDecimal.
-	 * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
-	 *                       or the result yields an infinite number of digits.
+	 * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero, or the result yields an infinite number of digits.
 	 */
 	public function exactlyDividedBy(BigNumber|int|float|string $that): self
 	{
@@ -133,10 +132,10 @@ class Calculation
 	 * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
 	 */
 	public function power(
-        BigNumber|int $exponent,
-        ?int $scale = null,
-        int $roundingMode = RoundingMode::UNNECESSARY
-    ): self
+		BigNumber|int $exponent,
+		?int $scale = null,
+		int $roundingMode = RoundingMode::UNNECESSARY
+	): self
 	{
 		if ($exponent instanceof BigNumber) {
 			$exponent = $exponent->toInt();

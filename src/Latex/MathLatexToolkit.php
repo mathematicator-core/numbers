@@ -56,9 +56,9 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	public static function sqrt(
-        int|string|Stringable $expression,
-        int|string|Stringable |null $n = null
-    ): MathLatexBuilder
+		int|string|Stringable $expression,
+		int|string|Stringable |null $n = null
+	): MathLatexBuilder
 	{
 		return self::func('sqrt', [$expression], $n);
 	}
@@ -76,10 +76,10 @@ final class MathLatexToolkit implements IMathToolkit
 	 * @param array<int|string|Stringable|null> $arguments
 	 */
 	public static function func(
-        string $name,
-        iterable $arguments = [],
-        int|string|Stringable |null $root = null
-    ): MathLatexBuilder
+		string $name,
+		iterable $arguments = [],
+		int|string|Stringable |null $root = null
+	): MathLatexBuilder
 	{
 		$return = '\\' . $name;
 		if ($root) {
@@ -94,10 +94,10 @@ final class MathLatexToolkit implements IMathToolkit
 
 
 	public static function operator(
-        int|string|Stringable $left,
-        int|string|Stringable $right,
-        string $operator
-    ): MathLatexBuilder
+		int|string|Stringable $left,
+		int|string|Stringable $right,
+		string $operator
+	): MathLatexBuilder
 	{
 		return new MathLatexBuilder($left . '\ ' . $operator . '\ ' . $right);
 	}

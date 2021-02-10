@@ -26,10 +26,10 @@ interface IMathToolkit
 	 * @param array<int|string|Stringable|null> $arguments
 	 */
 	public static function func(
-        string $name,
-        array $arguments = [],
-        int|string|Stringable |null $root = null
-    ): IMathBuilder;
+		string $name,
+		array $arguments = [],
+		int|string|Stringable |null $root = null
+	): IMathBuilder;
 
 	public static function operator(string|Stringable $left, string|Stringable $right, string $operator): IMathBuilder;
 }
