@@ -32,7 +32,7 @@ final class FractionToHumanString
 	/**
 	 * @param bool $simplify Remove denominator if === 1
 	 */
-	private static function convertPart(Fraction|string|null $part, bool $isDenominator, bool $simplify): string
+	private static function convertPart(Fraction|string |null $part, bool $isDenominator, bool $simplify): string
 	{
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {

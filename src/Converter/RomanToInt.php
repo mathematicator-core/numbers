@@ -20,7 +20,7 @@ final class RomanToInt
 {
 	/** @var int[] */
 	private static array $conversionTable = [
-		'M' => 1000,
+		'M' => 1_000,
 		'CM' => 900,
 		'D' => 500,
 		'CD' => 400,
@@ -110,7 +110,7 @@ final class RomanToInt
 					$prependedRomanNumeral .= $prependString . substr((string) $tableLineKey, 1, 1);
 				}
 
-				$outTable[$prependedRomanNumeral] = (int) $tableLine * (1000 ** $thousandsIterator);
+				$outTable[$prependedRomanNumeral] = (int) $tableLine * (1_000 ** $thousandsIterator);
 			}
 		}
 
@@ -146,7 +146,7 @@ final class RomanToInt
 
 		$out = [$conversionTable[$romanChar], $nextRomanChar ? $conversionTable[$nextRomanChar] : null];
 
-		foreach ($conversionTable as $conversionTableKey => $conversionTableItem) {
+		foreach (array_keys($conversionTable) as $conversionTableKey) {
 			if ($conversionTableKey === $romanChar || $conversionTableKey === $romanChar . $nextRomanChar) {
 				// E.g. if X || IX
 				break;

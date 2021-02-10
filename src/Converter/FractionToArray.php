@@ -41,7 +41,11 @@ final class FractionToArray
 	 * @return string|mixed[]|null
 	 * @throws NumberFormatException
 	 */
-	private static function convertPart(Fraction|string|null $part, bool $isDenominator, bool $simplify): string|array|null
+	private static function convertPart(
+        Fraction|string |null $part,
+        bool $isDenominator,
+        bool $simplify
+    ): string|array|null
 	{
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {

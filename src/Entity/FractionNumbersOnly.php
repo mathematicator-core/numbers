@@ -19,14 +19,14 @@ use Stringable;
  */
 final class FractionNumbersOnly extends Fraction
 {
-	protected self|BigDecimal|null $numerator;
+	protected self|BigDecimal |null $numerator;
 
-	protected self|BigDecimal|null $denominator;
+	protected self|BigDecimal |null $denominator;
 
 
 	public function __construct(
-		int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator = null,
-		int|string|Stringable|BigNumber|FractionNumbersOnly|null $denominator = null
+		int|string|Stringable|BigNumber|FractionNumbersOnly |null $numerator = null,
+		int|string|Stringable|BigNumber|FractionNumbersOnly |null $denominator = null
 	) {
 		parent::__construct($numerator, $denominator);
 	}
@@ -41,7 +41,7 @@ final class FractionNumbersOnly extends Fraction
 	/**
 	 * @throws NumberFormatException
 	 */
-	public function setNumerator(int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator)
+	public function setNumerator(int|string|Stringable|BigNumber|FractionNumbersOnly |null $numerator)
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);

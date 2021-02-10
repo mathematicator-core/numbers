@@ -19,7 +19,7 @@ class SmartNumberBenchmark
 	 */
 	public function benchAssignIntToStringPhp()
 	{
-		$smartNumber = (string) 158985102;
+		$smartNumber = (string) 158_985_102;
 	}
 
 

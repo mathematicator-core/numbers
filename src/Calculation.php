@@ -132,7 +132,11 @@ class Calculation
 	 * @param int $roundingMode An optional rounding mode.
 	 * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
 	 */
-	public function power(BigNumber|int $exponent, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
+	public function power(
+        BigNumber|int $exponent,
+        ?int $scale = null,
+        int $roundingMode = RoundingMode::UNNECESSARY
+    ): self
 	{
 		if ($exponent instanceof BigNumber) {
 			$exponent = $exponent->toInt();

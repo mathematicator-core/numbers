@@ -20,9 +20,9 @@ class Fraction implements ArrayAccess
 {
 	use FractionArrayAccessTrait;
 
-	protected Fraction|string|self|null $numerator;
+	protected Fraction|string|self |null $numerator;
 
-	protected Fraction|string|self|null $denominator;
+	protected Fraction|string|self |null $denominator;
 
 	/** Superior fraction (if in compound structure) */
 	protected ?Fraction $parentInNumerator = null;
@@ -32,8 +32,8 @@ class Fraction implements ArrayAccess
 
 
 	public function __construct(
-		int|string|Stringable|BigNumber|Fraction|null $numerator = null,
-		int|string|Stringable|BigNumber|Fraction|null $denominator = null
+		int|string|Stringable|BigNumber|Fraction |null $numerator = null,
+		int|string|Stringable|BigNumber|Fraction |null $denominator = null
 	) {
 		if ($numerator !== null) {
 			$this->setNumerator($numerator);
@@ -85,7 +85,7 @@ class Fraction implements ArrayAccess
 	}
 
 
-	public function setNumerator(int|string|Stringable|BigNumber|Fraction|null $numerator): self
+	public function setNumerator(int|string|Stringable|BigNumber|Fraction |null $numerator): self
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);
@@ -106,7 +106,7 @@ class Fraction implements ArrayAccess
 	}
 
 
-	public function setDenominator(int|string|Stringable|BigNumber|Fraction|null $denominator): self
+	public function setDenominator(int|string|Stringable|BigNumber|Fraction |null $denominator): self
 	{
 		if ($denominator instanceof self) {
 			$denominator->setParentInDenominator($this);

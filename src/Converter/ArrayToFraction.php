@@ -46,7 +46,7 @@ final class ArrayToFraction
 	 * @param mixed[]|string|Stringable|int|float|null $part
 	 * @throws NumberFormatException
 	 */
-	private static function convertPart(array|string|Stringable|int|float|null $part): Fraction|string|null
+	private static function convertPart(array|string|Stringable|int|float |null $part): Fraction|string|null
 	{
 		if ($part === null) {
 			return null;

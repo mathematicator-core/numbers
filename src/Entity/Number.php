@@ -49,7 +49,7 @@ class Number
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws \Mathematicator\Numbers\Exception\NumberFormatException
 	 */
-	public function __construct(int|float|string|BigNumber|self $number)
+	public function __construct(int|float|string|BigNumber |self $number)
 	{
 		$this->invalidateCache(); // Defines array cache indexes
 
