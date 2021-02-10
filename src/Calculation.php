@@ -135,8 +135,7 @@ class Calculation
 		BigNumber|int $exponent,
 		?int $scale = null,
 		int $roundingMode = RoundingMode::UNNECESSARY
-	): self
-	{
+	): self {
 		if ($exponent instanceof BigNumber) {
 			$exponent = $exponent->toInt();
 		}

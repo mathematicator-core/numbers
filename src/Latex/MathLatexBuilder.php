@@ -19,8 +19,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 		int|string|Stringable $latex = '',
 		?string $delimiterLeft = null,
 		?string $delimiterRight = null
-	)
-	{
+	) {
 		$this->snippet = new MathLatexSnippet((string) $latex);
 
 		if ($delimiterLeft) {
