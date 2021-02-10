@@ -8,12 +8,9 @@ namespace Mathematicator\Numbers\Converter;
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Mathematicator\Numbers\Latex\MathLatexToolkit;
-use Nette\StaticClass;
 
 final class FractionToLatex
 {
-	use StaticClass;
-
 	public static function convert(Fraction $fraction): MathLatexBuilder
 	{
 		$numerator = $fraction->getNumerator();

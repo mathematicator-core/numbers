@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Exception;
 
+
 /**
  * Exception thrown when result cannot be provided because final number would be out of allowed set.
  */

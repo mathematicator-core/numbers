@@ -6,7 +6,6 @@ namespace Mathematicator\Numbers\HumanString;
 
 
 use Mathematicator\Numbers\IMathToolkit;
-use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -14,8 +13,6 @@ use Stringable;
  */
 final class MathHumanStringToolkit implements IMathToolkit
 {
-	use StaticClass;
-
 	public const PI = 'π';
 
 	public const DEGREE = '°';
@@ -35,49 +32,31 @@ final class MathHumanStringToolkit implements IMathToolkit
 	public const PERCENT = '%';
 
 
-	/**
-	 * @param int|string|Stringable $humanString
-	 */
-	public static function create($humanString = ''): MathHumanStringBuilder
+	public static function create(int|string|Stringable $humanString = ''): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($humanString);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $numerator
-	 * @param int|string|Stringable $denominator
-	 */
-	public static function frac($numerator, $denominator): MathHumanStringBuilder
+	public static function frac(int|string|Stringable $numerator, int|string|Stringable $denominator): MathHumanStringBuilder
 	{
 		return self::operator($numerator, $denominator, self::DIVIDE);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $x
-	 * @param int|string|Stringable $pow
-	 */
-	public static function pow($x, $pow): MathHumanStringBuilder
+	public static function pow(int|string|Stringable $x, int|string|Stringable $pow): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($x . '^(' . $pow . ')');
 	}
 
 
-	/**
-	 * @param int|string|Stringable $expression
-	 * @param int|string|Stringable|null $n
-	 */
-	public static function sqrt($expression, $n = null): MathHumanStringBuilder
+	public static function sqrt(int|string|Stringable $expression, int|string|Stringable|null $n = null): MathHumanStringBuilder
 	{
 		return self::func('sqrt', [$expression], $n);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $content
-	 */
-	public static function wrap($content, string $left, string $right = null): MathHumanStringBuilder
+	public static function wrap(int|string|Stringable $content, string $left, string $right = null): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($left . $content . ($right ?: $left));
 	}
@@ -87,9 +66,8 @@ final class MathHumanStringToolkit implements IMathToolkit
 	 * Render function to valid human string formula.
 	 *
 	 * @param array<int|string|Stringable|null> $arguments
-	 * @param int|string|Stringable|null $root
 	 */
-	public static function func(string $name, $arguments = [], $root = null): MathHumanStringBuilder
+	public static function func(string $name, iterable $arguments = [], int|string|Stringable|null $root = null): MathHumanStringBuilder
 	{
 		$return = $name;
 		if ($root) {
@@ -103,11 +81,7 @@ final class MathHumanStringToolkit implements IMathToolkit
 	}
 
 
-	/**
-	 * @param int|string|Stringable $left
-	 * @param int|string|Stringable $right
-	 */
-	public static function operator($left, $right, string $operator): MathHumanStringBuilder
+	public static function operator(int|string|Stringable $left, int|string|Stringable $right, string $operator): MathHumanStringBuilder
 	{
 		return new MathHumanStringBuilder($left . $operator . $right);
 	}

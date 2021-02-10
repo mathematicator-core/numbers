@@ -7,31 +7,24 @@ namespace Mathematicator\Numbers\Validator;
 
 use Mathematicator\Numbers\Converter\RomanToInt;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Nette\StaticClass;
-use Nette\Utils\Strings;
 
 /**
  * Checks whether the roman number is valid in modern set. (all positive integers and fractions /12)
  */
 final class RomanNumberValidator
 {
-	use StaticClass;
-
 	public static function validate(string $romanNumber, bool $allowZero = true): bool
 	{
-		if (strlen($romanNumber) === 0) {
+		if ($romanNumber === '') {
 			return false;
 		}
-
-		$normalizedInput = Strings::upper($romanNumber);
-
-		if ($allowZero && $normalizedInput === 'N') {
+		if ($allowZero && ($romanNumber = strtoupper($romanNumber)) === 'N') {
 			return true;
 		}
 
 		try {
 			RomanToInt::convert($romanNumber);
-		} catch (NumberFormatException $e) {
+		} catch (NumberFormatException) {
 			return false;
 		}
 
@@ -41,13 +34,10 @@ final class RomanNumberValidator
 
 	public static function isOptimal(string $romanNumber, bool $allowZero = true): bool
 	{
-		if (strlen($romanNumber) === 0) {
+		if ($romanNumber === '') {
 			return false;
 		}
-
-		$normalizedInput = Strings::upper($romanNumber);
-
-		if ($allowZero && $normalizedInput === 'N') {
+		if (($normalizedInput = strtoupper($romanNumber)) === 'N' && $allowZero) {
 			return true;
 		}
 

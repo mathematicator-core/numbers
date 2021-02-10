@@ -27,10 +27,7 @@ class Calculation
 	}
 
 
-	/**
-	 * @param int|float|string|BigNumber|SmartNumber $number
-	 */
-	public static function of($number): self
+	public static function of(int|float|string|BigNumber|SmartNumber $number): self
 	{
 		if ($number instanceof SmartNumber) {
 			return new self($number);
@@ -60,7 +57,7 @@ class Calculation
 	 * @param BigNumber|int|float|string $that The number to add. Must be convertible to a BigDecimal.
 	 * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
 	 */
-	public function plus($that): self
+	public function plus(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->plus($that));
 	}
@@ -74,7 +71,7 @@ class Calculation
 	 * @param BigNumber|int|float|string $that The number to subtract. Must be convertible to a BigDecimal.
 	 * @throws MathException If the number is not valid, or is not convertible to a BigDecimal.
 	 */
-	public function minus($that): self
+	public function minus(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->minus($that));
 	}
@@ -88,7 +85,7 @@ class Calculation
 	 * @param BigNumber|int|float|string $that The multiplier. Must be convertible to a BigDecimal.
 	 * @throws MathException If the multiplier is not a valid number, or is not convertible to a BigDecimal.
 	 */
-	public function multipliedBy($that): self
+	public function multipliedBy(BigNumber|int|float|string $that): self
 	{
 		$thisNumber = $this->getBigNumber();
 
@@ -103,11 +100,10 @@ class Calculation
 	/**
 	 * Returns the result of the division of this number by the given one, at the given scale.
 	 *
-	 * @param BigNumber|int|float|string $that The divisor.
 	 * @throws InvalidArgumentException  If the scale or rounding mode is invalid.
 	 * @throws MathException             If the number is invalid, is zero, or rounding was necessary.
 	 */
-	public function dividedBy($that): self
+	public function dividedBy(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->toBigRational()->dividedBy(BigRational::of($that)));
 	}
@@ -122,7 +118,7 @@ class Calculation
 	 * @throws MathException If the divisor is not a valid number, is not convertible to a BigDecimal, is zero,
 	 *                       or the result yields an infinite number of digits.
 	 */
-	public function exactlyDividedBy($that): self
+	public function exactlyDividedBy(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->toBigDecimal()->exactlyDividedBy($that));
 	}
@@ -136,7 +132,7 @@ class Calculation
 	 * @param int $roundingMode An optional rounding mode.
 	 * @throws InvalidArgumentException If the exponent is not in the range 0 to 1,000,000.
 	 */
-	public function power($exponent, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
+	public function power(BigNumber|int $exponent, ?int $scale = null, int $roundingMode = RoundingMode::UNNECESSARY): self
 	{
 		if ($exponent instanceof BigNumber) {
 			$exponent = $exponent->toInt();
@@ -155,7 +151,6 @@ class Calculation
 		}
 
 		$result = $this->getBigNumber()->power($exponent);
-
 		if ($scale !== null && $result instanceof BigDecimal) {
 			$result->toScale($scale, $roundingMode);
 		}
@@ -170,7 +165,7 @@ class Calculation
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
 	 * @throws DivisionByZeroException If the divisor is zero.
 	 */
-	public function quotient($that): self
+	public function quotient(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->quotient($that));
 	}
@@ -184,7 +179,7 @@ class Calculation
 	 * @param BigNumber|int|float|string $that The divisor. Must be convertible to a BigInteger.
 	 * @throws DivisionByZeroException If the divisor is zero.
 	 */
-	public function remainder($that): self
+	public function remainder(BigNumber|int|float|string $that): self
 	{
 		return self::of($this->getBigNumber()->remainder($that));
 	}
@@ -205,10 +200,9 @@ class Calculation
 
 
 	/**
-	 * @return BigInteger|BigDecimal|BigRational
 	 * @throws UnsupportedCalcOperationException
 	 */
-	private function getBigNumber()
+	private function getBigNumber(): BigInteger|BigDecimal|BigRational
 	{
 		$number = $this->number->getNumber();
 

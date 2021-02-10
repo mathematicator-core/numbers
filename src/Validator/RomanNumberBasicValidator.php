@@ -7,7 +7,6 @@ namespace Mathematicator\Numbers\Validator;
 
 use Mathematicator\Numbers\Converter\RomanToInt;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Nette\StaticClass;
 use Nette\Utils\Strings;
 
 /**
@@ -15,8 +14,6 @@ use Nette\Utils\Strings;
  */
 final class RomanNumberBasicValidator
 {
-	use StaticClass;
-
 	/**
 	 * @see https://php.vrana.cz/prevod-rimskych-cislic.php
 	 */

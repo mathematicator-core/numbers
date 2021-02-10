@@ -10,21 +10,17 @@ use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Helper\FractionHelper;
-use Nette\StaticClass;
 use Stringable;
 
 final class DecimalToFraction
 {
-	use StaticClass;
-
 	/**
 	 * Converts a decimal number to the best available fraction.
 	 * The fraction is automatically converted to the basic abbreviated form.
 	 *
-	 * @param float|int|string|Stringable|BigNumber $decimalInput
 	 * @throws NumberFormatException
 	 */
-	public static function convert($decimalInput): FractionNumbersOnly
+	public static function convert(float|int|string|Stringable|BigNumber $decimalInput): FractionNumbersOnly
 	{
 		$decimal = BigDecimal::of((string) $decimalInput);
 		$decimalAbs = $decimal->abs();

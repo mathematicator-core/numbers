@@ -14,47 +14,17 @@ interface IMathBuilder
 {
 	public function __toString(): string;
 
-	/**
-	 * @param int|string|Stringable $with
-	 * @return SelfClass
-	 */
-	public function plus($with);
+	public function plus(int|string|Stringable $with): self;
 
-	/**
-	 * @param int|string|Stringable $with
-	 * @return SelfClass
-	 */
-	public function minus($with);
+	public function minus(int|string|Stringable $with): self;
 
-	/**
-	 * @param int|string|Stringable $with
-	 * @return SelfClass
-	 */
-	public function multipliedBy($with);
+	public function multipliedBy(int|string|Stringable $with): self;
 
-	/**
-	 * @param int|string|Stringable $with
-	 * @return SelfClass
-	 */
-	public function dividedBy($with);
+	public function dividedBy(int|string|Stringable $with): self;
 
-	/**
-	 * @param int|string|Stringable $to
-	 * @return SelfClass
-	 */
-	public function equals($to);
+	public function equals(int|string|Stringable $to): self;
 
-	/**
-	 * @param string $operator
-	 * @param int|string|Stringable $to
-	 * @return SelfClass
-	 */
-	public function operator(string $operator, $to);
+	public function operator(string $operator, int|string|Stringable $to): self;
 
-	/**
-	 * @param string $left
-	 * @param string|null $right
-	 * @return SelfClass
-	 */
-	public function wrap(string $left, string $right = null);
+	public function wrap(string $left, string $right = null): self;
 }

@@ -8,12 +8,9 @@ namespace Mathematicator\Numbers\Converter;
 use Brick\Math\BigRational;
 use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
-use Nette\StaticClass;
 
 final class RationalToHumanString
 {
-	use StaticClass;
-
 	public static function convert(BigRational $rationalNumber): MathHumanStringBuilder
 	{
 		return MathHumanStringToolkit::frac(

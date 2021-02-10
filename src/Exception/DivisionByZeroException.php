@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Exception;
 
+
 /**
  * Exception thrown when a division by zero occurs.
  */

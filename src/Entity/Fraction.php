@@ -20,11 +20,9 @@ class Fraction implements ArrayAccess
 {
 	use FractionArrayAccessTrait;
 
-	/** @var Fraction|string|null */
-	protected $numerator;
+	protected Fraction|string|self|null $numerator;
 
-	/** @var Fraction|string|null */
-	protected $denominator;
+	protected Fraction|string|self|null $denominator;
 
 	/** Superior fraction (if in compound structure) */
 	protected ?Fraction $parentInNumerator = null;
@@ -33,12 +31,10 @@ class Fraction implements ArrayAccess
 	protected ?Fraction $parentInDenominator = null;
 
 
-	/**
-	 * @param int|string|Stringable|BigNumber|Fraction|null $numerator optional
-	 * @param int|string|Stringable|BigNumber|Fraction|null $denominator optional If numerator is set, than 1 is default
-	 */
-	public function __construct($numerator = null, $denominator = null)
-	{
+	public function __construct(
+		int|string|Stringable|BigNumber|Fraction|null $numerator = null,
+		int|string|Stringable|BigNumber|Fraction|null $denominator = null
+	) {
 		if ($numerator !== null) {
 			$this->setNumerator($numerator);
 		}
@@ -83,19 +79,13 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @return Fraction|string|null
-	 */
-	public function getNumerator()
+	public function getNumerator(): Fraction|string|null
 	{
 		return $this->numerator;
 	}
 
 
-	/**
-	 * @param int|string|Stringable|BigNumber|Fraction|null $numerator
-	 */
-	public function setNumerator($numerator): self
+	public function setNumerator(int|string|Stringable|BigNumber|Fraction|null $numerator): self
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);
@@ -110,19 +100,13 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @return Fraction|string|null
-	 */
-	public function getDenominator()
+	public function getDenominator(): Fraction|string|null
 	{
 		return $this->denominator;
 	}
 
 
-	/**
-	 * @param int|string|Stringable|BigNumber|Fraction|null $denominator
-	 */
-	public function setDenominator($denominator): self
+	public function setDenominator(int|string|Stringable|BigNumber|Fraction|null $denominator): self
 	{
 		if ($denominator instanceof self) {
 			$denominator->setParentInDenominator($this);
@@ -137,10 +121,7 @@ class Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @return Fraction|string
-	 */
-	public function getDenominatorNotNull()
+	public function getDenominatorNotNull(): Fraction|string
 	{
 		return $this->getDenominator() ?: '1';
 	}

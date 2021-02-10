@@ -16,10 +16,7 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 	private string $humanString;
 
 
-	/**
-	 * @param int|string|Stringable $humanString
-	 */
-	public function __construct($humanString = '')
+	public function __construct(int|string|Stringable $humanString = '')
 	{
 		$this->humanString = (string) $humanString;
 	}
@@ -37,55 +34,37 @@ final class MathHumanStringBuilder implements IMathBuilder, Stringable
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function plus($with): self
+	public function plus(int|string|Stringable $with): self
 	{
 		return $this->operator(MathHumanStringToolkit::PLUS, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function minus($with): self
+	public function minus(int|string|Stringable $with): self
 	{
 		return $this->operator(MathHumanStringToolkit::MINUS, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function multipliedBy($with): self
+	public function multipliedBy(int|string|Stringable $with): self
 	{
 		return $this->operator(MathHumanStringToolkit::MULTIPLY, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function dividedBy($with): self
+	public function dividedBy(int|string|Stringable $with): self
 	{
 		return $this->operator(MathHumanStringToolkit::DIVIDE, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $to
-	 */
-	public function equals($to): self
+	public function equals(int|string|Stringable $to): self
 	{
 		return $this->operator(MathHumanStringToolkit::EQUALS, $to);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $to
-	 */
-	public function operator(string $operator, $to): self
+	public function operator(string $operator, int|string|Stringable $to): self
 	{
 		$this->humanString = (string) MathHumanStringToolkit::operator($this->humanString, $to, $operator);
 

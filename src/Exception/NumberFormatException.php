@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mathematicator\Numbers\Exception;
 
+
 /**
  * Exception thrown when invalid number format on input is provided.
  */

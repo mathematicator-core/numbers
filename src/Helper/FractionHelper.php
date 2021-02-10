@@ -13,14 +13,11 @@ use Mathematicator\Numbers\Entity\FractionNumbersOnly;
 use Mathematicator\Numbers\Exception\DivisionByZeroException;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\PrimaryNumber;
-use Nette\StaticClass;
 use Nette\Utils\Validators;
 use RuntimeException;
 
 class FractionHelper
 {
-	use StaticClass;
-
 	/**
 	 * Automatically converts a fraction to a shortened form.
 	 * A prime division is used to shorten the fractions. It is the fastest method for calculation.

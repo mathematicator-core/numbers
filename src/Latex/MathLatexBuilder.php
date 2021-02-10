@@ -16,10 +16,7 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 	private MathLatexSnippet $snippet;
 
 
-	/**
-	 * @param int|string|Stringable $latex
-	 */
-	public function __construct($latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null)
+	public function __construct(int|string|Stringable $latex = '', ?string $delimiterLeft = null, ?string $delimiterRight = null)
 	{
 		$this->snippet = new MathLatexSnippet((string) $latex);
 
@@ -41,55 +38,37 @@ final class MathLatexBuilder implements IMathBuilder, Stringable
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function plus($with): self
+	public function plus(int|string|Stringable $with): self
 	{
 		return $this->operator(MathLatexToolkit::PLUS, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function minus($with): self
+	public function minus(int|string|Stringable $with): self
 	{
 		return $this->operator(MathLatexToolkit::MINUS, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function multipliedBy($with): self
+	public function multipliedBy(int|string|Stringable $with): self
 	{
 		return $this->operator(MathLatexToolkit::MULTIPLY, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $with
-	 */
-	public function dividedBy($with): self
+	public function dividedBy(int|string|Stringable $with): self
 	{
 		return $this->operator(MathLatexToolkit::DIVIDE, $with);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $to
-	 */
-	public function equals($to): self
+	public function equals(int|string|Stringable $to): self
 	{
 		return $this->operator(MathLatexToolkit::EQUALS, $to);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $to
-	 */
-	public function operator(string $operator, $to): self
+	public function operator(string $operator, int|string|Stringable $to): self
 	{
 		$this->snippet->latex = (string) MathLatexToolkit::operator($this->snippet->latex, $to, $operator);
 

@@ -11,7 +11,6 @@ use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Math\RoundingMode;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\Exception\OutOfSetException;
-use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -21,13 +20,10 @@ use Stringable;
  */
 class IntToRomanBasic
 {
-	use StaticClass;
-
 	/**
-	 * @param BigNumber|int|string|Stringable $input
 	 * @throws OutOfSetException
 	 */
-	public static function convert($input): string
+	public static function convert(BigNumber|int|string|Stringable $input): string
 	{
 		try {
 			$int = BigInteger::of((string) $input);

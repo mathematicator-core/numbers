@@ -12,50 +12,20 @@ use Stringable;
  */
 interface IMathToolkit
 {
-	/**
-	 * @param string|Stringable $numerator
-	 * @param string|Stringable $denominator
-	 * @return Builder
-	 */
-	public static function frac($numerator, $denominator);
+	public static function frac(string|Stringable $numerator, string|Stringable $denominator): IMathBuilder;
 
-	/**
-	 * @param string|Stringable $x
-	 * @param string|Stringable $pow
-	 * @return Builder
-	 */
-	public static function pow($x, $pow);
+	public static function pow(string|Stringable $x, string|Stringable $pow): IMathBuilder;
 
-	/**
-	 * @param int|string|Stringable $expression
-	 * @param int|string|Stringable|null $n
-	 * @return Builder
-	 */
-	public static function sqrt($expression, $n = null);
+	public static function sqrt(int|string|Stringable $expression, int|string|Stringable|null $n = null): IMathBuilder;
 
-	/**
-	 * @param string|Stringable $content
-	 * @param string $left
-	 * @param string|null $right
-	 * @return Builder
-	 */
-	public static function wrap($content, string $left, string $right = null);
+	public static function wrap(string|Stringable $content, string $left, ?string $right = null): IMathBuilder;
 
 	/**
 	 * Render function to valid LaTeX formula.
 	 *
-	 * @param string $name
 	 * @param array<int|string|Stringable|null> $arguments
-	 * @param int|string|Stringable|null $root
-	 * @return Builder
 	 */
-	public static function func(string $name, $arguments = [], $root = null);
+	public static function func(string $name, array $arguments = [], int|string|Stringable|null $root = null): IMathBuilder;
 
-	/**
-	 * @param string|Stringable $left
-	 * @param string|Stringable $right
-	 * @param string $operator
-	 * @return Builder
-	 */
-	public static function operator($left, $right, string $operator);
+	public static function operator(string|Stringable $left, string|Stringable $right, string $operator): IMathBuilder;
 }

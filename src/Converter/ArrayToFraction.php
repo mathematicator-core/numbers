@@ -7,13 +7,10 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Nette\StaticClass;
 use Stringable;
 
 final class ArrayToFraction
 {
-	use StaticClass;
-
 	/**
 	 * @param mixed[] $fraction
 	 * @throws NumberFormatException
@@ -47,10 +44,9 @@ final class ArrayToFraction
 
 	/**
 	 * @param mixed[]|string|Stringable|int|float|null $part
-	 * @return Fraction|string|null
 	 * @throws NumberFormatException
 	 */
-	private static function convertPart($part)
+	private static function convertPart(array|string|Stringable|int|float|null $part): Fraction|string|null
 	{
 		if ($part === null) {
 			return null;

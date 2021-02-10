@@ -24,10 +24,9 @@ use Stringable;
 final class IntToRoman extends IntToRomanBasic
 {
 	/**
-	 * @param BigNumber|int|string|Stringable $input
 	 * @throws OutOfSetException
 	 */
-	public static function convert($input): string
+	public static function convert(BigNumber|int|string|Stringable $input): string
 	{
 		$allowedSetDescription = 'integers >= 0';
 
@@ -36,18 +35,16 @@ final class IntToRoman extends IntToRomanBasic
 		} catch (RoundingNecessaryException $e) {
 			throw new OutOfSetException($input . ' (not integer)', $allowedSetDescription);
 		}
-
 		if ($int->isLessThan(0)) {
 			throw new OutOfSetException($input . ' (negative)', $allowedSetDescription);
 		}
-
-		$out = '';
 
 		// Prepare a conversion table
 		$numberLength = strlen((string) $int);
 		$numberThousands = ($numberLength - $numberLength % 3) / 3;
 
 		// Process each roman numeral
+		$out = '';
 		foreach (RomanToInt::getConversionTable($numberThousands) as $roman => $value) {
 			$matches = $int->dividedBy($value, RoundingMode::DOWN)->toInt();
 			$out .= str_repeat($roman, $matches);
@@ -59,10 +56,9 @@ final class IntToRoman extends IntToRomanBasic
 
 
 	/**
-	 * @param BigNumber|int|string|Stringable $input
 	 * @throws OutOfSetException
 	 */
-	public static function convertToLatex($input): string
+	public static function convertToLatex(BigNumber|int|string|Stringable $input): string
 	{
 		$out = self::convert($input);
 
@@ -74,7 +70,7 @@ final class IntToRoman extends IntToRomanBasic
 
 		// Convert underscores to latex overline
 		for ($i = $leadingUnderscoresCount; $i > 0; $i--) {
-			$out = (string) preg_replace('/_([IVXLCDM]|(\\\overline\{[\w{}]*\}))/', '\\overline{$1}', $out);
+			$out = (string) preg_replace('/_([IVXLCDM]|(\\\overline{[\w{}]*}))/', '\\overline{$1}', $out);
 		}
 
 		return $out;

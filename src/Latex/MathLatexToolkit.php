@@ -6,7 +6,6 @@ namespace Mathematicator\Numbers\Latex;
 
 
 use Mathematicator\Numbers\IMathToolkit;
-use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -14,8 +13,6 @@ use Stringable;
  */
 final class MathLatexToolkit implements IMathToolkit
 {
-	use StaticClass;
-
 	public const PI = '\pi';
 
 	public const INFINITY = '\infty';
@@ -37,11 +34,8 @@ final class MathLatexToolkit implements IMathToolkit
 	public const PERCENT = '\%';
 
 
-	/**
-	 * @param int|string|Stringable $latex
-	 */
 	public static function create(
-		$latex = '',
+		int|string|Stringable $latex = '',
 		?string $delimiterLeft = null,
 		?string $delimiterRight = null
 	): MathLatexBuilder {
@@ -49,40 +43,25 @@ final class MathLatexToolkit implements IMathToolkit
 	}
 
 
-	/**
-	 * @param int|string|Stringable $numerator
-	 * @param int|string|Stringable $denominator
-	 */
-	public static function frac($numerator, $denominator): MathLatexBuilder
+	public static function frac(int|string|Stringable $numerator, int|string|Stringable $denominator): MathLatexBuilder
 	{
 		return self::func('frac', [$numerator, $denominator]);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $x
-	 * @param int|string|Stringable $pow
-	 */
-	public static function pow($x, $pow): MathLatexBuilder
+	public static function pow(int|string|Stringable $x, int|string|Stringable $pow): MathLatexBuilder
 	{
 		return new MathLatexBuilder('{' . $x . '}^{' . $pow . '}');
 	}
 
 
-	/**
-	 * @param int|string|Stringable $expression
-	 * @param int|string|Stringable|null $n
-	 */
-	public static function sqrt($expression, $n = null): MathLatexBuilder
+	public static function sqrt(int|string|Stringable $expression, int|string|Stringable|null $n = null): MathLatexBuilder
 	{
 		return self::func('sqrt', [$expression], $n);
 	}
 
 
-	/**
-	 * @param int|string|Stringable $content
-	 */
-	public static function wrap($content, string $left, string $right = null): MathLatexBuilder
+	public static function wrap(int|string|Stringable $content, string $left, string $right = null): MathLatexBuilder
 	{
 		return new MathLatexBuilder($left . $content . ($right ?: $left));
 	}
@@ -92,9 +71,8 @@ final class MathLatexToolkit implements IMathToolkit
 	 * Render function to valid LaTeX formula.
 	 *
 	 * @param array<int|string|Stringable|null> $arguments
-	 * @param int|string|Stringable|null $root
 	 */
-	public static function func(string $name, $arguments = [], $root = null): MathLatexBuilder
+	public static function func(string $name, iterable $arguments = [], int|string|Stringable|null $root = null): MathLatexBuilder
 	{
 		$return = '\\' . $name;
 		if ($root) {
@@ -108,11 +86,7 @@ final class MathLatexToolkit implements IMathToolkit
 	}
 
 
-	/**
-	 * @param int|string|Stringable $left
-	 * @param int|string|Stringable $right
-	 */
-	public static function operator($left, $right, string $operator): MathLatexBuilder
+	public static function operator(int|string|Stringable $left, int|string|Stringable $right, string $operator): MathLatexBuilder
 	{
 		return new MathLatexBuilder($left . '\ ' . $operator . '\ ' . $right);
 	}

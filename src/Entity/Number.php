@@ -20,7 +20,6 @@ use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
 use Mathematicator\Numbers\Latex\MathLatexBuilder;
 use Mathematicator\Numbers\Latex\MathLatexToolkit;
-use Nette\SmartObject;
 
 /**
  * Number is an entity for interpreting numbers with an arbitrary precision.
@@ -31,35 +30,26 @@ use Nette\SmartObject;
  * - Integer
  * - Decimal number
  * - Rational number
- *
- * @property-read int|float|string|BigNumber $input
- * @property-read BigNumber $number
  */
 class Number
 {
-	use SmartObject;
 
 	/** Number main storage */
 	protected BigNumber $_number;
 
-	/**
-	 * Original user input
-	 *
-	 * @var int|float|string|BigNumber
-	 */
-	private $input;
+	/** Original user input */
+	private int|float|string|BigNumber $input;
 
 	/** @var mixed[] */
 	private array $cache = [];
 
 
 	/**
-	 * @param int|float|string|BigNumber|self $number
 	 * Allowed formats are: 123456789, 12345.6789, 5/8
 	 * If you have a real user input in nonstandard format, please NumberHelper::preprocessInput method first
 	 * @throws \Mathematicator\Numbers\Exception\NumberFormatException
 	 */
-	public function __construct($number)
+	public function __construct(int|float|string|BigNumber|self $number)
 	{
 		$this->invalidateCache(); // Defines array cache indexes
 
@@ -73,12 +63,9 @@ class Number
 	}
 
 
-	/**
-	 * @param int|float|string|BigNumber|Number $number
-	 */
-	public static function of($number): self
+	public static function of(int|float|string|BigNumber|Number $number): static
 	{
-		return new self($number);
+		return new static($number);
 	}
 
 
@@ -89,12 +76,8 @@ class Number
 	}
 
 
-	/**
-	 * User real input
-	 *
-	 * @return int|float|string|BigNumber
-	 */
-	public function getInput()
+	/** User real input */
+	public function getInput(): int|float|string|BigNumber
 	{
 		return $this->input;
 	}
@@ -258,11 +241,10 @@ class Number
 
 
 	/**
-	 * @param int|float|string|BigNumber $input
 	 * @throws \Mathematicator\Numbers\Exception\NumberFormatException
 	 * @throws \Mathematicator\Numbers\Exception\DivisionByZeroException
 	 */
-	protected function setValue($input): void
+	protected function setValue(int|float|string|BigNumber $input): void
 	{
 		try {
 			$this->_number = BigNumber::of($input);

@@ -17,40 +17,31 @@ use Stringable;
  *
  * @implements ArrayAccess<int, mixed[]|string|null>
  */
-final class FractionNumbersOnly extends Fraction implements ArrayAccess
+final class FractionNumbersOnly extends Fraction
 {
+	protected self|BigDecimal|null $numerator;
 
-	/** @var FractionNumbersOnly|BigDecimal|null */
-	protected $numerator;
-
-	/** @var FractionNumbersOnly|BigDecimal|null */
-	protected $denominator;
+	protected self|BigDecimal|null $denominator;
 
 
-	/**
-	 * @param int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator optional
-	 * @param int|string|Stringable|BigNumber|FractionNumbersOnly|null $denominator optional
-	 */
-	public function __construct($numerator = null, $denominator = null)
-	{
+	public function __construct(
+		int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator = null,
+		int|string|Stringable|BigNumber|FractionNumbersOnly|null $denominator = null
+	) {
 		parent::__construct($numerator, $denominator);
 	}
 
 
-	/**
-	 * @return FractionNumbersOnly|BigDecimal|null
-	 */
-	public function getNumerator()
+	public function getNumerator(): FractionNumbersOnly|BigDecimal|null
 	{
 		return $this->numerator;
 	}
 
 
 	/**
-	 * @param int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator
 	 * @throws NumberFormatException
 	 */
-	public function setNumerator($numerator)
+	public function setNumerator(int|string|Stringable|BigNumber|FractionNumbersOnly|null $numerator)
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);
@@ -65,20 +56,16 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @return FractionNumbersOnly|BigDecimal|null
-	 */
-	public function getDenominator()
+	public function getDenominator(): FractionNumbersOnly|BigDecimal|null
 	{
 		return $this->denominator;
 	}
 
 
 	/**
-	 * @param int|string|Stringable|BigNumber|Fraction $denominator
 	 * @throws NumberFormatException
 	 */
-	public function setDenominator($denominator): self
+	public function setDenominator(int|string|Stringable|BigNumber|Fraction $denominator): self
 	{
 		if ($denominator instanceof self) {
 			$denominator->setParentInDenominator($this);
@@ -93,10 +80,7 @@ final class FractionNumbersOnly extends Fraction implements ArrayAccess
 	}
 
 
-	/**
-	 * @return FractionNumbersOnly|BigDecimal
-	 */
-	public function getDenominatorNotNull()
+	public function getDenominatorNotNull(): FractionNumbersOnly|BigDecimal
 	{
 		return $this->getDenominator() ?? BigDecimal::of('1');
 	}

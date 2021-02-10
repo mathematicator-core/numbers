@@ -17,7 +17,7 @@ trait FractionArrayAccessTrait
 	 * @param mixed $offset
 	 * @param int|string|Stringable|BigNumber|Fraction|null $value
 	 */
-	public function offsetSet($offset, $value): void
+	public function offsetSet($offset, int|string|Stringable|BigNumber|Fraction|null $value): void
 	{
 		if (in_array($offset, [0, 'numerator'], true)) {
 			$this->setNumerator($value);

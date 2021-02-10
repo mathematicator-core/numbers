@@ -9,12 +9,9 @@ use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberFormatException;
 use Mathematicator\Numbers\HumanString\MathHumanStringBuilder;
 use Mathematicator\Numbers\HumanString\MathHumanStringToolkit;
-use Nette\StaticClass;
 
 final class FractionToHumanString
 {
-	use StaticClass;
-
 	/**
 	 * @param bool $simplify Remove denominator if === 1
 	 * @throws NumberFormatException
@@ -33,10 +30,9 @@ final class FractionToHumanString
 
 
 	/**
-	 * @param Fraction|string|null $part
 	 * @param bool $simplify Remove denominator if === 1
 	 */
-	private static function convertPart($part, bool $isDenominator, bool $simplify): string
+	private static function convertPart(Fraction|string|null $part, bool $isDenominator, bool $simplify): string
 	{
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {

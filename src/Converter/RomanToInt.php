@@ -8,7 +8,6 @@ namespace Mathematicator\Numbers\Converter;
 use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Nette\StaticClass;
 use Nette\Utils\Strings;
 use Stringable;
 
@@ -19,8 +18,6 @@ use Stringable;
  */
 final class RomanToInt
 {
-	use StaticClass;
-
 	/** @var int[] */
 	private static array $conversionTable = [
 		'M' => 1000,
@@ -81,10 +78,7 @@ final class RomanToInt
 	}
 
 
-	/**
-	 * @param BigNumber|int|string|Stringable $input
-	 */
-	public static function reverse($input): string
+	public static function reverse(BigNumber|int|string|Stringable $input): string
 	{
 		return IntToRoman::convert($input);
 	}

@@ -7,12 +7,9 @@ namespace Mathematicator\Numbers\Converter;
 
 use Mathematicator\Numbers\Entity\Fraction;
 use Mathematicator\Numbers\Exception\NumberFormatException;
-use Nette\StaticClass;
 
 final class FractionToArray
 {
-	use StaticClass;
-
 	/**
 	 * @return mixed[]
 	 * @throws NumberFormatException
@@ -41,11 +38,10 @@ final class FractionToArray
 
 
 	/**
-	 * @param Fraction|string|null $part
 	 * @return string|mixed[]|null
 	 * @throws NumberFormatException
 	 */
-	private static function convertPart($part, bool $isDenominator, bool $simplify)
+	private static function convertPart(Fraction|string|null $part, bool $isDenominator, bool $simplify): string|array|null
 	{
 		if ($isDenominator && $part === null) {
 			if (!$simplify) {

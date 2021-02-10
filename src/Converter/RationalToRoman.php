@@ -9,7 +9,6 @@ use Brick\Math\BigInteger;
 use Brick\Math\BigNumber;
 use Brick\Math\BigRational;
 use Mathematicator\Numbers\Exception\OutOfSetException;
-use Nette\StaticClass;
 use Stringable;
 
 /**
@@ -19,8 +18,6 @@ use Stringable;
  */
 final class RationalToRoman
 {
-	use StaticClass;
-
 	/** @var string[] */
 	protected static array $fractionConversionTable = [
 		'1/12' => '·',
@@ -38,11 +35,10 @@ final class RationalToRoman
 
 
 	/**
-	 * @param BigNumber|int|string|Stringable $input
 	 * @throws OutOfSetException
 	 * @see https://en.wikipedia.org/wiki/Roman_numerals (Fractions)
 	 */
-	public static function convert($input): string
+	public static function convert(BigNumber|int|string|Stringable $input): string
 	{
 		$rationalNumber = BigRational::of((string) $input)->simplified();
 
@@ -63,15 +59,10 @@ final class RationalToRoman
 			$numeratorFinal = $numeratorMultiplied->mod(12)->toInt();
 
 			$out = '';
-
-			// Integer part
-			if ($intFinal->isGreaterThan(0)) {
+			if ($intFinal->isGreaterThan(0)) { // Integer part
 				$out .= IntToRoman::convert($intFinal);
 			}
-
-
-			// Fraction part
-			if ($numeratorFinal > 0) {
+			if ($numeratorFinal > 0) { // Fraction part
 				$out .= self::$fractionConversionTable["$numeratorFinal/12"];
 			}
 

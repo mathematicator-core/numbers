@@ -23,115 +23,66 @@ use Mathematicator\Numbers\Helper\NumberHelper;
  * - Rational number
  *
  * Some methods decorates implementation from brick/math package.
- *
- * @property-read int|float|string|BigNumber $input
- * @property-read BigNumber $number
  */
 final class SmartNumber extends Number
 {
-	/**
-	 * @param int|float|string|BigNumber|Number $number
-	 * @return self
-	 */
-	public static function of($number): self
+	public static function of(int|float|string|BigNumber|Number $number): self
 	{
 		return new self($number);
 	}
 
 
-	/**
-	 * Checks if this number is strictly positive.
-	 *
-	 * @return bool
-	 */
+	/** Checks if this number is strictly positive. */
 	public function isPositive(): bool
 	{
 		return $this->_number->isPositive();
 	}
 
 
-	/**
-	 * Checks if this number is strictly negative.
-	 *
-	 * @return bool
-	 */
+	/** Checks if this number is strictly negative. */
 	public function isNegative(): bool
 	{
 		return $this->_number->isNegative();
 	}
 
 
-	/**
-	 * Checks if this number equals zero.
-	 *
-	 * @return bool
-	 */
+	/** Checks if this number equals zero. */
 	public function isZero(): bool
 	{
 		return $this->_number->isZero();
 	}
 
 
-	/**
-	 * Checks if this number is equal to the given one.
-	 *
-	 * @param BigNumber|int|float|string $that
-	 *
-	 * @return bool
-	 */
-	public function isEqualTo($that): bool
+	/** Checks if this number is equal to the given one. */
+	public function isEqualTo(BigNumber|int|float|string $that): bool
 	{
 		return $this->_number->isEqualTo($that);
 	}
 
 
-	/**
-	 * Checks if this number is strictly lower than the given one.
-	 *
-	 * @param BigNumber|int|float|string $that
-	 *
-	 * @return bool
-	 */
-	public function isLessThan($that): bool
+	/** Checks if this number is strictly lower than the given one. */
+	public function isLessThan(BigNumber|int|float|string $that): bool
 	{
 		return $this->_number->isLessThan($that);
 	}
 
 
-	/**
-	 * Checks if this number is lower than or equal to the given one.
-	 *
-	 * @param BigNumber|int|float|string $that
-	 *
-	 * @return bool
-	 */
-	public function isLessThanOrEqualTo($that): bool
+	/** Checks if this number is lower than or equal to the given one. */
+	public function isLessThanOrEqualTo(BigNumber|int|float|string $that): bool
 	{
 		return $this->_number->isLessThanOrEqualTo($that);
 	}
 
 
-	/**
-	 * Checks if this number is strictly greater than the given one.
-	 *
-	 * @param BigNumber|int|float|string $that
-	 *
-	 * @return bool
-	 */
-	public function isGreaterThan($that): bool
+	/** Checks if this number is strictly greater than the given one. */
+	public function isGreaterThan(BigNumber|int|float|string $that): bool
 	{
 		return $this->_number->isGreaterThan($that);
 	}
 
 
-	/**
-	 * Checks if this number is greater than or equal to the given one.
-	 *
-	 * @param BigNumber|int|float|string $that
-	 *
-	 * @return bool
-	 */
-	public function isGreaterThanOrEqualTo($that): bool
+	/** Checks if this number is greater than or equal to the given one. */
+	public function isGreaterThanOrEqualTo(BigNumber|int|float|string $that): bool
 	{
 		return $this->_number->isGreaterThanOrEqualTo($that);
 	}
@@ -142,10 +93,9 @@ final class SmartNumber extends Number
 	 * The parsing of numbers takes place in a safe way, in which the values are not distorted due to rounding.
 	 * Numbers are handled like a string.
 	 *
-	 * @param int|float|string|BigNumber $input
 	 * @throws Exception\NumberFormatException
 	 */
-	protected function setValue($input): void
+	protected function setValue(int|float|string|BigNumber $input): void
 	{
 		try {
 			parent::setValue($input);
