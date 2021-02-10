@@ -12,8 +12,6 @@ use Mathematicator\Numbers\Exception\NumberFormatException;
 
 /**
  * Entity to store simple and compound fractions
- *
- * @implements ArrayAccess<int, mixed[]|string|null>
  */
 class Fraction
 {

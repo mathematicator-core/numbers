@@ -26,7 +26,7 @@ use Mathematicator\Numbers\Helper\NumberHelper;
  */
 final class SmartNumber extends Number
 {
-	public static function of(int|float|string|BigNumber|Number $number): static
+	public static function of(int|float|string|BigNumber|Number $number): self
 	{
 		return new self($number);
 	}
