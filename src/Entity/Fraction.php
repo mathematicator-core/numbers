@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Entity;
 
 
-use ArrayAccess;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToHumanString;
 use Mathematicator\Numbers\Exception\NumberFormatException;
@@ -16,7 +15,7 @@ use Stringable;
  *
  * @implements ArrayAccess<int, mixed[]|string|null>
  */
-class Fraction implements ArrayAccess
+class Fraction
 {
 	use FractionArrayAccessTrait;
 
