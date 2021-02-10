@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Mathematicator\Numbers\Entity;
 
 
+use Brick\Math\BigDecimal;
 use Brick\Math\BigNumber;
 use Mathematicator\Numbers\Converter\FractionToHumanString;
 use Mathematicator\Numbers\Exception\NumberFormatException;
@@ -19,9 +20,9 @@ class Fraction
 {
 	use FractionArrayAccessTrait;
 
-	protected Fraction|string|self |null $numerator;
+	protected Fraction|BigDecimal|string|self |null $numerator;
 
-	protected Fraction|string|self |null $denominator;
+	protected Fraction|BigDecimal|string|self |null $denominator;
 
 	/** Superior fraction (if in compound structure) */
 	protected ?Fraction $parentInNumerator = null;
@@ -78,13 +79,13 @@ class Fraction
 	}
 
 
-	public function getNumerator(): Fraction|string|null
+	public function getNumerator(): Fraction|BigDecimal|string|self |null
 	{
 		return $this->numerator;
 	}
 
 
-	public function setNumerator(int|string|Stringable|BigNumber|Fraction |null $numerator): self
+	public function setNumerator(int|string|Stringable|BigNumber|Fraction |null $numerator): static
 	{
 		if ($numerator instanceof self) {
 			$numerator->setParentInNumerator($this);
@@ -99,7 +100,7 @@ class Fraction
 	}
 
 
-	public function getDenominator(): Fraction|string|null
+	public function getDenominator(): Fraction|BigDecimal|string|self |null
 	{
 		return $this->denominator;
 	}
@@ -120,7 +121,7 @@ class Fraction
 	}
 
 
-	public function getDenominatorNotNull(): Fraction|string
+	public function getDenominatorNotNull(): Fraction|FractionNumbersOnly|BigDecimal|string
 	{
 		return $this->getDenominator() ?: '1';
 	}
